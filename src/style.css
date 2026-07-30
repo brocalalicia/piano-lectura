@@ -85,6 +85,26 @@ body {
   color: var(--color-primario);
 }
 
+#explicacion {
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  padding: 20px 24px;
+  box-shadow: 0 6px 0 var(--color-boton-sombra);
+  max-width: 480px;
+  text-align: center;
+}
+
+#explicacion-titulo {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+#explicacion-texto {
+  margin: 0;
+  color: #5a5148;
+  line-height: 1.5;
+}
+
 #indicador-ejercicio {
   font-size: 0.95rem;
   color: #7a6f62;
@@ -251,6 +271,23 @@ body {
 .boton-control:active {
   transform: translateY(4px);
   box-shadow: 0 0 0 var(--color-primario-sombra);
+}
+
+#controles {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.boton-secundario {
+  padding: 8px 4px;
+  font-size: 0.85rem;
+  border: none;
+  background: none;
+  color: #a89b8b;
+  text-decoration: underline;
+  cursor: pointer;
+  user-select: none;
 }
 
 #zona-ejercicio {
