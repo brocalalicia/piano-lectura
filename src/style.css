@@ -1,0 +1,85 @@
+:root {
+  --color-fondo: #ffffff;
+  --color-texto: #222222;
+  --color-acierto: #2e7d32;
+  --color-fallo: #c62828;
+  --color-boton: #f0f0f0;
+  --color-boton-borde: #cccccc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+#marcador {
+  display: flex;
+  gap: 24px;
+  font-size: 1.1rem;
+}
+
+.marcador-aciertos strong {
+  color: var(--color-acierto);
+}
+
+.marcador-fallos strong {
+  color: var(--color-fallo);
+}
+
+#pentagrama {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#pentagrama.fallo svg {
+  background-color: #fdecea;
+}
+
+#botones {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.boton-nota {
+  padding: 20px 0;
+  font-size: 1.4rem;
+  border: 2px solid var(--color-boton-borde);
+  border-radius: 12px;
+  background: var(--color-boton);
+  cursor: pointer;
+  user-select: none;
+}
+
+.boton-nota:active {
+  background: #e0e0e0;
+}
+
+.boton-nota.fallo {
+  background: var(--color-fallo);
+  border-color: var(--color-fallo);
+  color: white;
+}
