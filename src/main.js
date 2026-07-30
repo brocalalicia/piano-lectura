@@ -31,6 +31,7 @@ const TRADUCCIONES = {
     iniciarSesion: "Iniciar sesión",
     pausar: "Pausar",
     reanudar: "Reanudar",
+    reiniciarSesion: "Reiniciar",
     explicacionTitulo: "¿Cómo se juega?",
     explicacionTexto:
       "Vas a ver un pentagrama (las cinco líneas de la música) con una nota dibujada. Cada nota tiene un nombre: do, re, mi, fa, sol, la o si. Tu tarea es mirar en qué posición está la nota y pulsar el botón con su nombre correcto. Si aciertas, la escucharás sonar. Si fallas, no pasa nada: la nota se queda ahí hasta que la aciertes.",
@@ -66,6 +67,7 @@ const TRADUCCIONES = {
     iniciarSesion: "Démarrer la session",
     pausar: "Pause",
     reanudar: "Reprendre",
+    reiniciarSesion: "Recommencer",
     explicacionTitulo: "Comment jouer ?",
     explicacionTexto:
       "Tu vas voir une portée (les cinq lignes de la musique) avec une note dessinée. Chaque note a un nom : do, ré, mi, fa, sol, la ou si. Ta mission est de regarder où se trouve la note et d'appuyer sur le bouton avec son bon nom. Si tu as raison, tu l'entendras. Si tu te trompes, ce n'est pas grave : la note reste là jusqu'à ce que tu la trouves.",
@@ -116,6 +118,7 @@ const explicacionTextoEl = document.getElementById("explicacion-texto");
 const indicadorEjercicioEl = document.getElementById("indicador-ejercicio");
 const progresoPuntosEl = document.getElementById("progreso-puntos");
 const botonEstado = document.getElementById("boton-estado");
+const botonReiniciarSesion = document.getElementById("boton-reiniciar-sesion");
 const memorizacionEl = document.getElementById("memorizacion");
 const memorizacionTextoEl = document.getElementById("memorizacion-texto");
 const contadorRegresivoEl = document.getElementById("contador-regresivo");
@@ -472,6 +475,15 @@ function avanzarSiguienteEjercicio() {
   iniciarEjercicioActual(ordenBotones);
 }
 
+function volverAInicio() {
+  if (cuentaAtrasIntervalId !== null) {
+    clearInterval(cuentaAtrasIntervalId);
+    cuentaAtrasIntervalId = null;
+  }
+  estado = "inicio";
+  actualizarUI();
+}
+
 function pausar() {
   estado = "pausado";
   tiempoPausaInicio = Date.now();
@@ -624,6 +636,7 @@ function actualizarUI() {
   contenedorBotones.classList.toggle("oculto", enMemorizacion);
   resultadoEl.classList.toggle("oculto", estado !== "terminado");
   botonEstado.classList.toggle("oculto", estado === "terminado" || enMemorizacion);
+  botonReiniciarSesion.classList.toggle("oculto", !enProgreso);
 
   habilitarBotonesNota(estado === "jugando");
 
@@ -651,6 +664,7 @@ function aplicarIdioma(nuevoIdioma) {
   etiquetaFallosEl.textContent = t().fallos;
   etiquetaRachaEl.textContent = t().racha;
   memorizacionTextoEl.textContent = t().memorizaTitulo;
+  botonReiniciarSesion.textContent = t().reiniciarSesion;
   explicacionTituloEl.textContent = t().explicacionTitulo;
   explicacionTextoEl.textContent = t().explicacionTexto;
 
@@ -685,6 +699,11 @@ botonEstado.addEventListener("click", () => {
   } else if (estado === "pausado") {
     reanudar();
   }
+});
+
+botonReiniciarSesion.addEventListener("click", () => {
+  vibrar(15);
+  volverAInicio();
 });
 
 botonContinuar.addEventListener("click", () => {
