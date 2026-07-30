@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Lectura musical</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="selector-idioma">
+        <button class="boton-idioma" data-lang="es">ES</button>
+        <button class="boton-idioma" data-lang="fr">FR</button>
+      </div>
+
+      <div id="marcador">
+        <span class="marcador-item marcador-aciertos"><span id="etiqueta-aciertos"></span>: <strong id="contador-aciertos">0</strong></span>
+        <span class="marcador-item marcador-fallos"><span id="etiqueta-fallos"></span>: <strong id="contador-fallos">0</strong></span>
+        <span class="marcador-item marcador-racha"><span id="etiqueta-racha"></span>: <strong id="contador-racha">0</strong></span>
+      </div>
+
+      <div id="indicador-ejercicio" class="oculto"></div>
+
+      <div id="progreso-puntos" class="oculto"></div>
+
+      <div id="controles">
+        <button id="boton-estado" class="boton-control"></button>
+      </div>
+
+      <div id="memorizacion" class="oculto">
+        <p id="memorizacion-texto"></p>
+        <div id="contador-regresivo">5</div>
+      </div>
+
+      <div id="zona-ejercicio" class="oculto">
+        <div id="contenedor-pentagrama">
+          <div id="pentagrama"></div>
+          <div id="feedback-icono"></div>
+        </div>
+        <div id="botones"></div>
+      </div>
+
+      <div id="resultado" class="oculto">
+        <h2 id="resultado-titulo"></h2>
+        <div id="resultado-estrellas"></div>
+        <p id="leyenda-estrellas"></p>
+        <p id="resultado-precision"></p>
+        <p id="resultado-detalle"></p>
+        <p id="resultado-tiempo"></p>
+        <p id="resultado-racha"></p>
+        <div id="tabla-sesion-contenedor" class="oculto"></div>
+        <button id="boton-continuar" class="boton-control"></button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
