@@ -8,11 +8,27 @@
   <body>
     <div id="app">
       <div id="barra-superior">
-        <button id="boton-reiniciar-sesion" class="boton-secundario oculto"></button>
+        <div id="acciones-superiores">
+          <button id="boton-menu" class="boton-secundario oculto"></button>
+          <button id="boton-reiniciar-sesion" class="boton-secundario oculto"></button>
+        </div>
         <div id="selector-idioma">
           <button class="boton-idioma" data-lang="es">ES</button>
           <button class="boton-idioma" data-lang="fr">FR</button>
         </div>
+      </div>
+
+      <div id="indicador-nivel" class="oculto"></div>
+
+      <div id="menu-clave" class="oculto">
+        <h2 id="menu-clave-titulo"></h2>
+        <div class="menu-opciones" id="menu-clave-opciones"></div>
+      </div>
+
+      <div id="menu-nivel" class="oculto">
+        <h2 id="menu-nivel-titulo"></h2>
+        <div class="menu-opciones" id="menu-nivel-opciones"></div>
+        <button id="boton-volver-clave" class="boton-secundario"></button>
       </div>
 
       <div id="marcador">

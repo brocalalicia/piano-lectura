@@ -2,15 +2,65 @@ import { Renderer, Stave, StaveNote, Formatter, Annotation } from "vexflow";
 import * as Tone from "tone";
 import "./style.css";
 
-// Notas que se pueden practicar en esta pantalla: do central a sol.
-// "id" es el identificador interno (siempre el mismo, no se traduce).
-const NOTAS = [
-  { id: "do", vex: "c/4" },
-  { id: "re", vex: "d/4" },
-  { id: "mi", vex: "e/4" },
-  { id: "fa", vex: "f/4" },
-  { id: "sol", vex: "g/4" },
+// Las siete notas de la escala. El indice coincide con LETRAS, que es como
+// las nombra VexFlow. "id" es el identificador interno, nunca se traduce.
+const ESCALA = ["do", "re", "mi", "fa", "sol", "la", "si"];
+const LETRAS = ["c", "d", "e", "f", "g", "a", "b"];
+
+// Numero de orden de una nota escrita, contando grados de la escala desde el
+// do de la octava 0. Sirve para construir rangos y para saber a que altura se
+// dibuja cada nota sobre el pentagrama.
+function gradoDeNota(vexKey) {
+  const [letra, octava] = vexKey.split("/");
+  return Number(octava) * 7 + LETRAS.indexOf(letra);
+}
+
+function notaDeGrado(grado) {
+  const posicion = grado % 7;
+  return { id: ESCALA[posicion], vex: `${LETRAS[posicion]}/${Math.floor(grado / 7)}` };
+}
+
+// Todas las notas entre dos extremos, ambos incluidos.
+function construirRango(desde, hasta) {
+  const notas = [];
+  for (let grado = gradoDeNota(desde); grado <= gradoDeNota(hasta); grado += 1) {
+    notas.push(notaDeGrado(grado));
+  }
+  return notas;
+}
+
+// Nota que cae sobre la linea inferior del pentagrama en cada clave.
+const LINEA_INFERIOR = { treble: "e/4", bass: "g/2" };
+
+// Las dos claves y sus cuatro niveles. Se puede entrar directamente a
+// cualquier nivel: no hay nada que desbloquear.
+const CLAVES = [
+  {
+    id: "sol",
+    clef: "treble",
+    niveles: [
+      { id: "inicial", desde: "c/4", hasta: "g/4" },
+      { id: "intermedio", desde: "c/5", hasta: "g/5" },
+      { id: "avanzado1", desde: "g/5", hasta: "e/6" },
+      { id: "avanzado2", desde: "g/3", hasta: "c/4" },
+    ],
+  },
+  {
+    id: "fa",
+    clef: "bass",
+    niveles: [
+      { id: "inicial", desde: "f/3", hasta: "c/4" },
+      { id: "intermedio", desde: "f/2", hasta: "c/3" },
+      { id: "avanzado1", desde: "c/4", hasta: "g/4" },
+      { id: "avanzado2", desde: "c/2", hasta: "f/2" },
+    ],
+  },
 ];
+
+let claveActual = CLAVES[0];
+let nivelActual = claveActual.niveles[0];
+// Notas del nivel que se esta practicando.
+let notasNivel = construirRango(nivelActual.desde, nivelActual.hasta);
 
 // Botones de respuesta: las siete notas (identificadores internos, orden base).
 const BOTONES_ID = ["do", "re", "mi", "fa", "sol", "la", "si"];
@@ -25,6 +75,31 @@ const IDIOMA_GUARDADO_KEY = "piano-lectura-idioma";
 const TRADUCCIONES = {
   es: {
     tituloPagina: "Lectura musical",
+    menuClaveTitulo: "¿Qué clave quieres practicar?",
+    menuNivelTitulo: "Elige un nivel",
+    volverClave: "Cambiar de clave",
+    volverMenu: "Menú",
+    claves: { sol: "Clave de sol", fa: "Clave de fa" },
+    niveles: {
+      inicial: "Inicial",
+      intermedio: "Intermedio",
+      avanzado1: "Avanzado 1",
+      avanzado2: "Avanzado 2",
+    },
+    rangos: {
+      sol: {
+        inicial: "do central a sol",
+        intermedio: "do alto a sol alto",
+        avanzado1: "sol alto a mi, con líneas adicionales",
+        avanzado2: "sol grave a do central",
+      },
+      fa: {
+        inicial: "fa a do central",
+        intermedio: "fa grave a do",
+        avanzado1: "do central a sol, con líneas adicionales",
+        avanzado2: "do grave a fa grave",
+      },
+    },
     aciertos: "Aciertos",
     fallos: "Fallos",
     racha: "Racha",
@@ -61,6 +136,31 @@ const TRADUCCIONES = {
   },
   fr: {
     tituloPagina: "Lecture musicale",
+    menuClaveTitulo: "Quelle clé veux-tu travailler ?",
+    menuNivelTitulo: "Choisis un niveau",
+    volverClave: "Changer de clé",
+    volverMenu: "Menu",
+    claves: { sol: "Clé de sol", fa: "Clé de fa" },
+    niveles: {
+      inicial: "Débutant",
+      intermedio: "Intermédiaire",
+      avanzado1: "Avancé 1",
+      avanzado2: "Avancé 2",
+    },
+    rangos: {
+      sol: {
+        inicial: "du do central au sol",
+        intermedio: "du do aigu au sol aigu",
+        avanzado1: "du sol aigu au mi, avec lignes supplémentaires",
+        avanzado2: "du sol grave au do central",
+      },
+      fa: {
+        inicial: "du fa au do central",
+        intermedio: "du fa grave au do",
+        avanzado1: "du do central au sol, avec lignes supplémentaires",
+        avanzado2: "du do grave au fa grave",
+      },
+    },
     aciertos: "Réussites",
     fallos: "Erreurs",
     racha: "Série",
@@ -117,6 +217,15 @@ const explicacionTituloEl = document.getElementById("explicacion-titulo");
 const explicacionTextoEl = document.getElementById("explicacion-texto");
 const indicadorEjercicioEl = document.getElementById("indicador-ejercicio");
 const marcadorEl = document.getElementById("marcador");
+const indicadorNivelEl = document.getElementById("indicador-nivel");
+const menuClaveEl = document.getElementById("menu-clave");
+const menuClaveTituloEl = document.getElementById("menu-clave-titulo");
+const menuClaveOpcionesEl = document.getElementById("menu-clave-opciones");
+const menuNivelEl = document.getElementById("menu-nivel");
+const menuNivelTituloEl = document.getElementById("menu-nivel-titulo");
+const menuNivelOpcionesEl = document.getElementById("menu-nivel-opciones");
+const botonVolverClave = document.getElementById("boton-volver-clave");
+const botonMenu = document.getElementById("boton-menu");
 const progresoPuntosEl = document.getElementById("progreso-puntos");
 const botonEstado = document.getElementById("boton-estado");
 const botonReiniciarSesion = document.getElementById("boton-reiniciar-sesion");
@@ -139,8 +248,9 @@ const feedbackIconoEl = document.getElementById("feedback-icono");
 const DURACION_FEEDBACK = 500;
 const SEGUNDOS_MEMORIZACION = 10;
 
-// estado posibles: "inicio", "memorizando", "jugando", "pausado", "terminado"
-let estado = "inicio";
+// estados posibles: "menu-clave", "menu-nivel", "inicio", "memorizando",
+// "jugando", "pausado", "terminado"
+let estado = "menu-clave";
 let cuentaAtrasIntervalId = null;
 
 let aciertos = 0;
@@ -202,17 +312,17 @@ function barajar(array) {
 function saltoMaximoPermitido(indiceNota) {
   const nivelBase = serieActual === 2 ? 2 : 0;
   const nivel = nivelBase + Math.floor(indiceNota / 5);
-  return Math.min(nivel + 1, NOTAS.length - 1);
+  return Math.min(nivel + 1, notasNivel.length - 1);
 }
 
 function elegirSiguienteNotaIndice(indiceAnterior, indiceRonda) {
   if (indiceAnterior === null) {
-    return Math.floor(Math.random() * NOTAS.length);
+    return Math.floor(Math.random() * notasNivel.length);
   }
 
   const saltoMaximo = saltoMaximoPermitido(indiceRonda);
   const candidatos = [];
-  for (let i = 0; i < NOTAS.length; i += 1) {
+  for (let i = 0; i < notasNivel.length; i += 1) {
     if (i === indiceAnterior) continue;
     if (Math.abs(i - indiceAnterior) <= saltoMaximo) candidatos.push(i);
   }
@@ -222,7 +332,7 @@ function elegirSiguienteNotaIndice(indiceAnterior, indiceRonda) {
 
 function elegirSiguienteNota() {
   notaActualIndice = elegirSiguienteNotaIndice(notaActualIndice, notasCompletadas);
-  notaActual = NOTAS[notaActualIndice];
+  notaActual = notasNivel[notaActualIndice];
   falloEnNotaActual = false;
 }
 
@@ -230,15 +340,34 @@ function elegirSiguienteNota() {
 // medidas fijas, para que la tarjeta lo agrande hasta llenarla. Los margenes
 // se calculan desde las lineas del pentagrama, asi que la posicion es siempre
 // la misma aunque cambie la nota.
-const MARGEN_ARRIBA = 22; // parte alta de la clave de sol
-const MARGEN_ABAJO = 30; // do central con su linea adicional
+const MARGEN_CLAVE = 22; // lo que sobresale el dibujo de la clave
+const MARGEN_NOTA = 14; // cabeza de la nota y su linea adicional
 
-function encuadrarPentagrama(pentagrama, margenAbajoExtra = 0) {
-  const svg = contenedorPentagrama.querySelector("svg");
+// Altura a la que cae una nota escrita sobre este pentagrama.
+function yDeNota(pentagrama, vexKey, clef) {
+  const pasos = gradoDeNota(vexKey) - gradoDeNota(LINEA_INFERIOR[clef]);
+  return pentagrama.getYForLine(4) - pasos * 5;
+}
+
+function encuadrarPentagrama(contenedor, pentagrama, opciones = {}) {
+  const { notas = notasNivel, clef = claveActual.clef, margenAbajoExtra = 0 } = opciones;
+  const svg = contenedor.querySelector("svg");
   if (!svg) return;
 
-  const arriba = pentagrama.getYForLine(0) - MARGEN_ARRIBA;
-  const abajo = pentagrama.getYForLine(4) + MARGEN_ABAJO + margenAbajoExtra;
+  // El encuadre se calcula con las notas extremas del nivel, nunca con la
+  // nota que toca ahora: asi el pentagrama no salta entre preguntas aunque
+  // unas notas esten mucho mas altas que otras.
+  let arriba = pentagrama.getYForLine(0) - MARGEN_CLAVE;
+  let abajo = pentagrama.getYForLine(4) + MARGEN_CLAVE;
+
+  if (notas.length > 0) {
+    const yMasAguda = yDeNota(pentagrama, notas[notas.length - 1].vex, clef);
+    const yMasGrave = yDeNota(pentagrama, notas[0].vex, clef);
+    arriba = Math.min(arriba, yMasAguda - MARGEN_NOTA);
+    abajo = Math.max(abajo, yMasGrave + MARGEN_NOTA);
+  }
+
+  abajo += margenAbajoExtra;
   const izquierda = pentagrama.getX() - 6;
   const ancho = pentagrama.getWidth() + 12;
 
@@ -261,19 +390,22 @@ function dibujarPentagrama() {
   const contexto = renderer.getContext();
 
   const pentagrama = new Stave(0, 40, 155);
-  pentagrama.addClef("treble");
+  pentagrama.addClef(claveActual.clef);
   pentagrama.setContext(contexto).draw();
 
+  // La clave hay que indicarsela tambien a la nota: si no, VexFlow la coloca
+  // en la altura que le tocaria en clave de sol.
   const nota = new StaveNote({
     keys: [notaActual.vex],
     duration: "w",
+    clef: claveActual.clef,
   });
 
   Formatter.FormatAndDraw(contexto, pentagrama, [nota]);
-  encuadrarPentagrama(pentagrama);
+  encuadrarPentagrama(contenedorPentagrama, pentagrama);
 }
 
-// Muestra las 5 notas del rango a la vez, con su nombre debajo, para que
+// Muestra todas las notas del nivel a la vez, con su nombre debajo, para que
 // el alumno las memorice antes de empezar el ejercicio.
 function mostrarPentagramaCompleto() {
   contenedorPentagrama.innerHTML = "";
@@ -283,22 +415,46 @@ function mostrarPentagramaCompleto() {
   renderer.resize(500, 260);
   const contexto = renderer.getContext();
 
-  const pentagrama = new Stave(0, 40, 340);
-  pentagrama.addClef("treble");
+  // El ancho crece con el numero de notas del nivel, que no siempre son cinco.
+  const pentagrama = new Stave(0, 40, 60 + notasNivel.length * 56);
+  pentagrama.addClef(claveActual.clef);
   pentagrama.setContext(contexto).draw();
 
-  const notasStave = NOTAS.map((nota) => {
-    const staveNote = new StaveNote({ keys: [nota.vex], duration: "q" });
+  const notasStave = notasNivel.map((nota) => {
+    const staveNote = new StaveNote({
+      keys: [nota.vex],
+      duration: "q",
+      clef: claveActual.clef,
+    });
     const etiqueta = new Annotation(t().notas[nota.id]);
     etiqueta.setVerticalJustification(Annotation.VerticalJustify.BOTTOM);
     etiqueta.setFont("Arial, sans-serif", 16, "normal");
     etiqueta.setStyle({ fillStyle: "#3a322c", strokeStyle: "#3a322c" });
+    // Un poco de aire para que el nombre no toque la cabeza de la nota en los
+    // niveles cuyas notas caen por debajo del pentagrama.
+    etiqueta.setYShift(10);
     staveNote.addModifier(etiqueta, 0);
     return staveNote;
   });
 
   Formatter.FormatAndDraw(contexto, pentagrama, notasStave);
-  encuadrarPentagrama(pentagrama, 34); // sitio para los nombres bajo las notas
+  // Sitio extra abajo para los nombres que van bajo las notas.
+  encuadrarPentagrama(contenedorPentagrama, pentagrama, { margenAbajoExtra: 46 });
+}
+
+// Pentagrama en miniatura con solo la clave, para los botones del menu.
+function dibujarMiniaturaClave(contenedor, clef) {
+  contenedor.innerHTML = "";
+
+  const renderer = new Renderer(contenedor, Renderer.Backends.SVG);
+  renderer.resize(200, 200);
+  const contexto = renderer.getContext();
+
+  const pentagrama = new Stave(0, 40, 70);
+  pentagrama.addClef(clef);
+  pentagrama.setContext(contexto).draw();
+
+  encuadrarPentagrama(contenedor, pentagrama, { notas: [], clef });
 }
 
 function iniciarCuentaAtras(segundos, alTerminar) {
@@ -518,13 +674,104 @@ function avanzarSiguienteEjercicio() {
   iniciarEjercicioActual(ordenBotones);
 }
 
-function volverAInicio() {
+function detenerCuentaAtras() {
   if (cuentaAtrasIntervalId !== null) {
     clearInterval(cuentaAtrasIntervalId);
     cuentaAtrasIntervalId = null;
   }
+}
+
+function volverAInicio() {
+  detenerCuentaAtras();
   estado = "inicio";
   actualizarUI();
+}
+
+// --- Menu de navegacion: primero la clave, despues el nivel ---------------
+
+function renderizarMenuClave() {
+  menuClaveOpcionesEl.innerHTML = "";
+
+  CLAVES.forEach((clave) => {
+    const boton = document.createElement("button");
+    boton.className = "boton-menu boton-clave";
+
+    const miniatura = document.createElement("span");
+    miniatura.className = "miniatura-clave";
+    boton.appendChild(miniatura);
+
+    const nombre = document.createElement("span");
+    nombre.className = "menu-nombre";
+    nombre.textContent = t().claves[clave.id];
+    boton.appendChild(nombre);
+
+    boton.addEventListener("click", () => {
+      vibrar(15);
+      seleccionarClave(clave);
+    });
+
+    menuClaveOpcionesEl.appendChild(boton);
+    dibujarMiniaturaClave(miniatura, clave.clef);
+  });
+}
+
+function renderizarMenuNivel() {
+  menuNivelOpcionesEl.innerHTML = "";
+
+  claveActual.niveles.forEach((nivel) => {
+    const boton = document.createElement("button");
+    boton.className = "boton-menu boton-nivel";
+
+    const nombre = document.createElement("span");
+    nombre.className = "menu-nombre";
+    nombre.textContent = t().niveles[nivel.id];
+    boton.appendChild(nombre);
+
+    const rango = document.createElement("span");
+    rango.className = "menu-rango";
+    rango.textContent = t().rangos[claveActual.id][nivel.id];
+    boton.appendChild(rango);
+
+    boton.addEventListener("click", () => {
+      vibrar(15);
+      seleccionarNivel(nivel);
+    });
+
+    menuNivelOpcionesEl.appendChild(boton);
+  });
+}
+
+function seleccionarClave(clave) {
+  claveActual = clave;
+  estado = "menu-nivel";
+  renderizarMenuNivel();
+  actualizarUI();
+}
+
+function seleccionarNivel(nivel) {
+  nivelActual = nivel;
+  notasNivel = construirRango(nivel.desde, nivel.hasta);
+  estado = "inicio";
+  actualizarIndicadorNivel();
+  actualizarUI();
+}
+
+function volverAlMenuClave() {
+  detenerCuentaAtras();
+  estado = "menu-clave";
+  renderizarMenuClave();
+  actualizarUI();
+}
+
+function volverAlMenuNivel() {
+  detenerCuentaAtras();
+  estado = "menu-nivel";
+  renderizarMenuNivel();
+  actualizarUI();
+}
+
+function actualizarIndicadorNivel() {
+  indicadorNivelEl.textContent = `${t().claves[claveActual.id]} · ${t().niveles[nivelActual.id]}`;
 }
 
 function pausar() {
@@ -669,23 +916,30 @@ function finalizarEjercicioActual() {
 function actualizarUI() {
   const enMemorizacion = estado === "memorizando";
   const enProgreso = estado === "memorizando" || estado === "jugando" || estado === "pausado";
+  const enMenu = estado === "menu-clave" || estado === "menu-nivel";
 
   // El estado tambien va en el body para que el CSS pueda centrar las
-  // pantallas que no tienen la zona de juego (inicio y resumen final).
+  // pantallas que no tienen la zona de juego (menus, inicio y resumen).
   document.body.dataset.estado = estado;
 
-  // Ni antes de empezar (todo a cero) ni en el resumen (la tarjeta ya lo dice).
-  marcadorEl.classList.toggle("oculto", estado === "inicio" || estado === "terminado");
+  menuClaveEl.classList.toggle("oculto", estado !== "menu-clave");
+  menuNivelEl.classList.toggle("oculto", estado !== "menu-nivel");
+  indicadorNivelEl.classList.toggle("oculto", enMenu);
+  botonMenu.classList.toggle("oculto", enMenu);
+
+  // El marcador no aporta nada antes de empezar (todo a cero) ni en el
+  // resumen (la tarjeta ya da esos datos).
+  marcadorEl.classList.toggle("oculto", enMenu || estado === "inicio" || estado === "terminado");
 
   explicacionEl.classList.toggle("oculto", estado !== "inicio");
   indicadorEjercicioEl.classList.toggle("oculto", !enProgreso);
   progresoPuntosEl.classList.toggle("oculto", !enProgreso);
   memorizacionEl.classList.toggle("oculto", !enMemorizacion);
-  zonaEjercicio.classList.toggle("oculto", estado === "inicio" || estado === "terminado");
+  zonaEjercicio.classList.toggle("oculto", !enProgreso);
   zonaEjercicio.classList.toggle("pausada", estado === "pausado");
   contenedorBotones.classList.toggle("oculto", enMemorizacion);
   resultadoEl.classList.toggle("oculto", estado !== "terminado");
-  botonEstado.classList.toggle("oculto", estado === "terminado" || enMemorizacion);
+  botonEstado.classList.toggle("oculto", enMenu || estado === "terminado" || enMemorizacion);
   botonReiniciarSesion.classList.toggle("oculto", !enProgreso);
 
   habilitarBotonesNota(estado === "jugando");
@@ -719,6 +973,13 @@ function aplicarIdioma(nuevoIdioma) {
   etiquetaRachaEl.textContent = t().racha;
   memorizacionTextoEl.textContent = t().memorizaTitulo;
   botonReiniciarSesion.textContent = t().reiniciarSesion;
+  botonMenu.textContent = t().volverMenu;
+  menuClaveTituloEl.textContent = t().menuClaveTitulo;
+  menuNivelTituloEl.textContent = t().menuNivelTitulo;
+  botonVolverClave.textContent = t().volverClave;
+  renderizarMenuClave();
+  renderizarMenuNivel();
+  actualizarIndicadorNivel();
   explicacionTituloEl.textContent = t().explicacionTitulo;
   explicacionTextoEl.textContent = t().explicacionTexto;
 
@@ -753,6 +1014,16 @@ botonEstado.addEventListener("click", () => {
   } else if (estado === "pausado") {
     reanudar();
   }
+});
+
+botonVolverClave.addEventListener("click", () => {
+  vibrar(15);
+  volverAlMenuClave();
+});
+
+botonMenu.addEventListener("click", () => {
+  vibrar(15);
+  volverAlMenuNivel();
 });
 
 botonReiniciarSesion.addEventListener("click", () => {

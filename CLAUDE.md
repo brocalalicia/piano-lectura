@@ -52,8 +52,22 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - Feedback triple siempre: color + icono + sonido. Nunca solo color (daltonismo).
 - Micro-animaciones rápidas (bajo 200ms). Nada que bloquee al alumno.
 
+## Niveles
+- Se entra por un menú: primero la clave (sol o fa) y después el nivel.
+  Cualquier alumno puede ir directo al nivel que quiera; no se desbloquea nada.
+- Clave de sol: Inicial (do central a sol), Intermedio (do alto a sol alto),
+  Avanzado 1 (sol alto a mi, en líneas adicionales por encima) y
+  Avanzado 2 (sol grave a do central, por debajo del pentagrama).
+- Clave de fa: Inicial (fa a do central), Intermedio (fa grave a do),
+  Avanzado 1 (do central a sol, en líneas adicionales por encima) y
+  Avanzado 2 (do grave a fa grave, por debajo del pentagrama).
+- Los botones de respuesta son siempre las siete notas, aunque el nivel tenga
+  cuatro, cinco o seis: las que sobran hacen de señuelo.
+- Todos los niveles funcionan igual: memorización, 2 series de 3 ejercicios
+  y tabla final.
+
 ## Estructura de juego
-- Antes de cada ejercicio, 5 segundos para memorizar las notas del rango
+- Antes de cada ejercicio, 10 segundos para memorizar las notas del nivel
   (pentagrama con todas las notas a la vez y su nombre debajo).
 - Una sesión son 2 series de 3 ejercicios (6 en total), 10 notas cada uno,
   con puntos de progreso e indicador "Ejercicio X de 6 (Serie Y)" arriba.

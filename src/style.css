@@ -49,6 +49,95 @@ body {
   min-height: 32px;
 }
 
+#acciones-superiores {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#indicador-nivel {
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--color-tarjeta);
+  box-shadow: 0 2px 0 var(--color-boton-sombra);
+  font-size: 0.85rem;
+  color: #8a7f72;
+}
+
+/* --- Menu: primero la clave, despues el nivel --------------------------- */
+
+#menu-clave,
+#menu-nivel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+#menu-clave h2,
+#menu-nivel h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.menu-opciones {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  width: 100%;
+}
+
+.boton-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 88px;
+  padding: 16px 12px;
+  border: none;
+  border-radius: var(--radio);
+  background: var(--color-boton);
+  box-shadow:
+    0 4px 0 var(--color-boton-sombra),
+    inset 0 0 0 2px var(--color-boton-borde);
+  color: var(--color-texto);
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+
+.boton-menu:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 0 0 var(--color-boton-sombra),
+    inset 0 0 0 2px var(--color-boton-borde);
+}
+
+.boton-clave {
+  min-height: 150px;
+}
+
+.miniatura-clave {
+  display: block;
+  width: 46px;
+  margin-bottom: 6px;
+}
+
+.menu-nombre {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.menu-rango {
+  font-size: 0.85rem;
+  color: #8a7f72;
+  line-height: 1.3;
+}
+
 #selector-idioma {
   display: flex;
   gap: 8px;
@@ -303,11 +392,15 @@ body {
 /* En la pantalla inicial y en el resumen no hay zona de juego que ocupe el
    alto sobrante, asi que centramos el contenido en vez de dejarlo arriba. */
 body[data-estado="inicio"] #explicacion,
+body[data-estado="menu-clave"] #menu-clave,
+body[data-estado="menu-nivel"] #menu-nivel,
 body[data-estado="terminado"] #resultado {
   margin-top: auto;
 }
 
 body[data-estado="inicio"] #controles,
+body[data-estado="menu-clave"] #menu-clave,
+body[data-estado="menu-nivel"] #menu-nivel,
 body[data-estado="terminado"] #resultado {
   margin-bottom: auto;
 }
