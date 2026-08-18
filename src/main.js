@@ -220,6 +220,32 @@ function elegirSiguienteNota() {
   notaActual = NOTAS[notaActualIndice];
 }
 
+// Recorta el dibujo a la zona util (clave, lineas y notas) y lo deja sin
+// medidas fijas, para que la tarjeta lo agrande hasta llenarla. Los margenes
+// se calculan desde las lineas del pentagrama, asi que la posicion es siempre
+// la misma aunque cambie la nota.
+const MARGEN_ARRIBA = 22; // parte alta de la clave de sol
+const MARGEN_ABAJO = 30; // do central con su linea adicional
+
+function encuadrarPentagrama(pentagrama, margenAbajoExtra = 0) {
+  const svg = contenedorPentagrama.querySelector("svg");
+  if (!svg) return;
+
+  const arriba = pentagrama.getYForLine(0) - MARGEN_ARRIBA;
+  const abajo = pentagrama.getYForLine(4) + MARGEN_ABAJO + margenAbajoExtra;
+  const izquierda = pentagrama.getX() - 6;
+  const ancho = pentagrama.getWidth() + 12;
+
+  svg.setAttribute("viewBox", `${izquierda} ${arriba} ${ancho} ${abajo - arriba}`);
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  svg.removeAttribute("width");
+  svg.removeAttribute("height");
+  // VexFlow deja un ancho y alto fijos en el propio elemento; los quitamos
+  // para que mande el CSS y el dibujo se estire hasta llenar la tarjeta.
+  svg.style.width = "100%";
+  svg.style.height = "auto";
+}
+
 function dibujarPentagrama() {
   contenedorPentagrama.innerHTML = "";
   contenedorPentagrama.classList.remove("fallo", "acierto");
@@ -228,7 +254,7 @@ function dibujarPentagrama() {
   renderer.resize(500, 240);
   const contexto = renderer.getContext();
 
-  const pentagrama = new Stave(20, 40, 450);
+  const pentagrama = new Stave(0, 40, 155);
   pentagrama.addClef("treble");
   pentagrama.setContext(contexto).draw();
 
@@ -238,6 +264,7 @@ function dibujarPentagrama() {
   });
 
   Formatter.FormatAndDraw(contexto, pentagrama, [nota]);
+  encuadrarPentagrama(pentagrama);
 }
 
 // Muestra las 5 notas del rango a la vez, con su nombre debajo, para que
@@ -250,7 +277,7 @@ function mostrarPentagramaCompleto() {
   renderer.resize(500, 260);
   const contexto = renderer.getContext();
 
-  const pentagrama = new Stave(20, 40, 450);
+  const pentagrama = new Stave(0, 40, 340);
   pentagrama.addClef("treble");
   pentagrama.setContext(contexto).draw();
 
@@ -265,6 +292,7 @@ function mostrarPentagramaCompleto() {
   });
 
   Formatter.FormatAndDraw(contexto, pentagrama, notasStave);
+  encuadrarPentagrama(pentagrama, 34); // sitio para los nombres bajo las notas
 }
 
 function iniciarCuentaAtras(segundos, alTerminar) {
