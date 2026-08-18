@@ -41,10 +41,18 @@ body {
   gap: 20px;
 }
 
+#barra-superior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 32px;
+}
+
 #selector-idioma {
   display: flex;
   gap: 8px;
-  align-self: flex-end;
+  margin-left: auto;
 }
 
 .boton-idioma {
@@ -66,12 +74,28 @@ body {
   color: white;
 }
 
+/* Tres fichas redondeadas en vez de una linea de texto suelto. */
 #marcador {
   display: flex;
-  gap: 20px;
-  font-size: 1.05rem;
+  gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.marcador-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--color-tarjeta);
+  box-shadow: 0 2px 0 var(--color-boton-sombra);
+  font-size: 0.9rem;
+  color: #8a7f72;
+}
+
+.marcador-item strong {
+  font-size: 1.2rem;
 }
 
 .marcador-aciertos strong {
@@ -113,18 +137,33 @@ body {
 
 #progreso-puntos {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 9px;
 }
 
+/* Cada punto es una nota de la ronda. Relleno verde = acertada a la primera;
+   aro rojo hueco = acertada despues de fallar (distinto color y distinta
+   forma, para que se entienda sin depender del color). */
 .punto {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: var(--color-boton-sombra);
+  transition: transform 150ms ease;
 }
 
-.punto.completado {
+.punto.limpio {
+  background: var(--color-acierto);
+}
+
+.punto.con-fallo {
+  background: var(--color-tarjeta);
+  box-shadow: inset 0 0 0 4px var(--color-fallo);
+}
+
+.punto.actual {
   background: var(--color-primario);
+  transform: scale(1.35);
 }
 
 #memorizacion {
@@ -261,6 +300,18 @@ body {
   display: none !important;
 }
 
+/* En la pantalla inicial y en el resumen no hay zona de juego que ocupe el
+   alto sobrante, asi que centramos el contenido en vez de dejarlo arriba. */
+body[data-estado="inicio"] #explicacion,
+body[data-estado="terminado"] #resultado {
+  margin-top: auto;
+}
+
+body[data-estado="inicio"] #controles,
+body[data-estado="terminado"] #resultado {
+  margin-bottom: auto;
+}
+
 .boton-control {
   padding: 16px 32px;
   font-size: 1.2rem;
@@ -277,6 +328,20 @@ body {
 .boton-control:active {
   transform: translateY(4px);
   box-shadow: 0 0 0 var(--color-primario-sombra);
+}
+
+/* Durante el ejercicio, pausar es un control secundario: la nota manda. */
+.boton-control.compacto {
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  background: var(--color-tarjeta);
+  color: #8a7f72;
+  box-shadow: 0 2px 0 var(--color-boton-sombra);
+}
+
+.boton-control.compacto:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 var(--color-boton-sombra);
 }
 
 #controles {
@@ -403,4 +468,8 @@ body {
 #resultado-racha {
   color: #7a6f62;
   margin: 2px 0;
+}
+
+#boton-continuar {
+  margin-top: 20px;
 }

@@ -28,7 +28,7 @@ const TRADUCCIONES = {
     aciertos: "Aciertos",
     fallos: "Fallos",
     racha: "Racha",
-    iniciarSesion: "Iniciar sesión",
+    iniciarSesion: "Empezar",
     pausar: "Pausar",
     reanudar: "Reanudar",
     reiniciarSesion: "Reiniciar",
@@ -64,7 +64,7 @@ const TRADUCCIONES = {
     aciertos: "Réussites",
     fallos: "Erreurs",
     racha: "Série",
-    iniciarSesion: "Démarrer la session",
+    iniciarSesion: "Commencer",
     pausar: "Pause",
     reanudar: "Reprendre",
     reiniciarSesion: "Recommencer",
@@ -116,6 +116,7 @@ const explicacionEl = document.getElementById("explicacion");
 const explicacionTituloEl = document.getElementById("explicacion-titulo");
 const explicacionTextoEl = document.getElementById("explicacion-texto");
 const indicadorEjercicioEl = document.getElementById("indicador-ejercicio");
+const marcadorEl = document.getElementById("marcador");
 const progresoPuntosEl = document.getElementById("progreso-puntos");
 const botonEstado = document.getElementById("boton-estado");
 const botonReiniciarSesion = document.getElementById("boton-reiniciar-sesion");
@@ -152,6 +153,10 @@ let notaActualIndice = null;
 let botonesNota = [];
 let ordenBotonesVisible = [...BOTONES_ID];
 let puntosProgreso = [];
+// Guarda como se resolvio cada nota de la ronda ("limpio" o "con-fallo") para
+// pintar los puntos de progreso.
+let resultadosRonda = [];
+let falloEnNotaActual = false;
 
 let serieActual = 1;
 let ejercicioActual = 1;
@@ -218,6 +223,7 @@ function elegirSiguienteNotaIndice(indiceAnterior, indiceRonda) {
 function elegirSiguienteNota() {
   notaActualIndice = elegirSiguienteNotaIndice(notaActualIndice, notasCompletadas);
   notaActual = NOTAS[notaActualIndice];
+  falloEnNotaActual = false;
 }
 
 // Recorta el dibujo a la zona util (clave, lineas y notas) y lo deja sin
@@ -335,6 +341,8 @@ function actualizarNombresBotonesNota() {
 }
 
 function crearPuntosProgreso() {
+  resultadosRonda = [];
+  falloEnNotaActual = false;
   progresoPuntosEl.innerHTML = "";
   puntosProgreso = Array.from({ length: NOTAS_POR_RONDA }, () => {
     const punto = document.createElement("span");
@@ -352,7 +360,12 @@ function actualizarMarcador() {
 
 function actualizarProgreso() {
   puntosProgreso.forEach((punto, indice) => {
-    punto.classList.toggle("completado", indice < notasCompletadas);
+    punto.className = "punto";
+    if (resultadosRonda[indice]) {
+      punto.classList.add(resultadosRonda[indice]);
+    } else if (indice === resultadosRonda.length) {
+      punto.classList.add("actual");
+    }
   });
 }
 
@@ -373,6 +386,7 @@ async function manejarRespuesta(idNota, boton) {
   if (idNota === notaActual.id) {
     aciertos += 1;
     notasCompletadas += 1;
+    resultadosRonda.push(falloEnNotaActual ? "con-fallo" : "limpio");
     racha += 1;
     rachaMaxima = Math.max(rachaMaxima, racha);
     actualizarMarcador();
@@ -393,6 +407,7 @@ async function manejarRespuesta(idNota, boton) {
   } else {
     fallos += 1;
     racha = 0;
+    falloEnNotaActual = true;
     actualizarMarcador();
     mostrarFallo(boton);
   }
@@ -655,6 +670,13 @@ function actualizarUI() {
   const enMemorizacion = estado === "memorizando";
   const enProgreso = estado === "memorizando" || estado === "jugando" || estado === "pausado";
 
+  // El estado tambien va en el body para que el CSS pueda centrar las
+  // pantallas que no tienen la zona de juego (inicio y resumen final).
+  document.body.dataset.estado = estado;
+
+  // Ni antes de empezar (todo a cero) ni en el resumen (la tarjeta ya lo dice).
+  marcadorEl.classList.toggle("oculto", estado === "inicio" || estado === "terminado");
+
   explicacionEl.classList.toggle("oculto", estado !== "inicio");
   indicadorEjercicioEl.classList.toggle("oculto", !enProgreso);
   progresoPuntosEl.classList.toggle("oculto", !enProgreso);
@@ -667,6 +689,10 @@ function actualizarUI() {
   botonReiniciarSesion.classList.toggle("oculto", !enProgreso);
 
   habilitarBotonesNota(estado === "jugando");
+
+  // En la pantalla inicial es el boton principal; durante el ejercicio se
+  // vuelve pequeno para no competir con el pentagrama.
+  botonEstado.classList.toggle("compacto", estado === "jugando" || estado === "pausado");
 
   if (estado === "inicio") {
     botonEstado.textContent = t().iniciarSesion;

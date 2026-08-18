@@ -7,15 +7,18 @@
   </head>
   <body>
     <div id="app">
-      <div id="selector-idioma">
-        <button class="boton-idioma" data-lang="es">ES</button>
-        <button class="boton-idioma" data-lang="fr">FR</button>
+      <div id="barra-superior">
+        <button id="boton-reiniciar-sesion" class="boton-secundario oculto"></button>
+        <div id="selector-idioma">
+          <button class="boton-idioma" data-lang="es">ES</button>
+          <button class="boton-idioma" data-lang="fr">FR</button>
+        </div>
       </div>
 
       <div id="marcador">
-        <span class="marcador-item marcador-aciertos"><span id="etiqueta-aciertos"></span>: <strong id="contador-aciertos">0</strong></span>
-        <span class="marcador-item marcador-fallos"><span id="etiqueta-fallos"></span>: <strong id="contador-fallos">0</strong></span>
-        <span class="marcador-item marcador-racha"><span id="etiqueta-racha"></span>: <strong id="contador-racha">0</strong></span>
+        <span class="marcador-item marcador-aciertos"><strong id="contador-aciertos">0</strong> <span id="etiqueta-aciertos"></span></span>
+        <span class="marcador-item marcador-fallos"><strong id="contador-fallos">0</strong> <span id="etiqueta-fallos"></span></span>
+        <span class="marcador-item marcador-racha"><strong id="contador-racha">0</strong> <span id="etiqueta-racha"></span></span>
       </div>
 
       <div id="explicacion" class="oculto">
@@ -29,7 +32,6 @@
 
       <div id="controles">
         <button id="boton-estado" class="boton-control"></button>
-        <button id="boton-reiniciar-sesion" class="boton-secundario oculto"></button>
       </div>
 
       <div id="memorizacion" class="oculto">
