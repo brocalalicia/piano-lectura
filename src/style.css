@@ -32,6 +32,7 @@ body {
 
 #app {
   max-width: 640px;
+  min-height: 100dvh;
   margin: 0 auto;
   padding: 16px;
   display: flex;
@@ -209,14 +210,19 @@ body {
   color: var(--color-fallo);
 }
 
+/* Cuatro botones arriba y tres centrados abajo, para que no quede un hueco
+   suelto a la derecha. En pantallas anchas caben los siete en una sola fila,
+   en el mismo orden que la escala. */
 #botones {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
   width: 100%;
 }
 
 .boton-nota {
+  flex: 0 0 calc(25% - 9px);
   min-height: 68px;
   padding: 12px 0;
   font-size: 1.4rem;
@@ -290,12 +296,23 @@ body {
   user-select: none;
 }
 
+/* La zona de juego ocupa todo el alto que sobra y se centra dentro de el,
+   asi no queda medio pantallazo vacio debajo de los botones. */
 #zona-ejercicio {
   width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
   gap: 24px;
+}
+
+@media (min-width: 600px) {
+  .boton-nota {
+    flex: 0 0 calc((100% - 72px) / 7);
+    font-size: 1.25rem;
+  }
 }
 
 #zona-ejercicio.pausada {
