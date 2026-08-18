@@ -58,8 +58,8 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - Clave de sol: Inicial (do central a sol), Intermedio (do alto a sol alto),
   Avanzado 1 (sol alto a mi, en líneas adicionales por encima) y
   Avanzado 2 (sol grave a do central, por debajo del pentagrama).
-- Clave de fa: Inicial (fa a do central), Intermedio (do central a sol, en
-  líneas adicionales por encima), Avanzado 1 (fa grave a do) y
+- Clave de fa: Inicial (fa a do central), Intermedio (fa grave a do),
+  Avanzado 1 (do central a sol, en líneas adicionales por encima) y
   Avanzado 2 (do grave a fa grave, por debajo del pentagrama).
 - Los botones de respuesta son siempre las siete notas, aunque el nivel tenga
   cuatro, cinco o seis: las que sobran hacen de señuelo.

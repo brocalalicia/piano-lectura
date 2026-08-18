@@ -50,8 +50,8 @@ const CLAVES = [
     clef: "bass",
     niveles: [
       { id: "inicial", desde: "f/3", hasta: "c/4" },
-      { id: "intermedio", desde: "c/4", hasta: "g/4" },
-      { id: "avanzado1", desde: "f/2", hasta: "c/3" },
+      { id: "intermedio", desde: "f/2", hasta: "c/3" },
+      { id: "avanzado1", desde: "c/4", hasta: "g/4" },
       { id: "avanzado2", desde: "c/2", hasta: "f/2" },
     ],
   },
@@ -95,8 +95,8 @@ const TRADUCCIONES = {
       },
       fa: {
         inicial: "fa a do central",
-        intermedio: "do central a sol, con líneas adicionales",
-        avanzado1: "fa grave a do",
+        intermedio: "fa grave a do",
+        avanzado1: "do central a sol, con líneas adicionales",
         avanzado2: "do grave a fa grave",
       },
     },
@@ -156,8 +156,8 @@ const TRADUCCIONES = {
       },
       fa: {
         inicial: "du fa au do central",
-        intermedio: "du do central au sol, avec lignes supplémentaires",
-        avanzado1: "du fa grave au do",
+        intermedio: "du fa grave au do",
+        avanzado1: "du do central au sol, avec lignes supplémentaires",
         avanzado2: "du do grave au fa grave",
       },
     },
