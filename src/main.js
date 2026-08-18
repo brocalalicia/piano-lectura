@@ -77,8 +77,7 @@ const TRADUCCIONES = {
     tituloPagina: "Lectura musical",
     menuClaveTitulo: "¿Qué clave quieres practicar?",
     menuNivelTitulo: "Elige un nivel",
-    volverClave: "Cambiar de clave",
-    volverMenu: "Menú",
+    atras: "Atrás",
     claves: { sol: "Clave de sol", fa: "Clave de fa" },
     niveles: {
       inicial: "Inicial",
@@ -138,8 +137,7 @@ const TRADUCCIONES = {
     tituloPagina: "Lecture musicale",
     menuClaveTitulo: "Quelle clé veux-tu travailler ?",
     menuNivelTitulo: "Choisis un niveau",
-    volverClave: "Changer de clé",
-    volverMenu: "Menu",
+    atras: "Retour",
     claves: { sol: "Clé de sol", fa: "Clé de fa" },
     niveles: {
       inicial: "Débutant",
@@ -224,8 +222,7 @@ const menuClaveOpcionesEl = document.getElementById("menu-clave-opciones");
 const menuNivelEl = document.getElementById("menu-nivel");
 const menuNivelTituloEl = document.getElementById("menu-nivel-titulo");
 const menuNivelOpcionesEl = document.getElementById("menu-nivel-opciones");
-const botonVolverClave = document.getElementById("boton-volver-clave");
-const botonMenu = document.getElementById("boton-menu");
+const botonAtras = document.getElementById("boton-atras");
 const progresoPuntosEl = document.getElementById("progreso-puntos");
 const botonEstado = document.getElementById("boton-estado");
 const botonReiniciarSesion = document.getElementById("boton-reiniciar-sesion");
@@ -770,6 +767,16 @@ function volverAlMenuNivel() {
   actualizarUI();
 }
 
+// Un unico boton de volver, siempre en el mismo sitio: deshace el ultimo paso
+// que dio el alumno. Desde la eleccion de clave ya no hay nada detras.
+function volverAtras() {
+  if (estado === "menu-nivel") {
+    volverAlMenuClave();
+  } else if (estado !== "menu-clave") {
+    volverAlMenuNivel();
+  }
+}
+
 function actualizarIndicadorNivel() {
   indicadorNivelEl.textContent = `${t().claves[claveActual.id]} · ${t().niveles[nivelActual.id]}`;
 }
@@ -925,7 +932,7 @@ function actualizarUI() {
   menuClaveEl.classList.toggle("oculto", estado !== "menu-clave");
   menuNivelEl.classList.toggle("oculto", estado !== "menu-nivel");
   indicadorNivelEl.classList.toggle("oculto", enMenu);
-  botonMenu.classList.toggle("oculto", enMenu);
+  botonAtras.classList.toggle("oculto", estado === "menu-clave");
 
   // El marcador no aporta nada antes de empezar (todo a cero) ni en el
   // resumen (la tarjeta ya da esos datos).
@@ -973,10 +980,9 @@ function aplicarIdioma(nuevoIdioma) {
   etiquetaRachaEl.textContent = t().racha;
   memorizacionTextoEl.textContent = t().memorizaTitulo;
   botonReiniciarSesion.textContent = t().reiniciarSesion;
-  botonMenu.textContent = t().volverMenu;
+  botonAtras.textContent = `← ${t().atras}`;
   menuClaveTituloEl.textContent = t().menuClaveTitulo;
   menuNivelTituloEl.textContent = t().menuNivelTitulo;
-  botonVolverClave.textContent = t().volverClave;
   renderizarMenuClave();
   renderizarMenuNivel();
   actualizarIndicadorNivel();
@@ -1016,14 +1022,9 @@ botonEstado.addEventListener("click", () => {
   }
 });
 
-botonVolverClave.addEventListener("click", () => {
+botonAtras.addEventListener("click", () => {
   vibrar(15);
-  volverAlMenuClave();
-});
-
-botonMenu.addEventListener("click", () => {
-  vibrar(15);
-  volverAlMenuNivel();
+  volverAtras();
 });
 
 botonReiniciarSesion.addEventListener("click", () => {

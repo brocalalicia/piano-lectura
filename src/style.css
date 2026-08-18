@@ -55,6 +55,24 @@ body {
   gap: 16px;
 }
 
+.boton-atras {
+  padding: 7px 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-tarjeta);
+  box-shadow: 0 2px 0 var(--color-boton-sombra);
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+
+.boton-atras:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 var(--color-boton-sombra);
+}
+
 #indicador-nivel {
   padding: 6px 16px;
   border-radius: 999px;
