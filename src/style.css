@@ -100,11 +100,18 @@ body {
   text-align: center;
 }
 
+/* Dos por fila; si el numero de opciones es impar, la ultima queda centrada
+   en vez de pegada a la izquierda. */
 .menu-opciones {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 14px;
   width: 100%;
+}
+
+.boton-menu {
+  flex: 0 0 calc(50% - 7px);
 }
 
 .boton-menu {

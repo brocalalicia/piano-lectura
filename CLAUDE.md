@@ -55,12 +55,16 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 ## Niveles
 - Se entra por un menú: primero la clave (sol o fa) y después el nivel.
   Cualquier alumno puede ir directo al nivel que quiera; no se desbloquea nada.
-- Clave de sol: Inicial (do central a sol), Intermedio (do alto a sol alto),
-  Avanzado 1 (sol alto a mi, en líneas adicionales por encima) y
-  Avanzado 2 (sol grave a do central, por debajo del pentagrama).
-- Clave de fa: Inicial (fa a do central), Intermedio (fa grave a do),
-  Avanzado 1 (do central a sol, en líneas adicionales por encima) y
-  Avanzado 2 (do grave a fa grave, por debajo del pentagrama).
+- Cinco niveles por clave. Entre todos cubren el rango sin dejar ninguna nota
+  sin practicar; si se cambia un rango, hay que comprobar que no se abre un
+  hueco (fue lo que pasó con la línea central de cada pentagrama).
+- Clave de sol: Inicial 1 (do central a sol), Inicial 2 (sol a do alto),
+  Intermedio (do alto a sol alto), Avanzado 1 (sol alto a mi, en líneas
+  adicionales por encima) y Avanzado 2 (sol grave a do central, por debajo).
+- Clave de fa: Inicial 1 (fa a do central), Inicial 2 (do a sol, en mitad del
+  pentagrama), Intermedio (fa grave a do), Avanzado 1 (do central a sol, en
+  líneas adicionales por encima) y Avanzado 2 (do grave a fa grave, por
+  debajo).
 - Los botones de respuesta son siempre las siete notas, aunque el nivel tenga
   cuatro, cinco o seis: las que sobran hacen de señuelo.
 - Todos los niveles funcionan igual: memorización, 2 series de 3 ejercicios

@@ -39,7 +39,8 @@ const CLAVES = [
     id: "sol",
     clef: "treble",
     niveles: [
-      { id: "inicial", desde: "c/4", hasta: "g/4" },
+      { id: "inicial1", desde: "c/4", hasta: "g/4" },
+      { id: "inicial2", desde: "g/4", hasta: "c/5" },
       { id: "intermedio", desde: "c/5", hasta: "g/5" },
       { id: "avanzado1", desde: "g/5", hasta: "e/6" },
       { id: "avanzado2", desde: "g/3", hasta: "c/4" },
@@ -49,7 +50,8 @@ const CLAVES = [
     id: "fa",
     clef: "bass",
     niveles: [
-      { id: "inicial", desde: "f/3", hasta: "c/4" },
+      { id: "inicial1", desde: "f/3", hasta: "c/4" },
+      { id: "inicial2", desde: "c/3", hasta: "g/3" },
       { id: "intermedio", desde: "f/2", hasta: "c/3" },
       { id: "avanzado1", desde: "c/4", hasta: "g/4" },
       { id: "avanzado2", desde: "c/2", hasta: "f/2" },
@@ -80,20 +82,23 @@ const TRADUCCIONES = {
     atras: "Atrás",
     claves: { sol: "Clave de sol", fa: "Clave de fa" },
     niveles: {
-      inicial: "Inicial",
+      inicial1: "Inicial 1",
+      inicial2: "Inicial 2",
       intermedio: "Intermedio",
       avanzado1: "Avanzado 1",
       avanzado2: "Avanzado 2",
     },
     rangos: {
       sol: {
-        inicial: "do central a sol",
+        inicial1: "do central a sol",
+        inicial2: "sol a do alto",
         intermedio: "do alto a sol alto",
         avanzado1: "sol alto a mi, con líneas adicionales",
         avanzado2: "sol grave a do central",
       },
       fa: {
-        inicial: "fa a do central",
+        inicial1: "fa a do central",
+        inicial2: "do a sol",
         intermedio: "fa grave a do",
         avanzado1: "do central a sol, con líneas adicionales",
         avanzado2: "do grave a fa grave",
@@ -140,20 +145,23 @@ const TRADUCCIONES = {
     atras: "Retour",
     claves: { sol: "Clé de sol", fa: "Clé de fa" },
     niveles: {
-      inicial: "Débutant",
+      inicial1: "Débutant 1",
+      inicial2: "Débutant 2",
       intermedio: "Intermédiaire",
       avanzado1: "Avancé 1",
       avanzado2: "Avancé 2",
     },
     rangos: {
       sol: {
-        inicial: "du do central au sol",
+        inicial1: "du do central au sol",
+        inicial2: "du sol au do aigu",
         intermedio: "du do aigu au sol aigu",
         avanzado1: "du sol aigu au mi, avec lignes supplémentaires",
         avanzado2: "du sol grave au do central",
       },
       fa: {
-        inicial: "du fa au do central",
+        inicial1: "du fa au do central",
+        inicial2: "du do au sol",
         intermedio: "du fa grave au do",
         avanzado1: "du do central au sol, avec lignes supplémentaires",
         avanzado2: "du do grave au fa grave",
