@@ -77,6 +77,21 @@ const IDIOMA_GUARDADO_KEY = "piano-lectura-idioma";
 const TRADUCCIONES = {
   es: {
     tituloPagina: "Lectura musical",
+    portadaTitulo: "Ejercicios de lectura",
+    portadaObjetivo:
+      "Reconocer de un vistazo el nombre de cada nota escrita, sin contar líneas. Es la base para leer una partitura con soltura.",
+    consisteTitulo: "En qué consiste",
+    consisteTexto:
+      "Aparece una nota en el pentagrama y eliges su nombre entre los siete botones. Si aciertas, la escuchas sonar y viene la siguiente. Si fallas, la nota se queda ahí hasta que la encuentres.",
+    sesionTitulo: "Cómo es una sesión",
+    sesionLista: [
+      "10 segundos para memorizar las notas del nivel",
+      "2 series de 3 ejercicios, 10 notas cada uno",
+      "La serie 2 es más difícil: saltos más grandes y los botones cambian de orden",
+      "Al final, una tabla con los 6 ejercicios",
+    ],
+    medidasTitulo: "Qué puedes mejorar",
+    medidasLista: ["Precisión", "Tiempo", "Racha", "Estrellas"],
     menuClaveTitulo: "¿Qué clave quieres practicar?",
     menuNivelTitulo: "Elige un nivel",
     atras: "Atrás",
@@ -111,9 +126,6 @@ const TRADUCCIONES = {
     pausar: "Pausar",
     reanudar: "Reanudar",
     reiniciarSesion: "Reiniciar",
-    explicacionTitulo: "¿Cómo se juega?",
-    explicacionTexto:
-      "Vas a ver un pentagrama (las cinco líneas de la música) con una nota dibujada. Cada nota tiene un nombre: do, re, mi, fa, sol, la o si. Tu tarea es mirar en qué posición está la nota y pulsar el botón con su nombre correcto. Si aciertas, la escucharás sonar. Si fallas, no pasa nada: la nota se queda ahí hasta que la aciertes.",
     indicadorEjercicio: (n, total, serie) => `Ejercicio ${n} de ${total} (Serie ${serie})`,
     memorizaTitulo: "Memoriza estas notas",
     ejercicioCompletado: (n, total) => `Ejercicio ${n} de ${total} completado`,
@@ -140,6 +152,21 @@ const TRADUCCIONES = {
   },
   fr: {
     tituloPagina: "Lecture musicale",
+    portadaTitulo: "Exercices de lecture",
+    portadaObjetivo:
+      "Reconnaître d'un coup d'œil le nom de chaque note écrite, sans compter les lignes. C'est la base pour lire une partition avec aisance.",
+    consisteTitulo: "En quoi ça consiste",
+    consisteTexto:
+      "Une note apparaît sur la portée et tu choisis son nom parmi les sept boutons. Si tu as raison, tu l'entends sonner et la suivante arrive. Si tu te trompes, la note reste là jusqu'à ce que tu la trouves.",
+    sesionTitulo: "Comment se passe une session",
+    sesionLista: [
+      "10 secondes pour mémoriser les notes du niveau",
+      "2 séries de 3 exercices, 10 notes chacun",
+      "La série 2 est plus difficile : sauts plus grands et boutons dans un autre ordre",
+      "À la fin, un tableau avec les 6 exercices",
+    ],
+    medidasTitulo: "Ce que tu peux améliorer",
+    medidasLista: ["Précision", "Temps", "Enchaînement", "Étoiles"],
     menuClaveTitulo: "Quelle clé veux-tu travailler ?",
     menuNivelTitulo: "Choisis un niveau",
     atras: "Retour",
@@ -169,14 +196,11 @@ const TRADUCCIONES = {
     },
     aciertos: "Réussites",
     fallos: "Erreurs",
-    racha: "Série",
+    racha: "Enchaînement",
     iniciarSesion: "Commencer",
     pausar: "Pause",
     reanudar: "Reprendre",
     reiniciarSesion: "Recommencer",
-    explicacionTitulo: "Comment jouer ?",
-    explicacionTexto:
-      "Tu vas voir une portée (les cinq lignes de la musique) avec une note dessinée. Chaque note a un nom : do, ré, mi, fa, sol, la ou si. Ta mission est de regarder où se trouve la note et d'appuyer sur le bouton avec son bon nom. Si tu as raison, tu l'entendras. Si tu te trompes, ce n'est pas grave : la note reste là jusqu'à ce que tu la trouves.",
     indicadorEjercicio: (n, total, serie) => `Exercice ${n} sur ${total} (Série ${serie})`,
     memorizaTitulo: "Mémorise ces notes",
     ejercicioCompletado: (n, total) => `Exercice ${n} sur ${total} terminé`,
@@ -190,7 +214,7 @@ const TRADUCCIONES = {
     precision: (p) => `Précision : ${p}%`,
     detalle: (n, f) => `(${n} notes, ${f} erreurs)`,
     tiempo: (texto) => `Temps : ${texto}`,
-    rachaMaxima: (r) => `Série maximale : ${r}`,
+    rachaMaxima: (r) => `Meilleur enchaînement : ${r}`,
     tiempoMin: (m, s) => `${m} min ${s} s`,
     tiempoSeg: (s) => `${s} s`,
     columnaSerie: "Série",
@@ -218,13 +242,18 @@ const contenedorBotones = document.getElementById("botones");
 const contadorAciertosEl = document.getElementById("contador-aciertos");
 const contadorFallosEl = document.getElementById("contador-fallos");
 const contadorRachaEl = document.getElementById("contador-racha");
-const explicacionEl = document.getElementById("explicacion");
-const explicacionTituloEl = document.getElementById("explicacion-titulo");
-const explicacionTextoEl = document.getElementById("explicacion-texto");
 const indicadorEjercicioEl = document.getElementById("indicador-ejercicio");
 const marcadorEl = document.getElementById("marcador");
 const indicadorNivelEl = document.getElementById("indicador-nivel");
 const menuClaveEl = document.getElementById("menu-clave");
+const portadaTituloEl = document.getElementById("portada-titulo");
+const portadaObjetivoEl = document.getElementById("portada-objetivo");
+const consisteTituloEl = document.getElementById("portada-consiste-titulo");
+const consisteTextoEl = document.getElementById("portada-consiste-texto");
+const sesionTituloEl = document.getElementById("portada-sesion-titulo");
+const sesionListaEl = document.getElementById("portada-sesion-lista");
+const medidasTituloEl = document.getElementById("portada-medidas-titulo");
+const medidasListaEl = document.getElementById("portada-medidas-lista");
 const menuClaveTituloEl = document.getElementById("menu-clave-titulo");
 const menuClaveOpcionesEl = document.getElementById("menu-clave-opciones");
 const menuNivelEl = document.getElementById("menu-nivel");
@@ -694,6 +723,32 @@ function volverAInicio() {
 
 // --- Menu de navegacion: primero la clave, despues el nivel ---------------
 
+// Portada de la primera pantalla: que es esto, para que sirve y como esta
+// organizada una sesion. Se vuelve a pintar al cambiar de idioma.
+function renderizarPortada() {
+  portadaTituloEl.textContent = t().portadaTitulo;
+  portadaObjetivoEl.textContent = t().portadaObjetivo;
+  consisteTituloEl.textContent = t().consisteTitulo;
+  consisteTextoEl.textContent = t().consisteTexto;
+  sesionTituloEl.textContent = t().sesionTitulo;
+  medidasTituloEl.textContent = t().medidasTitulo;
+
+  sesionListaEl.innerHTML = "";
+  t().sesionLista.forEach((texto) => {
+    const punto = document.createElement("li");
+    punto.textContent = texto;
+    sesionListaEl.appendChild(punto);
+  });
+
+  medidasListaEl.innerHTML = "";
+  t().medidasLista.forEach((texto) => {
+    const ficha = document.createElement("span");
+    ficha.className = "medida-chip";
+    ficha.textContent = texto;
+    medidasListaEl.appendChild(ficha);
+  });
+}
+
 function renderizarMenuClave() {
   menuClaveOpcionesEl.innerHTML = "";
 
@@ -946,7 +1001,6 @@ function actualizarUI() {
   // resumen (la tarjeta ya da esos datos).
   marcadorEl.classList.toggle("oculto", enMenu || estado === "inicio" || estado === "terminado");
 
-  explicacionEl.classList.toggle("oculto", estado !== "inicio");
   indicadorEjercicioEl.classList.toggle("oculto", !enProgreso);
   progresoPuntosEl.classList.toggle("oculto", !enProgreso);
   memorizacionEl.classList.toggle("oculto", !enMemorizacion);
@@ -991,11 +1045,10 @@ function aplicarIdioma(nuevoIdioma) {
   botonAtras.textContent = `← ${t().atras}`;
   menuClaveTituloEl.textContent = t().menuClaveTitulo;
   menuNivelTituloEl.textContent = t().menuNivelTitulo;
+  renderizarPortada();
   renderizarMenuClave();
   renderizarMenuNivel();
   actualizarIndicadorNivel();
-  explicacionTituloEl.textContent = t().explicacionTitulo;
-  explicacionTextoEl.textContent = t().explicacionTexto;
 
   actualizarNombresBotonesNota();
   actualizarBotonesIdiomaActivo();

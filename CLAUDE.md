@@ -21,6 +21,10 @@ No soy programador.
 - Si algo no funciona, dime cómo comprobarlo yo mismo en el navegador.
 
 ## Interfaz
+- La primera pantalla es una portada: título, objetivo, en qué consiste, cómo
+  es una sesión y qué variables puede mejorar el alumno. Debajo, la elección
+  de clave. No hay otra explicación del juego: si cambia la estructura de la
+  sesión, hay que actualizar esa portada.
 - Español por defecto, con selector de idioma (ES/FR) arriba a la derecha.
   La preferencia se guarda en el navegador (localStorage).
 - Nombres de notas en solfeo: do, re, mi, fa, sol, la, si (ré en francés).

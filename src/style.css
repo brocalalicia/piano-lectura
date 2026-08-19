@@ -82,6 +82,127 @@ body {
   color: #8a7f72;
 }
 
+/* --- Portada de la primera pantalla ------------------------------------- */
+
+#portada-titulo {
+  margin: 0;
+  font-size: 1.8rem;
+  text-align: center;
+  line-height: 1.15;
+}
+
+#portada-objetivo {
+  margin: 0;
+  max-width: 480px;
+  text-align: center;
+  color: #5a5148;
+  line-height: 1.45;
+}
+
+#portada-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Las dos tarjetas van en fila cuando cabe y apiladas en movil. */
+.info-bloque {
+  flex: 1 1 250px;
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  padding: 16px 18px;
+  box-shadow: 0 4px 0 var(--color-boton-sombra);
+}
+
+.info-bloque h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.info-bloque p {
+  margin: 0;
+}
+
+.info-bloque ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.info-bloque li + li {
+  margin-top: 6px;
+}
+
+.info-bloque p,
+.info-bloque li {
+  color: #5a5148;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+#portada-medidas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#portada-medidas h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+#portada-medidas-lista {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.medida-chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--color-tarjeta);
+  box-shadow: 0 2px 0 var(--color-boton-sombra);
+  font-size: 0.85rem;
+  color: #8a7f72;
+}
+
+/* En pantallas de movil la portada se queda justa de alto: se aprieta un poco
+   para que los botones de clave se vean sin tener que bajar. */
+@media (max-width: 600px) {
+  #menu-clave {
+    gap: 15px;
+  }
+
+  #portada-titulo {
+    font-size: 1.5rem;
+  }
+
+  #portada-objetivo {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  #portada-info {
+    gap: 10px;
+  }
+
+  .info-bloque {
+    padding: 13px 16px;
+  }
+
+  .info-bloque p,
+  .info-bloque li {
+    font-size: 0.87rem;
+    line-height: 1.35;
+  }
+
+  .info-bloque li + li {
+    margin-top: 5px;
+  }
+}
+
 /* --- Menu: primero la clave, despues el nivel --------------------------- */
 
 #menu-clave,
@@ -222,26 +343,6 @@ body {
 
 .marcador-racha strong {
   color: var(--color-primario);
-}
-
-#explicacion {
-  background: var(--color-tarjeta);
-  border-radius: var(--radio);
-  padding: 20px 24px;
-  box-shadow: 0 6px 0 var(--color-boton-sombra);
-  max-width: 480px;
-  text-align: center;
-}
-
-#explicacion-titulo {
-  margin: 0 0 8px;
-  font-size: 1.2rem;
-}
-
-#explicacion-texto {
-  margin: 0;
-  color: #5a5148;
-  line-height: 1.5;
 }
 
 #indicador-ejercicio {
@@ -416,7 +517,7 @@ body {
 
 /* En la pantalla inicial y en el resumen no hay zona de juego que ocupe el
    alto sobrante, asi que centramos el contenido en vez de dejarlo arriba. */
-body[data-estado="inicio"] #explicacion,
+body[data-estado="inicio"] #controles,
 body[data-estado="menu-clave"] #menu-clave,
 body[data-estado="menu-nivel"] #menu-nivel,
 body[data-estado="terminado"] #resultado {
