@@ -230,20 +230,6 @@ body {
     padding-top: 14px;
   }
 
-  /* En movil no cabe todo de una vez, asi que la eleccion de clave sube por
-     delante del bloque explicativo: es lo que el alumno viene a hacer. */
-  #menu-clave > h2 {
-    order: 1;
-  }
-
-  #menu-clave-opciones {
-    order: 2;
-  }
-
-  #portada-info {
-    order: 3;
-  }
-
   .boton-clave {
     min-height: 168px;
   }
@@ -583,16 +569,20 @@ body {
    alto sobrante, asi que centramos el contenido en vez de dejarlo arriba. */
 body[data-estado="inicio"] #controles,
 body[data-estado="menu-clave"] #menu-clave,
-body[data-estado="menu-nivel"] #menu-nivel,
 body[data-estado="terminado"] #resultado {
   margin-top: auto;
 }
 
 body[data-estado="inicio"] #controles,
 body[data-estado="menu-clave"] #menu-clave,
-body[data-estado="menu-nivel"] #menu-nivel,
 body[data-estado="terminado"] #resultado {
   margin-bottom: auto;
+}
+
+/* El menu de niveles arranca arriba: centrado en vertical dejaba los botones
+   demasiado abajo en pantallas altas. */
+body[data-estado="menu-nivel"] #menu-nivel {
+  margin-top: 12px;
 }
 
 .boton-control {
