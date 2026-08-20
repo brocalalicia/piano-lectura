@@ -293,6 +293,81 @@ const TERCERAS_MI = {
   ],
 };
 
+// Ejemplos para los bloques de teoria.
+const FIGURAS = {
+  tipo: "teoria",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "g/4", f: "w" }, { barra: true },
+        { n: "g/4", f: "h" }, { n: "g/4", f: "h" }, { barra: true },
+        { n: "g/4" }, { n: "g/4" }, { n: "g/4" }, { n: "g/4" },
+      ],
+    },
+  ],
+};
+
+const ALTERACIONES = {
+  tipo: "teoria",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "f/4" }, { n: "f/4", alt: "#" }, { barra: true },
+        { n: "b/4" }, { n: "b/4", alt: "b" },
+      ],
+    },
+  ],
+};
+
+const DOS_NOTAS = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: ["c/4", "e/4"], d: "1-3", f: "h" }, { n: ["d/4", "f/4"], d: "2-4", f: "h" },
+        { barra: true },
+        { n: ["e/4", "g/4"], d: "3-5", f: "h" }, { n: ["c/4", "e/4"], d: "1-3", f: "h" },
+      ],
+    },
+  ],
+};
+
+function ejercicio(id, titulo, objetivo, indicaciones, partitura) {
+  return { id, titulo, objetivo, indicaciones, partitura };
+}
+
+// En la lista de ejercicios solo cabe una linea, asi que de la explicacion de
+// teoria se muestra la primera frase.
+function primeraFrase(texto) {
+  const cortar = (t) => `${t.split(". ")[0]}.`;
+  return { es: cortar(texto.es), fr: cortar(texto.fr) };
+}
+
+function teoria(id, titulo, texto, indicaciones, ejemplo) {
+  return {
+    id,
+    titulo,
+    objetivo: primeraFrase(texto),
+    indicaciones,
+    partitura: {
+      tipo: "teoria",
+      texto,
+      ...(ejemplo ? { compas: ejemplo.compas, sistemas: ejemplo.sistemas } : {}),
+    },
+  };
+}
+
+// Manda al otro programa de la app, al nivel de lectura que toca ese curso.
+function lectura(id, clave, nivel, titulo, objetivo, indicaciones) {
+  return { id, titulo, objetivo, indicaciones, partitura: { tipo: "lectura", clave, nivel } };
+}
+
 // Referencia a un metodo de la profesora. La pagina es la impresa en el papel.
 function pouillard(id, titulo, donde, detalle, indicaciones) {
   return {
@@ -309,6 +384,8 @@ function pouillard(id, titulo, donde, detalle, indicaciones) {
   };
 }
 
+const referencia = pouillard;
+
 const CURSO_PENDIENTE = { ejercicios: [] };
 
 export const NIVELES_PRACTICA = [
@@ -321,268 +398,225 @@ export const NIVELES_PRACTICA = [
     },
     cursos: [
       {
-        titulo: { es: "La posición de cinco dedos", fr: "La position de cinq doigts" },
+        titulo: { es: "La mano y el teclado", fr: "La main et le clavier" },
         objetivo: {
-          es: "Que la mano encuentre sus cinco notas sin mirar el teclado.",
-          fr: "Que la main trouve ses cinq notes sans regarder le clavier.",
+          es: "Colocarse bien, encontrar el do en el teclado y saber cuánto dura cada figura.",
+          fr: "Bien se placer, trouver le do sur le clavier et savoir combien dure chaque figure.",
         },
         ejercicios: [
-          {
-            id: "p1c1-md",
-            titulo: { es: "Cinco dedos en redondas, mano derecha", fr: "Cinq doigts en rondes, main droite" },
-            objetivo: {
-              es: "Una nota por compás: tiempo de sobra para colocar el dedo y escuchar.",
-              fr: "Une note par mesure : tout le temps de placer le doigt et d'écouter.",
-            },
-            indicaciones: {
-              es: ["Cuenta cuatro en cada nota, en voz alta.", "Dedos curvos y muñeca a la altura de los nudillos."],
-              fr: ["Compte quatre sur chaque note, à voix haute.", "Doigts arrondis et poignet à hauteur des articulations."],
-            },
-            partitura: CINCO_DEDOS_REDONDAS_MD,
-          },
-          {
-            id: "p1c1-mi",
-            titulo: { es: "Cinco dedos en redondas, mano izquierda", fr: "Cinq doigts en rondes, main gauche" },
-            objetivo: {
-              es: "Lo mismo con la izquierda, que empieza por el meñique.",
-              fr: "La même chose à gauche, qui commence par l'auriculaire.",
-            },
-            indicaciones: {
-              es: ["El 5 tiende a hundirse: mantenlo curvo.", "Mismo sonido que la derecha, ni más flojo ni más fuerte."],
-              fr: ["Le 5 a tendance à s'affaisser : garde-le arrondi.", "Même son que la droite, ni plus faible ni plus fort."],
-            },
-            partitura: CINCO_DEDOS_REDONDAS_MI,
-          },
-          pouillard(
-            "p1c1-ref1",
-            { es: "Cómo sentarse y colocar la mano", fr: "S'asseoir et placer la main" },
+          ejercicio("p1c1-md", { es: "Cinco dedos en redondas, mano derecha", fr: "Cinq doigts en rondes, main droite" },
+            { es: "Una nota por compás: tiempo de sobra para colocar el dedo y escuchar.", fr: "Une note par mesure : tout le temps de placer le doigt et d'écouter." },
+            { es: ["Cuenta cuatro en cada nota, en voz alta.", "Dedos curvos y muñeca a la altura de los nudillos."], fr: ["Compte quatre sur chaque note, à voix haute.", "Doigts arrondis et poignet à hauteur des articulations."] },
+            CINCO_DEDOS_REDONDAS_MD),
+          ejercicio("p1c1-mi", { es: "Cinco dedos en redondas, mano izquierda", fr: "Cinq doigts en rondes, main gauche" },
+            { es: "Lo mismo con la izquierda, que empieza por el meñique.", fr: "La même chose à gauche, qui commence par l'auriculaire." },
+            { es: ["El 5 tiende a hundirse: mantenlo curvo.", "Mismo sonido que la derecha."], fr: ["Le 5 a tendance à s'affaisser : garde-le arrondi.", "Même son que la droite."] },
+            CINCO_DEDOS_REDONDAS_MI),
+          teoria("p1c1-teclado", { es: "El teclado: encontrar el do", fr: "Le clavier : trouver le do" },
+            { es: "Las teclas negras van en grupos de dos y de tres. El do está siempre a la izquierda del grupo de dos.", fr: "Les touches noires vont par groupes de deux et de trois. Le do est toujours à gauche du groupe de deux." },
+            { es: ["Que encuentre todos los do del piano sin contar.", "Después, todos los fa: a la izquierda del grupo de tres."], fr: ["Qu'il trouve tous les do du piano sans compter.", "Ensuite tous les fa : à gauche du groupe de trois."] }),
+          teoria("p1c1-figuras", { es: "Redonda, blanca y negra", fr: "Ronde, blanche et noire" },
+            { es: "La redonda dura cuatro tiempos, la blanca dos y la negra uno. Un compás de 4/4 se llena con una redonda, dos blancas o cuatro negras.", fr: "La ronde dure quatre temps, la blanche deux et la noire un. Une mesure à 4/4 se remplit avec une ronde, deux blanches ou quatre noires." },
+            { es: ["Dar palmas contando en voz alta antes de tocarlo.", "Los tres compases del ejemplo duran lo mismo."], fr: ["Frapper dans les mains en comptant à voix haute avant de jouer.", "Les trois mesures de l'exemple durent la même chose."] },
+            FIGURAS),
+          referencia("p1c1-ref", { es: "Cómo sentarse y colocar la mano", fr: "S'asseoir et placer la main" },
             { es: "Presentación, págs. 4-6", fr: "Présentation, p. 4-6" },
             { es: "Sentarse al piano, posición del cuerpo y de la mano, y conocer el teclado.", fr: "S'asseoir au piano, position du corps et de la main, et connaître le clavier." },
-            { es: ["Antes de tocar nada, revisa altura del taburete y distancia."], fr: ["Avant de jouer, vérifie la hauteur du tabouret et la distance."] }
-          ),
-          pouillard(
-            "p1c1-ref2",
-            { es: "La digitación", fr: "Le doigté" },
-            { es: "Capítulo I, pág. 8", fr: "Chapitre I, p. 8" },
-            { es: "Los números de los dedos y para qué sirven en la partitura.", fr: "Les numéros des doigts et à quoi ils servent sur la partition." },
-            { es: ["Que sepa decir el número de cada dedo sin dudar."], fr: ["Qu'il sache dire le numéro de chaque doigt sans hésiter."] }
-          ),
+            { es: ["Revisa altura del taburete y distancia antes de nada."], fr: ["Vérifie la hauteur du tabouret et la distance avant tout."] }),
         ],
       },
       {
-        titulo: { es: "El pulso", fr: "La pulsation" },
+        titulo: { es: "El pulso y las primeras melodías", fr: "La pulsation et les premières mélodies" },
         objetivo: {
-          es: "La misma posición, ahora contando: negras, blancas y redondas.",
-          fr: "La même position, maintenant en comptant : noires, blanches et rondes.",
+          es: "Tocar contando, con el compás de 4/4, y sacar las primeras melodías del método.",
+          fr: "Jouer en comptant, à 4/4, et sortir les premières mélodies de la méthode.",
         },
         ejercicios: [
-          {
-            id: "p1c2-md",
-            titulo: { es: "Cinco dedos en negras, mano derecha", fr: "Cinq doigts en noires, main droite" },
-            objetivo: { es: "Subir y bajar sin parar entre nota y nota.", fr: "Monter et descendre sans s'arrêter entre les notes." },
-            indicaciones: {
-              es: ["Con metrónomo a 60, una negra por clic.", "Si tropiezas, baja a 50 antes que fallar."],
-              fr: ["Au métronome à 60, une noire par clic.", "Si tu trébuches, descends à 50 plutôt que de te tromper."],
-            },
-            partitura: CINCO_DEDOS_DERECHA,
-          },
-          {
-            id: "p1c2-mi",
-            titulo: { es: "Cinco dedos en negras, mano izquierda", fr: "Cinq doigts en noires, main gauche" },
-            objetivo: { es: "Lo mismo con la izquierda, a la misma velocidad.", fr: "La même chose à gauche, à la même vitesse." },
-            indicaciones: {
-              es: ["No la dejes ir más lenta que la derecha.", "Mira que el pulgar no se despegue del teclado."],
-              fr: ["Ne la laisse pas aller plus lentement que la droite.", "Veille à ce que le pouce ne quitte pas le clavier."],
-            },
-            partitura: CINCO_DEDOS_IZQUIERDA,
-          },
-          {
-            id: "p1c2-ritmo",
-            titulo: { es: "Blancas y negras", fr: "Blanches et noires" },
-            objetivo: { es: "Mezclar figuras de distinta duración sin perder el pulso.", fr: "Mélanger des figures de durées différentes sans perdre la pulsation." },
-            indicaciones: {
-              es: ["Cuenta en voz alta: la blanca dura dos.", "La redonda del final se sostiene, no se suelta antes."],
-              fr: ["Compte à voix haute : la blanche dure deux.", "La ronde de la fin se tient, on ne la lâche pas avant."],
-            },
-            partitura: BLANCAS_Y_NEGRAS_MD,
-          },
-          pouillard(
-            "p1c2-ref",
-            { es: "Juego non legato", fr: "Jeu non legato" },
-            { es: "Capítulo I, pág. 10", fr: "Chapitre I, p. 10" },
-            { es: "El ataque separado, cada nota con su propio impulso.", fr: "L'attaque détachée, chaque note avec son propre élan." },
-            { es: ["Es el ataque con el que se empieza, antes del legato."], fr: ["C'est l'attaque par laquelle on commence, avant le legato."] }
-          ),
+          ejercicio("p1c2-md", { es: "Cinco dedos en negras, mano derecha", fr: "Cinq doigts en noires, main droite" },
+            { es: "Subir y bajar sin parar entre nota y nota.", fr: "Monter et descendre sans s'arrêter entre les notes." },
+            { es: ["Metrónomo a 60, una negra por clic.", "Si tropiezas, baja a 50 antes que fallar."], fr: ["Métronome à 60, une noire par clic.", "Si tu trébuches, descends à 50 plutôt que de te tromper."] },
+            CINCO_DEDOS_DERECHA),
+          ejercicio("p1c2-mi", { es: "Cinco dedos en negras, mano izquierda", fr: "Cinq doigts en noires, main gauche" },
+            { es: "Lo mismo con la izquierda, a la misma velocidad.", fr: "La même chose à gauche, à la même vitesse." },
+            { es: ["No la dejes ir más lenta que la derecha."], fr: ["Ne la laisse pas aller plus lentement que la droite."] },
+            CINCO_DEDOS_IZQUIERDA),
+          ejercicio("p1c2-ritmo", { es: "Blancas y negras", fr: "Blanches et noires" },
+            { es: "Mezclar figuras de distinta duración sin perder el pulso.", fr: "Mélanger des figures de durées différentes sans perdre la pulsation." },
+            { es: ["Cuenta en voz alta: la blanca dura dos.", "La redonda del final se sostiene entera."], fr: ["Compte à voix haute : la blanche dure deux.", "La ronde de la fin se tient entièrement."] },
+            BLANCAS_Y_NEGRAS_MD),
+          teoria("p1c2-compas", { es: "El compás y la barra de compás", fr: "La mesure et la barre de mesure" },
+            { es: "La barra vertical corta la música en compases iguales. El 4/4 del principio dice que en cada uno caben cuatro negras.", fr: "La barre verticale coupe la musique en mesures égales. Le 4/4 du début dit que quatre noires y tiennent." },
+            { es: ["Que cuente 1-2-3-4 en cada compás mientras toca.", "El primer tiempo de cada compás pesa un poco más."], fr: ["Qu'il compte 1-2-3-4 dans chaque mesure en jouant.", "Le premier temps de chaque mesure pèse un peu plus."] }),
+          referencia("p1c2-ref", { es: "Non legato y melodías a 2, 3 y 4 dedos", fr: "Non legato et mélodies à 2, 3 et 4 doigts" },
+            { es: "Capítulo I, págs. 10-13", fr: "Chapitre I, p. 10-13" },
+            { es: "El ataque separado y las primeras piezas, con cada vez más dedos.", fr: "L'attaque détachée et les premières pièces, avec de plus en plus de doigts." },
+            { es: ["Una melodía por semana; empieza por las de 2 dedos."], fr: ["Une mélodie par semaine ; commence par celles à 2 doigts."] }),
+          lectura("p1c2-lectura", "sol", "inicial1",
+            { es: "Leer las notas de do a sol", fr: "Lire les notes de do à sol" },
+            { es: "Las mismas cinco notas que está tocando, ahora leyéndolas.", fr: "Les mêmes cinq notes qu'il joue, maintenant en les lisant." },
+            { es: ["Una sesión completa al final de la clase."], fr: ["Une session complète à la fin du cours."] }),
         ],
       },
       {
-        titulo: { es: "Cada dedo suena igual", fr: "Chaque doigt sonne pareil" },
+        titulo: { es: "Igualar los dedos y empezar a ligar", fr: "Égaliser les doigts et commencer à lier" },
         objetivo: {
-          es: "Igualar el sonido de los cinco dedos con notas repetidas.",
-          fr: "Égaliser le son des cinq doigts avec des notes répétées.",
+          es: "Que los cinco dedos suenen igual, y primer contacto con el legato.",
+          fr: "Que les cinq doigts sonnent pareil, et premier contact avec le legato.",
         },
         ejercicios: [
-          {
-            id: "p1c3-md",
-            titulo: { es: "Notas repetidas, mano derecha", fr: "Notes répétées, main droite" },
-            objetivo: { es: "Que el sonido salga del dedo y no del brazo.", fr: "Que le son vienne du doigt et non du bras." },
-            indicaciones: {
-              es: ["El brazo se queda quieto; sólo se mueve el dedo.", "Las dos notas iguales tienen que sonar iguales."],
-              fr: ["Le bras reste immobile ; seul le doigt bouge.", "Les deux notes identiques doivent sonner pareil."],
-            },
-            partitura: NOTAS_REPETIDAS,
-          },
-          {
-            id: "p1c3-mi",
-            titulo: { es: "Notas repetidas, mano izquierda", fr: "Notes répétées, main gauche" },
-            objetivo: { es: "Lo mismo en la izquierda, donde cuesta más igualar.", fr: "La même chose à gauche, où il est plus difficile d'égaliser." },
-            indicaciones: {
-              es: ["Escucha si la segunda nota sale más floja.", "El 5 y el 4 son los que se quedan atrás."],
-              fr: ["Écoute si la deuxième note sort plus faible.", "Le 5 et le 4 sont ceux qui restent en arrière."],
-            },
-            partitura: NOTAS_REPETIDAS_MI,
-          },
-          pouillard(
-            "p1c3-ref1",
-            { es: "Preparación al legato", fr: "Préparation au jeu legato" },
+          ejercicio("p1c3-md", { es: "Notas repetidas, mano derecha", fr: "Notes répétées, main droite" },
+            { es: "Que el sonido salga del dedo y no del brazo.", fr: "Que le son vienne du doigt et non du bras." },
+            { es: ["El brazo se queda quieto; sólo se mueve el dedo.", "Las dos notas iguales tienen que sonar iguales."], fr: ["Le bras reste immobile ; seul le doigt bouge.", "Les deux notes identiques doivent sonner pareil."] },
+            NOTAS_REPETIDAS),
+          ejercicio("p1c3-mi", { es: "Notas repetidas, mano izquierda", fr: "Notes répétées, main gauche" },
+            { es: "Lo mismo en la izquierda, donde cuesta más igualar.", fr: "La même chose à gauche, où il est plus difficile d'égaliser." },
+            { es: ["El 5 y el 4 son los que se quedan atrás."], fr: ["Le 5 et le 4 sont ceux qui restent en arrière."] },
+            NOTAS_REPETIDAS_MI),
+          teoria("p1c3-pentagrama", { es: "El pentagrama y la clave de sol", fr: "La portée et la clé de sol" },
+            { es: "Cinco líneas y cuatro espacios. La clave de sol dice que la segunda línea es el sol; desde ahí se cuenta todo lo demás.", fr: "Cinq lignes et quatre espaces. La clé de sol dit que la deuxième ligne est le sol ; tout le reste se compte à partir de là." },
+            { es: ["Que señale el sol antes de leer nada.", "El do central va en la primera línea adicional de abajo."], fr: ["Qu'il montre le sol avant de lire quoi que ce soit.", "Le do central est sur la première ligne supplémentaire du bas."] }),
+          referencia("p1c3-ref", { es: "Preparación al legato", fr: "Préparation au jeu legato" },
             { es: "Capítulo I, pág. 9", fr: "Chapitre I, p. 9" },
             { es: "Fórmulas de dos notas seguidas para empezar a ligar.", fr: "Formules de deux notes conjointes pour commencer à lier." },
-            { es: ["Un dedo se levanta cuando el otro ya ha bajado."], fr: ["Un doigt se lève quand l'autre est déjà descendu."] }
-          ),
-          pouillard(
-            "p1c3-ref2",
-            { es: "Melodías a 2, 3 y 4 dedos", fr: "Mélodies à 2, 3 et 4 doigts" },
-            { es: "Capítulo I, págs. 11-13", fr: "Chapitre I, p. 11-13" },
-            { es: "Las primeras piezas, con cada vez más dedos en juego.", fr: "Les premières pièces, avec de plus en plus de doigts en jeu." },
-            { es: ["Una por semana; empieza por las de 2 dedos."], fr: ["Une par semaine ; commence par celles à 2 doigts."] }
-          ),
+            { es: ["Un dedo se levanta cuando el otro ya ha bajado."], fr: ["Un doigt se lève quand l'autre est déjà descendu."] }),
+          lectura("p1c3-lectura", "sol", "inicial1",
+            { es: "Repasar do a sol", fr: "Réviser do à sol" },
+            { es: "Buscando ya bajar el tiempo, no sólo acertar.", fr: "En cherchant déjà à baisser le temps, pas seulement à réussir." },
+            { es: ["Compara el tiempo con el de la clase anterior."], fr: ["Compare le temps avec celui du cours précédent."] }),
         ],
       },
       {
-        titulo: { es: "Saltos de tercera", fr: "Sauts de tierce" },
+        titulo: { es: "Terceras y legato", fr: "Tierces et legato" },
         objetivo: {
-          es: "Dedos alternos: la mano deja de ir nota a nota.",
-          fr: "Doigts alternés : la main cesse d'aller note à note.",
+          es: "Dedos alternos, sonido ligado y primeros matices.",
+          fr: "Doigts alternés, son lié et premières nuances.",
         },
         ejercicios: [
-          {
-            id: "p1c4-md",
-            titulo: { es: "Terceras, mano derecha", fr: "Tierces, main droite" },
-            objetivo: { es: "Saltar un dedo sin que la mano se mueva de sitio.", fr: "Sauter un doigt sans que la main bouge de place." },
-            indicaciones: {
-              es: ["Los dedos que no tocan se quedan sobre sus teclas.", "Muy lento al principio: el salto se prepara antes."],
-              fr: ["Les doigts qui ne jouent pas restent sur leurs touches.", "Très lentement au début : le saut se prépare à l'avance."],
-            },
-            partitura: TERCERAS_MD,
-          },
-          {
-            id: "p1c4-mi",
-            titulo: { es: "Terceras, mano izquierda", fr: "Tierces, main gauche" },
-            objetivo: { es: "Lo mismo en la izquierda.", fr: "La même chose à gauche." },
-            indicaciones: {
-              es: ["Vigila que la muñeca no gire en cada salto."],
-              fr: ["Veille à ce que le poignet ne tourne pas à chaque saut."],
-            },
-            partitura: TERCERAS_MI,
-          },
-          pouillard(
-            "p1c4-ref2",
-            { es: "Matices, fraseo y registros", fr: "Nuances, phrasé et registres" },
-            { es: "Capítulo II, pág. 22", fr: "Chapitre II, p. 22" },
-            { es: "Tocar más fuerte o más flojo, y entender las frases.", fr: "Jouer plus fort ou plus doux, et comprendre les phrases." },
-            { es: ["Con la mano ya suelta, es el momento de pedir matiz."], fr: ["La main étant déjà souple, c'est le moment de demander de la nuance."] }
-          ),
-          pouillard(
-            "p1c4-ref",
-            { es: "Juego legato", fr: "Jeu legato" },
-            { es: "Capítulo II, pág. 16", fr: "Chapitre II, p. 16" },
-            { es: "Ligar las notas de verdad, sin corte de sonido entre ellas.", fr: "Lier les notes pour de bon, sans coupure de son entre elles." },
-            { es: ["Ya con la posición segura, es el momento del legato."], fr: ["La position étant sûre, c'est le moment du legato."] }
-          ),
+          ejercicio("p1c4-md", { es: "Terceras, mano derecha", fr: "Tierces, main droite" },
+            { es: "Saltar un dedo sin que la mano se mueva de sitio.", fr: "Sauter un doigt sans que la main bouge de place." },
+            { es: ["Los dedos que no tocan se quedan sobre sus teclas.", "El salto se prepara antes, no en el último momento."], fr: ["Les doigts qui ne jouent pas restent sur leurs touches.", "Le saut se prépare à l'avance, pas au dernier moment."] },
+            TERCERAS_MD),
+          ejercicio("p1c4-mi", { es: "Terceras, mano izquierda", fr: "Tierces, main gauche" },
+            { es: "Lo mismo en la izquierda.", fr: "La même chose à gauche." },
+            { es: ["Vigila que la muñeca no gire en cada salto."], fr: ["Veille à ce que le poignet ne tourne pas à chaque saut."] },
+            TERCERAS_MI),
+          teoria("p1c4-matices", { es: "Fuerte y flojo", fr: "Fort et doux" },
+            { es: "La f de forte quiere decir fuerte y la p de piano, flojo. Son la primera manera de que la música diga algo.", fr: "Le f de forte veut dire fort et le p de piano, doux. C'est la première façon de faire dire quelque chose à la musique." },
+            { es: ["Toca el mismo ejercicio dos veces, en f y en p.", "El matiz sale del peso del brazo, no de golpear."], fr: ["Joue le même exercice deux fois, en f puis en p.", "La nuance vient du poids du bras, pas de la frappe."] }),
+          referencia("p1c4-ref", { es: "Legato, matices y fraseo", fr: "Legato, nuances et phrasé" },
+            { es: "Capítulo II, págs. 16-22", fr: "Chapitre II, p. 16-22" },
+            { es: "Ligar de verdad, y las primeras indicaciones de matiz y de frase.", fr: "Lier pour de bon, et les premières indications de nuance et de phrase." },
+            { es: ["Con la posición ya segura, es el momento del legato."], fr: ["La position étant sûre, c'est le moment du legato."] }),
+          lectura("p1c4-lectura", "sol", "inicial2",
+            { es: "Ampliar de sol a do agudo", fr: "Élargir du sol au do aigu" },
+            { es: "Las notas que quedan por encima de la posición de cinco dedos.", fr: "Les notes au-dessus de la position de cinq doigts." },
+            { es: ["Si falla mucho, vuelve a Inicial 1 y sube la semana siguiente."], fr: ["S'il se trompe beaucoup, reviens à Débutant 1 et monte la semaine suivante."] }),
         ],
       },
-      CURSO_PENDIENTE,
       {
-        titulo: { es: "Manos juntas en paralelo", fr: "Mains ensemble en parallèle" },
+        titulo: { es: "Manos juntas y la clave de fa", fr: "Mains ensemble et la clé de fa" },
         objetivo: {
-          es: "Las dos manos tocando lo mismo a la vez, cada una en su octava.",
-          fr: "Les deux mains jouant la même chose en même temps, chacune dans son octave.",
+          es: "Las dos manos a la vez, y leer la mano izquierda en su propia clave.",
+          fr: "Les deux mains à la fois, et lire la main gauche dans sa propre clé.",
         },
         ejercicios: [
-          {
-            id: "p1c6-paralelo",
-            titulo: { es: "Manos juntas en paralelo", fr: "Mains ensemble en parallèle" },
-            objetivo: { es: "Coordinar las dos manos tocando lo mismo a la vez.", fr: "Coordonner les deux mains en jouant la même chose en même temps." },
-            indicaciones: {
-              es: ["Los dedos van cruzados: el 1 con el 5, el 2 con el 4.", "Si una mano se adelanta, vuelve a manos separadas."],
-              fr: ["Les doigts vont croisés : le 1 avec le 5, le 2 avec le 4.", "Si une main prend de l'avance, reviens aux mains séparées."],
-            },
-            partitura: MANOS_JUNTAS,
-          },
-          pouillard(
-            "p1c6-ref",
-            { es: "Manos juntas, polifonía en do", fr: "Mains ensemble, polyphonie en do" },
-            { es: "Capítulo II, pág. 18", fr: "Chapitre II, p. 18" },
-            { es: "Primeras piezas a dos manos con las dos voces sonando.", fr: "Premières pièces à deux mains avec les deux voix qui sonnent." },
-            { es: ["Monta cada mano por separado antes de juntarlas."], fr: ["Monte chaque main séparément avant de les réunir."] }
-          ),
-          pouillard(
-            "p1c6-ref2",
-            { es: "Independencia de manos", fr: "Indépendance des mains" },
+          ejercicio("p1c5-paralelo", { es: "Manos juntas en paralelo", fr: "Mains ensemble en parallèle" },
+            { es: "Coordinar las dos manos tocando lo mismo a la vez.", fr: "Coordonner les deux mains en jouant la même chose en même temps." },
+            { es: ["Los dedos van cruzados: el 1 con el 5, el 2 con el 4.", "Si una mano se adelanta, vuelve a manos separadas."], fr: ["Les doigts vont croisés : le 1 avec le 5, le 2 avec le 4.", "Si une main prend de l'avance, reviens aux mains séparées."] },
+            MANOS_JUNTAS),
+          teoria("p1c5-clavefa", { es: "La clave de fa y el do central", fr: "La clé de fa et le do central" },
+            { es: "La mano izquierda se escribe en clave de fa, donde la cuarta línea es el fa. El do central queda justo encima del pentagrama, en su línea adicional.", fr: "La main gauche s'écrit en clé de fa, où la quatrième ligne est le fa. Le do central se place juste au-dessus de la portée, sur sa ligne supplémentaire." },
+            { es: ["El do central es el mismo en las dos claves: una sola tecla.", "Enséñaselo en el piano y en el papel a la vez."], fr: ["Le do central est le même dans les deux clés : une seule touche.", "Montre-le au piano et sur le papier en même temps."] }),
+          teoria("p1c5-compases", { es: "Los compases de 3/4 y 2/4", fr: "Les mesures à 3/4 et 2/4" },
+            { es: "El número de abajo dice qué figura vale un tiempo y el de arriba cuántos hay por compás. En 3/4 se cuenta 1-2-3, como un vals.", fr: "Le chiffre du bas dit quelle figure vaut un temps et celui du haut combien il y en a par mesure. À 3/4 on compte 1-2-3, comme une valse." },
+            { es: ["Dar palmas en 3/4 y en 2/4 antes de tocarlo."], fr: ["Frapper dans les mains à 3/4 et à 2/4 avant de jouer."] }),
+          referencia("p1c5-ref", { es: "Manos juntas, polifonía en do y en sol", fr: "Mains ensemble, polyphonie en do et en sol" },
+            { es: "Capítulo II, págs. 18-20", fr: "Chapitre II, p. 18-20" },
+            { es: "Primeras piezas a dos manos, con las dos voces sonando.", fr: "Premières pièces à deux mains, avec les deux voix qui sonnent." },
+            { es: ["Monta cada mano por separado antes de juntarlas."], fr: ["Monte chaque main séparément avant de les réunir."] }),
+          lectura("p1c5-lectura", "fa", "inicial1",
+            { es: "Leer en clave de fa", fr: "Lire en clé de fa" },
+            { es: "De fa a do central, que es lo que acaba de tocar con la izquierda.", fr: "Du fa au do central, ce qu'il vient de jouer de la main gauche." },
+            { es: ["Es normal que al principio vaya más lento que en clave de sol."], fr: ["Il est normal qu'il soit plus lent qu'en clé de sol au début."] }),
+        ],
+      },
+      {
+        titulo: { es: "Movimiento contrario e independencia", fr: "Mouvement contraire et indépendance" },
+        objetivo: {
+          es: "Que cada mano vaya a lo suyo sin arrastrar a la otra.",
+          fr: "Que chaque main aille de son côté sans entraîner l'autre.",
+        },
+        ejercicios: [
+          ejercicio("p1c6-contrario", { es: "Movimiento contrario", fr: "Mouvement contraire" },
+            { es: "Las manos hacen lo mismo pero hacia lados opuestos.", fr: "Les mains font la même chose mais en sens opposé." },
+            { es: ["Los dos pulgares comparten el do central: cada uno toca el suyo.", "Es más fácil que el paralelo: los dedos van emparejados, 1 con 1."], fr: ["Les deux pouces partagent le do central : chacun joue le sien.", "C'est plus facile que le parallèle : les doigts vont par paires, 1 avec 1."] },
+            MOVIMIENTO_CONTRARIO),
+          teoria("p1c6-independencia", { es: "Cada mano, un papel", fr: "Chaque main, un rôle" },
+            { es: "Casi siempre una mano lleva la melodía y la otra acompaña. La que acompaña suena más floja: no es que toque menos, es que pesa menos.", fr: "Presque toujours une main porte la mélodie et l'autre accompagne. Celle qui accompagne sonne plus doux : elle ne joue pas moins, elle pèse moins." },
+            { es: ["Pídele que toque la melodía en f y el acompañamiento en p."], fr: ["Demande-lui de jouer la mélodie en f et l'accompagnement en p."] }),
+          referencia("p1c6-ref", { es: "Independencia de manos", fr: "Indépendance des mains" },
             { es: "Capítulo III, pág. 26", fr: "Chapitre III, p. 26" },
             { es: "Que cada mano haga algo distinto sin arrastrar a la otra.", fr: "Que chaque main fasse quelque chose de différent sans entraîner l'autre." },
-            { es: ["Empieza por una mano larga y la otra en notas sueltas."], fr: ["Commence par une main tenue et l'autre en notes détachées."] }
-          ),
-          pouillard(
-            "p1c6-ref3",
-            { es: "Los acordes", fr: "Les accords" },
-            { es: "Capítulo III, pág. 28", fr: "Chapitre III, p. 28" },
-            { es: "Primer contacto con dos y tres notas a la vez.", fr: "Premier contact avec deux et trois notes à la fois." },
-            { es: ["Sólo el primer contacto; los acordes llegan en Principiante 2."], fr: ["Seulement le premier contact ; les accords arrivent en Débutant 2."] }
-          ),
+            { es: ["Empieza por una mano tenida y la otra en notas sueltas."], fr: ["Commence par une main tenue et l'autre en notes détachées."] }),
+          lectura("p1c6-lectura", "fa", "inicial2",
+            { es: "Ampliar en clave de fa", fr: "Élargir en clé de fa" },
+            { es: "De do a sol, por encima del pentagrama de la izquierda.", fr: "Du do au sol, au-dessus de la portée de la main gauche." },
+            { es: ["Alterna con clave de sol para que no pierda ninguna."], fr: ["Alterne avec la clé de sol pour qu'il n'en perde aucune."] }),
         ],
       },
       {
-        titulo: { es: "Movimiento contrario", fr: "Mouvement contraire" },
+        titulo: { es: "Acordes y alteraciones", fr: "Accords et altérations" },
         objetivo: {
-          es: "Los dos pulgares en el do central y las manos hacia lados opuestos.",
-          fr: "Les deux pouces sur le do central et les mains en sens opposé.",
+          es: "Dos y tres notas a la vez, y las teclas negras en la partitura.",
+          fr: "Deux et trois notes à la fois, et les touches noires sur la partition.",
         },
         ejercicios: [
-          {
-            id: "p1c7-contrario",
-            titulo: { es: "Movimiento contrario", fr: "Mouvement contraire" },
-            objetivo: { es: "Las manos hacen lo mismo pero hacia lados opuestos.", fr: "Les mains font la même chose mais en sens opposé." },
-            indicaciones: {
-              es: ["Los dos pulgares comparten el do central: cada uno toca el suyo.", "Es más fácil que el paralelo: los dedos van emparejados, 1 con 1."],
-              fr: ["Les deux pouces partagent le do central : chacun joue le sien.", "C'est plus facile que le parallèle : les doigts vont par paires, 1 avec 1."],
-            },
-            partitura: MOVIMIENTO_CONTRARIO,
-          },
-          pouillard(
-            "p1c7-ref",
-            { es: "Manos juntas, polifonía en sol", fr: "Mains ensemble, polyphonie en sol" },
-            { es: "Capítulo II, pág. 20", fr: "Chapitre II, p. 20" },
-            { es: "Lo mismo trasladado a la posición de sol.", fr: "La même chose transposée à la position de sol." },
-            { es: ["Buen momento para mover la mano fuera del do."], fr: ["Bon moment pour déplacer la main hors du do."] }
-          ),
-          pouillard(
-            "p1c7-ref2",
-            { es: "Cruce de manos", fr: "Croisement de mains" },
-            { es: "Capítulo III, pág. 32", fr: "Chapitre III, p. 32" },
-            { es: "Una mano pasa por encima de la otra: suele gustarles.", fr: "Une main passe par-dessus l'autre : en général ça leur plaît." },
-            { es: ["Buen ejercicio para acabar el nivel con algo vistoso."], fr: ["Bon exercice pour finir le niveau avec quelque chose de spectaculaire."] }
-          ),
-          pouillard(
-            "p1c7-ref3",
-            { es: "Las alteraciones", fr: "Les altérations" },
-            { es: "Capítulo III, pág. 30", fr: "Chapitre III, p. 30" },
-            { es: "Sostenidos y bemoles: qué son y dónde están en el teclado.", fr: "Dièses et bémols : ce que c'est et où ils sont sur le clavier." },
-            { es: ["Teoría, sin tocarlos todavía: preparan Principiante 2."], fr: ["Théorie, sans les jouer encore : ils préparent le Débutant 2."] }
-          ),
+          ejercicio("p1c7-dosnotas", { es: "Dos notas a la vez", fr: "Deux notes à la fois" },
+            { es: "Que las dos suenen exactamente juntas y con el mismo peso.", fr: "Que les deux sonnent exactement ensemble et avec le même poids." },
+            { es: ["Deja caer el brazo; no aprietes con los dedos.", "Escucha si una de las dos se adelanta."], fr: ["Laisse tomber le bras ; ne serre pas avec les doigts.", "Écoute si l'une des deux est en avance."] },
+            DOS_NOTAS),
+          teoria("p1c7-alteraciones", { es: "Sostenidos y bemoles", fr: "Dièses et bémols" },
+            { es: "El sostenido sube la nota a la tecla de al lado, hacia la derecha; el bemol la baja hacia la izquierda. Casi siempre son las teclas negras.", fr: "Le dièse monte la note à la touche voisine, vers la droite ; le bémol la descend vers la gauche. Ce sont presque toujours les touches noires." },
+            { es: ["Fa sostenido y si bemol son los dos primeros que se encuentra.", "Sólo reconocerlos: tocarlos llega en Principiante 2."], fr: ["Fa dièse et si bémol sont les deux premiers qu'il rencontre.", "Seulement les reconnaître : les jouer viendra en Débutant 2."] },
+            ALTERACIONES),
+          referencia("p1c7-ref", { es: "Los acordes y las alteraciones", fr: "Les accords et les altérations" },
+            { es: "Capítulo III, págs. 28-30", fr: "Chapitre III, p. 28-30" },
+            { es: "Primer contacto con dos y tres notas juntas, y con las alteraciones.", fr: "Premier contact avec deux et trois notes ensemble, et avec les altérations." },
+            { es: ["Los acordes de tres sonidos completos llegan en Principiante 2."], fr: ["Les accords de trois sons complets arrivent en Débutant 2."] }),
+          lectura("p1c7-lectura", "sol", "inicial2",
+            { es: "Lectura mezclando las dos claves", fr: "Lecture en mêlant les deux clés" },
+            { es: "Una sesión de cada clave, seguidas.", fr: "Une session de chaque clé, à la suite." },
+            { es: ["Compara las estrellas de las dos: dónde flojea."], fr: ["Compare les étoiles des deux : où il faiblit."] }),
         ],
       },
-      CURSO_PENDIENTE,
+      {
+        titulo: { es: "Primeras piezas", fr: "Premières pièces" },
+        objetivo: {
+          es: "Juntarlo todo en una pieza de verdad, y saber cómo abordar una partitura nueva.",
+          fr: "Tout réunir dans une vraie pièce, et savoir aborder une partition nouvelle.",
+        },
+        ejercicios: [
+          ejercicio("p1c8-repaso", { es: "Repaso: manos juntas", fr: "Révision : mains ensemble" },
+            { es: "Calentar con lo que ya sabe antes de leer algo nuevo.", fr: "S'échauffer avec ce qu'il sait avant de lire du nouveau." },
+            { es: ["Paralelo y contrario seguidos, sin parar entre ellos."], fr: ["Parallèle et contraire à la suite, sans s'arrêter entre les deux."] },
+            MOVIMIENTO_CONTRARIO),
+          teoria("p1c8-leer", { es: "Cómo empezar una partitura nueva", fr: "Comment aborder une partition nouvelle" },
+            { es: "Antes de tocar: mirar la clave, el compás, dónde empieza cada mano y si hay alteraciones. Después, solfear el ritmo con palmas.", fr: "Avant de jouer : regarder la clé, la mesure, où commence chaque main et s'il y a des altérations. Ensuite, solfier le rythme en frappant dans les mains." },
+            { es: ["Este orden, siempre el mismo, hasta que le salga solo.", "Tocar es lo último, no lo primero."], fr: ["Cet ordre, toujours le même, jusqu'à ce qu'il vienne tout seul.", "Jouer est la dernière étape, pas la première."] }),
+          referencia("p1c8-ref1", { es: "Estudios progresivos y piezas", fr: "Études progressives et pièces" },
+            { es: "Capítulo VII, págs. 64-68", fr: "Chapitre VII, p. 64-68" },
+            { es: "El repertorio del método, ya con todo lo aprendido en el nivel.", fr: "Le répertoire de la méthode, avec tout ce qui a été appris au niveau." },
+            { es: ["Elige una pieza que le guste: es su primera de verdad."], fr: ["Choisis une pièce qui lui plaît : c'est sa première vraie pièce."] }),
+          referencia("p1c8-ref2", { es: "Cruce de manos", fr: "Croisement de mains" },
+            { es: "Capítulo III, pág. 32", fr: "Chapitre III, p. 32" },
+            { es: "Una mano pasa por encima de la otra.", fr: "Une main passe par-dessus l'autre." },
+            { es: ["Vistoso y fácil: buen final de nivel."], fr: ["Spectaculaire et facile : bonne fin de niveau."] }),
+          lectura("p1c8-lectura", "fa", "inicial2",
+            { es: "Evaluación de lectura", fr: "Évaluation de lecture" },
+            { es: "Una sesión completa de cada clave para ver dónde está.", fr: "Une session complète de chaque clé pour voir où il en est." },
+            { es: ["Apunta precisión y tiempo: son el punto de partida de Principiante 2."], fr: ["Note la précision et le temps : c'est le point de départ du Débutant 2."] }),
+        ],
+      },
     ],
   },
   {

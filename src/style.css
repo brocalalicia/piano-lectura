@@ -368,6 +368,34 @@ body {
   text-align: center;
 }
 
+/* Bloque de teoria: la explicacion, encima el ejemplo dibujado si lo lleva. */
+#ejercicio-teoria {
+  width: 100%;
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  padding: 18px 22px;
+  box-shadow: 0 4px 0 var(--color-boton-sombra);
+}
+
+#ejercicio-teoria p {
+  margin: 0;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.55;
+}
+
+/* Bloque que manda al programa de lectura. */
+#ejercicio-lectura {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  padding: 22px 20px;
+  box-shadow: 0 6px 0 var(--color-boton-sombra);
+}
+
 .referencia-etiqueta {
   font-size: 0.8rem;
   font-weight: 800;

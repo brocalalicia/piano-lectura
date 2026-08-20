@@ -73,10 +73,16 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   se citan indicando dónde mirarlos, nunca reproduciendo la página.
 - Al citar un método, la página es **la impresa en el papel**, no la del PDF:
   en el Pouillard hay seis de diferencia y ya provocó una referencia mal puesta.
-- Cada ejercicio es de uno de estos dos tipos: `dibujada` (fórmula técnica,
-  hecha con VexFlow) o `referencia` (uno de los métodos de la profesora:
-  método y página, sin copiar nada). **No se enlaza a partituras de fuera**:
-  o está dibujada dentro de la app, o remite a un libro que ella ya tiene.
+- Un curso es **una clase de una hora**, así que lleva bloques de distinto
+  tipo, no sólo técnica. Cada ejercicio es de uno de estos cuatro:
+  `dibujada` (fórmula técnica hecha con VexFlow), `teoria` (explicación, con
+  ejemplo dibujado si ayuda), `referencia` (método de la profesora: capítulo y
+  página impresa, sin copiar nada) y `lectura` (manda al programa de Lectura
+  de la propia app, a la clave y nivel que toca ese curso).
+- **No se enlaza a partituras de fuera**: o está dibujada dentro de la app, o
+  remite a un libro que ella ya tiene.
+- Los dos programas están conectados: la práctica manda a la lectura. Si se
+  añaden niveles de lectura, revisar a dónde apuntan los bloques `lectura`.
 
 ## Niveles
 - Se entra por un menú: primero la clave (sol o fa) y después el nivel.

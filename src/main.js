@@ -1,4 +1,4 @@
-import { Renderer, Stave, StaveNote, Formatter, Annotation, BarNote, StaveConnector } from "vexflow";
+import { Renderer, Stave, StaveNote, Formatter, Annotation, BarNote, StaveConnector, Accidental } from "vexflow";
 import { NIVELES_PRACTICA } from "./programa.js";
 import * as Tone from "tone";
 import "./style.css";
@@ -89,6 +89,9 @@ const TRADUCCIONES = {
     practicaCursoTitulo: (n) => `Curso ${n}`,
     practicaCuentaCursos: (n) => `${n} de 8 cursos preparados`,
     referenciaEn: "En tu método",
+    teoriaTitulo: "Teoría",
+    irALectura: "Practicar en Lectura",
+    lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
     comoTrabajarlo: "Cómo trabajarlo",
     portadaTitulo: "Ejercicios de lectura",
     portadaObjetivo:
@@ -177,6 +180,9 @@ const TRADUCCIONES = {
     practicaCursoTitulo: (n) => `Cours ${n}`,
     practicaCuentaCursos: (n) => `${n} cours sur 8 préparés`,
     referenciaEn: "Dans ta méthode",
+    teoriaTitulo: "Théorie",
+    irALectura: "S'entraîner en Lecture",
+    lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
     comoTrabajarlo: "Comment le travailler",
     portadaTitulo: "Exercices de lecture",
     portadaObjetivo:
@@ -293,6 +299,8 @@ const ejercicioTituloEl = document.getElementById("ejercicio-titulo");
 const ejercicioObjetivoEl = document.getElementById("ejercicio-objetivo");
 const ejercicioPartituraEl = document.getElementById("ejercicio-partitura");
 const ejercicioReferenciaEl = document.getElementById("ejercicio-referencia");
+const ejercicioTeoriaEl = document.getElementById("ejercicio-teoria");
+const ejercicioLecturaEl = document.getElementById("ejercicio-lectura");
 const ejercicioIndicacionesEl = document.getElementById("ejercicio-indicaciones");
 const portadaTituloEl = document.getElementById("portada-titulo");
 const portadaObjetivoEl = document.getElementById("portada-objetivo");
@@ -944,6 +952,7 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
         duration: nota.f || "q",
         clef: sistema.clef,
       });
+      if (nota.alt) staveNote.addModifier(new Accidental(nota.alt), 0);
       if (nota.d) {
         // La digitacion va encima en la mano derecha y debajo en la izquierda.
         const dedo = new Annotation(nota.d);
@@ -1118,10 +1127,40 @@ function renderizarPracticaEjercicio() {
 
   ejercicioPartituraEl.innerHTML = "";
   ejercicioReferenciaEl.innerHTML = "";
+  ejercicioTeoriaEl.innerHTML = "";
+  ejercicioLecturaEl.innerHTML = "";
   ejercicioReferenciaEl.classList.toggle("oculto", partitura.tipo !== "referencia");
+  ejercicioTeoriaEl.classList.toggle("oculto", partitura.tipo !== "teoria");
+  ejercicioLecturaEl.classList.toggle("oculto", partitura.tipo !== "lectura");
 
-  if (partitura.tipo === "dibujada") {
+  // La teoria puede llevar un ejemplo dibujado, y la lectura manda al otro
+  // programa de la app en el nivel que toca.
+  if (partitura.sistemas) {
     dibujarPartituraEjercicio(ejercicioPartituraEl, partitura);
+  }
+
+  if (partitura.tipo === "teoria") {
+    const texto = document.createElement("p");
+    texto.textContent = txt(partitura.texto);
+    ejercicioTeoriaEl.appendChild(texto);
+  } else if (partitura.tipo === "lectura") {
+    const clave = CLAVES.find((c) => c.id === partitura.clave);
+    const nivel = clave.niveles.find((n) => n.id === partitura.nivel);
+
+    const destino = document.createElement("span");
+    destino.className = "referencia-donde";
+    destino.textContent = t().lecturaEn(t().claves[clave.id], t().niveles[nivel.id]);
+    ejercicioLecturaEl.appendChild(destino);
+
+    const boton = document.createElement("button");
+    boton.className = "boton-control";
+    boton.textContent = t().irALectura;
+    boton.addEventListener("click", () => {
+      vibrar(15);
+      seleccionarClave(clave);
+      seleccionarNivel(nivel);
+    });
+    ejercicioLecturaEl.appendChild(boton);
   } else if (partitura.tipo === "referencia") {
     // Los metodos con derechos no se copian: se dice donde esta.
     const etiqueta = document.createElement("span");
