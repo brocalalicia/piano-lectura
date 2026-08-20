@@ -938,7 +938,12 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
     const notas = sistema.notas.map((nota) => {
       if (nota.barra) return new BarNote();
 
-      const staveNote = new StaveNote({ keys: [nota.n], duration: nota.f || "q", clef: sistema.clef });
+      // "n" es una nota suelta o, en los acordes, varias a la vez.
+      const staveNote = new StaveNote({
+        keys: Array.isArray(nota.n) ? nota.n : [nota.n],
+        duration: nota.f || "q",
+        clef: sistema.clef,
+      });
       if (nota.d) {
         // La digitacion va encima en la mano derecha y debajo en la izquierda.
         const dedo = new Annotation(nota.d);

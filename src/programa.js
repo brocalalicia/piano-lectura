@@ -85,6 +85,106 @@ const MANOS_JUNTAS = {
   ],
 };
 
+// Los dos pulgares sobre el do central: las manos se separan y se juntan.
+const MOVIMIENTO_CONTRARIO = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
+        { barra: true },
+        { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3" }, { n: "d/4", d: "2" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "b/3", d: "2" }, { n: "a/3", d: "3" }, { n: "g/3", d: "4" },
+        { barra: true },
+        { n: "f/3", d: "5" }, { n: "g/3", d: "4" }, { n: "a/3", d: "3" }, { n: "b/3", d: "2" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const ESCALA_DO_DERECHA = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "1" },
+        { barra: true },
+        { n: "g/4", d: "2" }, { n: "a/4", d: "3" }, { n: "b/4", d: "4" }, { n: "c/5", d: "5" },
+        { barra: true },
+        { n: "b/4", d: "4" }, { n: "a/4", d: "3" }, { n: "g/4", d: "2" }, { n: "f/4", d: "1" },
+        { barra: true },
+        { n: "e/4", d: "3" }, { n: "d/4", d: "2" }, { n: "c/4", d: "1", f: "h" },
+      ],
+    },
+  ],
+};
+
+const ESCALA_DO_IZQUIERDA = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5" }, { n: "d/3", d: "4" }, { n: "e/3", d: "3" }, { n: "f/3", d: "2" },
+        { barra: true },
+        { n: "g/3", d: "1" }, { n: "a/3", d: "3" }, { n: "b/3", d: "2" }, { n: "c/4", d: "1" },
+        { barra: true },
+        { n: "b/3", d: "2" }, { n: "a/3", d: "3" }, { n: "g/3", d: "1" }, { n: "f/3", d: "2" },
+        { barra: true },
+        { n: "e/3", d: "3" }, { n: "d/3", d: "4" }, { n: "c/3", d: "5", f: "h" },
+      ],
+    },
+  ],
+};
+
+const ARPEGIO_DO = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "e/4", d: "2" }, { n: "g/4", d: "3" }, { n: "c/5", d: "5" },
+        { barra: true },
+        { n: "g/4", d: "3" }, { n: "e/4", d: "2" }, { n: "c/4", d: "1", f: "h" },
+      ],
+    },
+  ],
+};
+
+const ACORDES_TRES_SONIDOS = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: ["c/4", "e/4", "g/4"], d: "1-3-5", f: "w" },
+        { barra: true },
+        { n: ["f/4", "a/4", "c/5"], d: "1-3-5", f: "w" },
+        { barra: true },
+        { n: ["g/4", "b/4", "d/5"], d: "1-3-5", f: "w" },
+        { barra: true },
+        { n: ["c/4", "e/4", "g/4"], d: "1-3-5", f: "w" },
+      ],
+    },
+  ],
+};
+
 export const NIVELES_PRACTICA = [
   {
     id: "principiante1",
@@ -173,6 +273,25 @@ export const NIVELES_PRACTICA = [
         partitura: MANOS_JUNTAS,
       },
       {
+        id: "movimiento-contrario",
+        titulo: { es: "Movimiento contrario", fr: "Mouvement contraire" },
+        objetivo: {
+          es: "Los dos pulgares en el do central. Las manos hacen lo mismo pero hacia lados opuestos.",
+          fr: "Les deux pouces sur le do central. Les mains font la même chose mais en sens opposé.",
+        },
+        indicaciones: {
+          es: [
+            "Los dos pulgares comparten el do central: cada uno toca el suyo.",
+            "Es más fácil que el paralelo porque los dedos van emparejados: 1 con 1, 2 con 2.",
+          ],
+          fr: [
+            "Les deux pouces partagent le do central : chacun joue le sien.",
+            "C'est plus facile que le parallèle car les doigts vont par paires : 1 avec 1, 2 avec 2.",
+          ],
+        },
+        partitura: MOVIMIENTO_CONTRARIO,
+      },
+      {
         id: "le-couppey-17",
         titulo: { es: "Le Couppey, «L'Alphabet» op. 17, nº 1-3", fr: "Le Couppey, « L'Alphabet » op. 17, nº 1-3" },
         objetivo: {
@@ -227,8 +346,13 @@ export const NIVELES_PRACTICA = [
     referencias: [
       {
         metodo: "Hervé y Pouillard, Méthode de piano débutants",
-        donde: { es: "pág. 5, «Mélodies à 2, 3 et 4 doigts»", fr: "p. 5, « Mélodies à 2, 3 et 4 doigts »" },
-        detalle: { es: "nº 1 Promenade y nº 2 Petite Danse", fr: "nº 1 Promenade et nº 2 Petite Danse" },
+        donde: { es: "Presentación, págs. 4-6", fr: "Présentation, p. 4-6" },
+        detalle: { es: "sentarse al piano, posición de la mano y el teclado", fr: "s'asseoir au piano, position de la main et le clavier" },
+      },
+      {
+        metodo: "Hervé y Pouillard, Méthode de piano débutants",
+        donde: { es: "Capítulo I, págs. 8-13", fr: "Chapitre I, p. 8-13" },
+        detalle: { es: "digitación, preparación al legato, juego non legato y melodías a 2, 3 y 4 dedos", fr: "doigté, préparation au legato, jeu non legato et mélodies à 2, 3 et 4 doigts" },
       },
     ],
   },
@@ -236,11 +360,142 @@ export const NIVELES_PRACTICA = [
     id: "principiante2",
     nombre: { es: "Principiante 2", fr: "Débutant 2" },
     objetivo: {
-      es: "Manos juntas con independencia, paso del pulgar y primeras escalas.",
-      fr: "Mains ensemble avec indépendance, passage du pouce et premières gammes.",
+      es: "Salir de la posición fija: paso del pulgar, escala y arpegio de do mayor, y primeros acordes de tres sonidos.",
+      fr: "Sortir de la position fixe : passage du pouce, gamme et arpège de do majeur, et premiers accords de trois sons.",
     },
-    ejercicios: [],
-    referencias: [],
+    ejercicios: [
+      {
+        id: "escala-do-md",
+        titulo: { es: "Escala de do mayor, mano derecha", fr: "Gamme de do majeur, main droite" },
+        objetivo: {
+          es: "El paso del pulgar por debajo, que es lo que permite pasar de cinco notas a una octava.",
+          fr: "Le passage du pouce en dessous, qui permet de passer de cinq notes à une octave.",
+        },
+        indicaciones: {
+          es: [
+            "Subiendo, el pulgar pasa por debajo del 3 para tocar el fa.",
+            "Prepara el pulgar mientras suenan el 2 y el 3, no en el último momento.",
+            "La mano no da tirones: el codo acompaña.",
+          ],
+          fr: [
+            "En montant, le pouce passe sous le 3 pour jouer le fa.",
+            "Prépare le pouce pendant que sonnent le 2 et le 3, pas au dernier moment.",
+            "La main ne doit pas sursauter : le coude accompagne.",
+          ],
+        },
+        partitura: ESCALA_DO_DERECHA,
+      },
+      {
+        id: "escala-do-mi",
+        titulo: { es: "Escala de do mayor, mano izquierda", fr: "Gamme de do majeur, main gauche" },
+        objetivo: {
+          es: "Lo mismo al revés: aquí es el 3 el que cruza por encima del pulgar.",
+          fr: "La même chose à l'envers : ici c'est le 3 qui croise par-dessus le pouce.",
+        },
+        indicaciones: {
+          es: [
+            "Subiendo, después del pulgar en el sol, el 3 cruza por encima para tocar el la.",
+            "Empieza muy lento y sin metrónomo hasta que el cruce no se oiga.",
+          ],
+          fr: [
+            "En montant, après le pouce sur le sol, le 3 croise par-dessus pour jouer le la.",
+            "Commence très lentement et sans métronome jusqu'à ce que le croisement ne s'entende plus.",
+          ],
+        },
+        partitura: ESCALA_DO_IZQUIERDA,
+      },
+      {
+        id: "arpegio-do",
+        titulo: { es: "Arpegio de do mayor, mano derecha", fr: "Arpège de do majeur, main droite" },
+        objetivo: {
+          es: "Abrir la mano más allá de los cinco dedos seguidos.",
+          fr: "Ouvrir la main au-delà des cinq doigts consécutifs.",
+        },
+        indicaciones: {
+          es: [
+            "El salto de sol a do lo hace el 5, no la muñeca.",
+            "Las cuatro notas tienen que sonar igual de fuertes.",
+          ],
+          fr: [
+            "Le saut de sol à do se fait avec le 5, pas avec le poignet.",
+            "Les quatre notes doivent sonner aussi fort les unes que les autres.",
+          ],
+        },
+        partitura: ARPEGIO_DO,
+      },
+      {
+        id: "acordes-tres-sonidos",
+        titulo: { es: "Acordes de tres sonidos", fr: "Accords de trois sons" },
+        objetivo: {
+          es: "Tocar tres notas a la vez y que suenen juntas y con el mismo peso.",
+          fr: "Jouer trois notes à la fois et qu'elles sonnent ensemble et avec le même poids.",
+        },
+        indicaciones: {
+          es: [
+            "Deja caer el brazo: el acorde no se aprieta con los dedos.",
+            "Escucha si alguna de las tres notas se adelanta o suena más floja.",
+            "Do, fa, sol y otra vez do: son los tres acordes que sostienen casi todo.",
+          ],
+          fr: [
+            "Laisse tomber le bras : l'accord ne se serre pas avec les doigts.",
+            "Écoute si l'une des trois notes est en avance ou sonne plus faible.",
+            "Do, fa, sol et de nouveau do : ce sont les trois accords qui soutiennent presque tout.",
+          ],
+        },
+        partitura: ACORDES_TRES_SONIDOS,
+      },
+      {
+        id: "beyer-101-b",
+        titulo: { es: "Beyer op. 101, nº 9-30", fr: "Beyer op. 101, nº 9-30" },
+        objetivo: {
+          es: "Manos juntas de verdad, ya fuera de la posición fija.",
+          fr: "Mains ensemble pour de bon, déjà hors de la position fixe.",
+        },
+        indicaciones: {
+          es: ["Van subiendo de dificultad muy poco a poco: haz uno por semana."],
+          fr: ["Ils montent en difficulté très progressivement : un par semaine."],
+        },
+        partitura: {
+          tipo: "enlace",
+          fuente: "IMSLP",
+          url: "https://imslp.org/wiki/Vorschule_im_Klavierspiel,_Op.101_(Beyer,_Ferdinand)",
+        },
+      },
+      {
+        id: "czerny-599-b",
+        titulo: { es: "Czerny op. 599, nº 6-20", fr: "Czerny op. 599, nº 6-20" },
+        objetivo: {
+          es: "Estudios de agilidad con la escala ya aprendida.",
+          fr: "Études d'agilité avec la gamme déjà apprise.",
+        },
+        indicaciones: {
+          es: ["No pases al siguiente hasta que el anterior salga sin pensar en los dedos."],
+          fr: ["Ne passe au suivant que lorsque le précédent sort sans penser aux doigts."],
+        },
+        partitura: {
+          tipo: "enlace",
+          fuente: "IMSLP",
+          url: "https://imslp.org/wiki/Practical_Method_for_Beginners,_Op.599_(Czerny,_Carl)",
+        },
+      },
+    ],
+    referencias: [
+      {
+        metodo: "Hervé y Pouillard, Méthode de piano débutants",
+        donde: { es: "Capítulo II, págs. 16-22", fr: "Chapitre II, p. 16-22" },
+        detalle: { es: "juego legato y manos juntas, polifonía en do y en sol", fr: "jeu legato et mains ensemble, polyphonie en do et en sol" },
+      },
+      {
+        metodo: "Hervé y Pouillard, Méthode de piano débutants",
+        donde: { es: "Capítulo III, págs. 26-32", fr: "Chapitre III, p. 26-32" },
+        detalle: { es: "independencia de manos, acordes, alteraciones y cruce de manos", fr: "indépendance des mains, accords, altérations et croisement de mains" },
+      },
+      {
+        metodo: "Hervé y Pouillard, Méthode de piano débutants",
+        donde: { es: "Capítulo IV, págs. 34-38", fr: "Chapitre IV, p. 34-38" },
+        detalle: { es: "paso del pulgar, escala de do mayor y acordes de tres sonidos", fr: "passage du pouce, gamme de do majeur et accords de trois sons" },
+      },
+    ],
   },
   {
     id: "intermedio1",

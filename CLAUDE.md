@@ -70,6 +70,8 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   Burgmüller, Duvernoy, Le Couppey...). Los métodos con derechos —Pouillard,
   Faber, Alfred, Hal Leonard, Chornet, los de la carpeta «Programme Piano»—
   se citan indicando dónde mirarlos, nunca reproduciendo la página.
+- Al citar un método, la página es **la impresa en el papel**, no la del PDF:
+  en el Pouillard hay seis de diferencia y ya provocó una referencia mal puesta.
 - Por eso cada partitura es de uno de estos tres tipos:
   `dibujada` (fórmulas técnicas, hechas con VexFlow), `enlace` (obra en
   dominio público, a IMSLP) o `referencia` (método con derechos: método,
