@@ -321,10 +321,20 @@ const synthFallo = new Tone.Synth({
 let audioListo = false;
 
 async function asegurarAudio() {
-  if (!audioListo) {
-    await Tone.start();
-    audioListo = true;
+  if (audioListo) return;
+
+  // El sonido es un extra. Si el navegador no deja arrancarlo, o tarda, la
+  // partida tiene que seguir igualmente: nunca nos quedamos esperando.
+  try {
+    await Promise.race([
+      Tone.start(),
+      new Promise((listo) => setTimeout(listo, 1000)),
+    ]);
+  } catch (error) {
+    console.warn("No se ha podido arrancar el audio:", error);
   }
+
+  audioListo = true;
 }
 
 function vibrar(duracionMs) {
@@ -605,17 +615,45 @@ async function manejarRespuesta(idNota, boton) {
   }
 }
 
+// Cada sintetizador es monofonico: si se le piden dos notas en el mismo
+// instante, Tone.js lanza una excepcion. Guardamos el ultimo instante usado
+// por cada uno para programar siempre estrictamente despues.
+const SEPARACION_MINIMA = 0.02;
+const ultimoInstante = new Map();
+
+function instanteLibre(sintetizador) {
+  const instante = Math.max(Tone.now(), (ultimoInstante.get(sintetizador) ?? 0) + SEPARACION_MINIMA);
+  ultimoInstante.set(sintetizador, instante);
+  return instante;
+}
+
+// Red de seguridad: un problema de sonido no puede cortar la partida. Sin
+// esto, una excepcion aqui dejaba el ejercicio congelado en la nota actual,
+// porque se saltaba el feedback y la orden de pasar a la siguiente.
+function reproducir(sonido) {
+  try {
+    sonido();
+  } catch (error) {
+    console.warn("No se ha podido reproducir el sonido:", error);
+  }
+}
+
 function sonarNota(vexKey) {
   // vexKey tiene forma "c/4" -> Tone.js espera "C4"
   const [letra, octava] = vexKey.split("/");
-  synth.triggerAttackRelease(`${letra.toUpperCase()}${octava}`, "8n");
+  reproducir(() => {
+    synth.triggerAttackRelease(`${letra.toUpperCase()}${octava}`, "8n", instanteLibre(synth));
+  });
 }
 
 function sonarFallo() {
   // Sonido corto y descendente, amistoso, no de castigo.
-  const ahora = Tone.now();
-  synthFallo.triggerAttackRelease("E3", "16n", ahora);
-  synthFallo.triggerAttackRelease("C3", "16n", ahora + 0.09);
+  reproducir(() => {
+    const inicio = instanteLibre(synthFallo);
+    synthFallo.triggerAttackRelease("E3", "16n", inicio);
+    synthFallo.triggerAttackRelease("C3", "16n", inicio + 0.09);
+    ultimoInstante.set(synthFallo, inicio + 0.09);
+  });
 }
 
 function mostrarIcono(simbolo, tipo) {
