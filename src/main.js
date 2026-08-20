@@ -36,17 +36,6 @@ const LINEA_INFERIOR = { treble: "e/4", bass: "g/2" };
 // cualquier nivel: no hay nada que desbloquear.
 const CLAVES = [
   {
-    id: "sol",
-    clef: "treble",
-    niveles: [
-      { id: "inicial1", desde: "c/4", hasta: "g/4" },
-      { id: "inicial2", desde: "g/4", hasta: "c/5" },
-      { id: "intermedio", desde: "c/5", hasta: "g/5" },
-      { id: "avanzado1", desde: "g/5", hasta: "e/6" },
-      { id: "avanzado2", desde: "g/3", hasta: "c/4" },
-    ],
-  },
-  {
     id: "fa",
     clef: "bass",
     niveles: [
@@ -55,6 +44,17 @@ const CLAVES = [
       { id: "intermedio", desde: "f/2", hasta: "c/3" },
       { id: "avanzado1", desde: "c/4", hasta: "g/4" },
       { id: "avanzado2", desde: "c/2", hasta: "f/2" },
+    ],
+  },
+  {
+    id: "sol",
+    clef: "treble",
+    niveles: [
+      { id: "inicial1", desde: "c/4", hasta: "g/4" },
+      { id: "inicial2", desde: "g/4", hasta: "c/5" },
+      { id: "intermedio", desde: "c/5", hasta: "g/5" },
+      { id: "avanzado1", desde: "g/5", hasta: "e/6" },
+      { id: "avanzado2", desde: "g/3", hasta: "c/4" },
     ],
   },
 ];
@@ -82,13 +82,13 @@ const TRADUCCIONES = {
       "Reconocer de un vistazo el nombre de cada nota escrita, sin contar líneas. Es la base para leer una partitura con soltura.",
     consisteTitulo: "En qué consiste",
     consisteTexto:
-      "Aparece una nota en el pentagrama y eliges su nombre entre los siete botones. Si aciertas, la escuchas sonar y viene la siguiente. Si fallas, la nota se queda ahí hasta que la encuentres.",
+      "Ves una nota en el pentagrama y pulsas su nombre. Si aciertas, la oyes sonar y llega la siguiente. Si fallas, se queda hasta que la encuentres.",
     sesionTitulo: "Cómo es una sesión",
     sesionLista: [
       "10 segundos para memorizar las notas del nivel",
       "2 series de 3 ejercicios, 10 notas cada uno",
-      "La serie 2 es más difícil: saltos más grandes y los botones cambian de orden",
-      "Al final, una tabla con los 6 ejercicios",
+      "La serie 2 sube el listón: saltos mayores y botones desordenados",
+      "Al final, una tabla con el resultado de los 6",
     ],
     medidasTitulo: "Qué puedes mejorar",
     medidasLista: ["Precisión", "Tiempo", "Racha", "Estrellas"],
@@ -158,13 +158,13 @@ const TRADUCCIONES = {
       "Reconnaître d'un coup d'œil le nom de chaque note écrite, sans compter les lignes. C'est la base pour lire une partition avec aisance.",
     consisteTitulo: "En quoi ça consiste",
     consisteTexto:
-      "Une note apparaît sur la portée et tu choisis son nom parmi les sept boutons. Si tu as raison, tu l'entends sonner et la suivante arrive. Si tu te trompes, la note reste là jusqu'à ce que tu la trouves.",
+      "Tu vois une note sur la portée et tu appuies sur son nom. Si tu as raison, tu l'entends sonner et la suivante arrive. Sinon, elle reste jusqu'à ce que tu la trouves.",
     sesionTitulo: "Comment se passe une session",
     sesionLista: [
       "10 secondes pour mémoriser les notes du niveau",
       "2 séries de 3 exercices, 10 notes chacun",
-      "La série 2 est plus difficile : sauts plus grands et boutons dans un autre ordre",
-      "À la fin, un tableau avec les 6 exercices",
+      "La série 2 monte d'un cran : sauts plus grands et boutons mélangés",
+      "À la fin, un tableau avec le résultat des 6",
     ],
     medidasTitulo: "Ce que tu peux améliorer",
     medidasLista: ["Précision", "Temps", "Enchaînement", "Étoiles"],
