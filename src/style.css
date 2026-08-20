@@ -11,6 +11,8 @@
   --color-primario-sombra: #d96a1f;
   --color-estrella: #ffb703;
   --color-estrella-vacia: #e6d9c6;
+  --color-texto-cuerpo: #5a5148;
+  --color-texto-tenue: #8a7f72;
   --radio: 16px;
 }
 
@@ -25,7 +27,7 @@ html, body {
 }
 
 body {
-  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: Nunito, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: var(--color-fondo);
   color: var(--color-texto);
 }
@@ -82,126 +84,176 @@ body {
   color: #8a7f72;
 }
 
-/* --- Portada de la primera pantalla ------------------------------------- */
+/* --- Portada de la primera pantalla -------------------------------------
+
+   La pagina tiene un solo elemento fuerte: las dos claves, en grande y con
+   aspecto de tecla que se hunde. Todo lo demas se mantiene callado.        */
 
 #portada-titulo {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
   text-align: center;
-  line-height: 1.15;
 }
 
 #portada-objetivo {
   margin: 0;
-  max-width: 480px;
+  max-width: 460px;
   text-align: center;
-  color: #5a5148;
+  color: var(--color-texto-tenue);
+  font-size: 1.05rem;
   line-height: 1.45;
 }
 
+/* Una sola tarjeta con las dos columnas y, abajo, la tira de mejoras. */
 #portada-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 22px 28px;
   width: 100%;
-}
-
-/* Las dos tarjetas van en fila cuando cabe y apiladas en movil. */
-.info-bloque {
-  flex: 1 1 250px;
   background: var(--color-tarjeta);
   border-radius: var(--radio);
-  padding: 16px 18px;
+  padding: 22px 24px;
   box-shadow: 0 4px 0 var(--color-boton-sombra);
 }
 
-.info-bloque h3 {
-  margin: 0 0 8px;
-  font-size: 1rem;
+.info-col h2 {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-texto);
+  text-align: left;
 }
 
-.info-bloque p {
+.info-col p {
   margin: 0;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.5;
 }
 
-.info-bloque ul {
+/* Los pasos van numerados porque son una secuencia real, no una lista suelta. */
+#portada-sesion-lista {
+  counter-reset: paso;
+  list-style: none;
   margin: 0;
-  padding-left: 18px;
+  padding: 0;
 }
 
-.info-bloque li + li {
-  margin-top: 6px;
-}
-
-.info-bloque p,
-.info-bloque li {
-  color: #5a5148;
-  font-size: 0.9rem;
+#portada-sesion-lista li {
+  counter-increment: paso;
+  position: relative;
+  padding-left: 32px;
+  color: var(--color-texto-cuerpo);
   line-height: 1.4;
 }
 
-#portada-medidas {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+#portada-sesion-lista li + li {
+  margin-top: 10px;
 }
 
-#portada-medidas h3 {
-  margin: 0;
-  font-size: 1rem;
+#portada-sesion-lista li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-primario);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#portada-medidas {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 18px;
+  border-top: 2px solid var(--color-boton-borde);
+}
+
+#portada-medidas-titulo {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--color-texto);
+  margin-right: 4px;
 }
 
 #portada-medidas-lista {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 8px;
 }
 
 .medida-chip {
-  padding: 6px 14px;
+  padding: 5px 13px;
   border-radius: 999px;
-  background: var(--color-tarjeta);
-  box-shadow: 0 2px 0 var(--color-boton-sombra);
+  background: var(--color-fondo);
   font-size: 0.85rem;
-  color: #8a7f72;
+  font-weight: 600;
+  color: var(--color-texto-tenue);
 }
 
-/* En pantallas de movil la portada se queda justa de alto: se aprieta un poco
-   para que los botones de clave se vean sin tener que bajar. */
 @media (max-width: 600px) {
   #menu-clave {
-    gap: 15px;
+    gap: 16px;
   }
 
   #portada-titulo {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
   }
 
   #portada-objetivo {
-    font-size: 0.95rem;
-    line-height: 1.4;
+    font-size: 0.98rem;
   }
 
   #portada-info {
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 18px 18px;
   }
 
-  .info-bloque {
-    padding: 13px 16px;
+  #portada-info p,
+  #portada-sesion-lista li {
+    font-size: 0.92rem;
   }
 
-  .info-bloque p,
-  .info-bloque li {
-    font-size: 0.87rem;
-    line-height: 1.35;
+  #portada-medidas {
+    padding-top: 14px;
   }
 
-  .info-bloque li + li {
-    margin-top: 5px;
+  /* En movil no cabe todo de una vez, asi que la eleccion de clave sube por
+     delante del bloque explicativo: es lo que el alumno viene a hacer. */
+  #menu-clave > h2 {
+    order: 1;
+  }
+
+  #menu-clave-opciones {
+    order: 2;
+  }
+
+  #portada-info {
+    order: 3;
+  }
+
+  .boton-clave {
+    min-height: 168px;
+  }
+
+  .miniatura-clave {
+    width: 104px;
+    margin-bottom: 12px;
   }
 }
+
 
 /* --- Menu: primero la clave, despues el nivel --------------------------- */
 
@@ -214,8 +266,8 @@ body {
   width: 100%;
 }
 
-#menu-clave h2,
-#menu-nivel h2 {
+#menu-clave > h2,
+#menu-nivel > h2 {
   margin: 0;
   font-size: 1.25rem;
   text-align: center;
@@ -264,13 +316,25 @@ body {
 }
 
 .boton-clave {
-  min-height: 150px;
+  min-height: 200px;
+  gap: 2px;
+  /* Borde inferior naranja: es la accion principal de la pagina. */
+  box-shadow:
+    0 5px 0 var(--color-primario),
+    inset 0 0 0 2px var(--color-boton-borde);
+}
+
+.boton-clave:active {
+  transform: translateY(5px);
+  box-shadow:
+    0 0 0 var(--color-primario),
+    inset 0 0 0 2px var(--color-boton-borde);
 }
 
 .miniatura-clave {
   display: block;
-  width: 46px;
-  margin-bottom: 6px;
+  width: 132px;
+  margin-bottom: 16px;
 }
 
 .menu-nombre {

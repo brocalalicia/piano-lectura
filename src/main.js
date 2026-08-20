@@ -96,6 +96,7 @@ const TRADUCCIONES = {
     menuNivelTitulo: "Elige un nivel",
     atras: "Atrás",
     claves: { sol: "Clave de sol", fa: "Clave de fa" },
+    cuentaNiveles: (n) => `${n} niveles`,
     niveles: {
       inicial1: "Inicial 1",
       inicial2: "Inicial 2",
@@ -171,6 +172,7 @@ const TRADUCCIONES = {
     menuNivelTitulo: "Choisis un niveau",
     atras: "Retour",
     claves: { sol: "Clé de sol", fa: "Clé de fa" },
+    cuentaNiveles: (n) => `${n} niveaux`,
     niveles: {
       inicial1: "Débutant 1",
       inicial2: "Débutant 2",
@@ -484,7 +486,7 @@ function dibujarMiniaturaClave(contenedor, clef) {
   renderer.resize(200, 200);
   const contexto = renderer.getContext();
 
-  const pentagrama = new Stave(0, 40, 70);
+  const pentagrama = new Stave(0, 40, 90);
   pentagrama.addClef(clef);
   pentagrama.setContext(contexto).draw();
 
@@ -764,6 +766,11 @@ function renderizarMenuClave() {
     nombre.className = "menu-nombre";
     nombre.textContent = t().claves[clave.id];
     boton.appendChild(nombre);
+
+    const cuenta = document.createElement("span");
+    cuenta.className = "menu-rango";
+    cuenta.textContent = t().cuentaNiveles(clave.niveles.length);
+    boton.appendChild(cuenta);
 
     boton.addEventListener("click", () => {
       vibrar(15);

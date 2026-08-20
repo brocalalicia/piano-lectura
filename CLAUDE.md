@@ -45,6 +45,8 @@ No soy programador.
 Estilo: juego de tablet cálido y amable, no aplicación de escritorio.
 Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 
+- Tipografía Nunito (Google Fonts), redondeada, a juego con los botones con
+  relieve. Si no carga, cae en la del sistema y todo sigue funcionando.
 - Fondo cálido (crema / melocotón suave). El pentagrama va sobre una tarjeta
   blanca redondeada que destaca como una "isla".
 - Pentagrama siempre negro sobre blanco, y en posición fija entre preguntas.
