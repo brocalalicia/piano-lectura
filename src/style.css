@@ -241,6 +241,198 @@ body {
 }
 
 
+/* --- Programa de practica ----------------------------------------------- */
+
+#menu-programa,
+#practica-nivel,
+#practica-lista,
+#practica-ejercicio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+}
+
+#programa-titulo {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+#programa-subtitulo {
+  margin: 0;
+  color: var(--color-texto-tenue);
+  text-align: center;
+}
+
+.boton-programa {
+  min-height: 130px;
+}
+
+#practica-lista-objetivo {
+  margin: 0;
+  max-width: 480px;
+  text-align: center;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.45;
+}
+
+#practica-lista-ejercicios {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Cada ejercicio de la lista: numero de orden, nombre y para que sirve. */
+.ejercicio-fila {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: var(--radio);
+  background: var(--color-tarjeta);
+  box-shadow:
+    0 4px 0 var(--color-boton-sombra),
+    inset 0 0 0 2px var(--color-boton-borde);
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+
+.ejercicio-fila:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 0 0 var(--color-boton-sombra),
+    inset 0 0 0 2px var(--color-boton-borde);
+}
+
+.ejercicio-numero {
+  flex: 0 0 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-primario);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ejercicio-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ejercicio-nombre {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-texto);
+}
+
+.ejercicio-objetivo {
+  font-size: 0.88rem;
+  color: var(--color-texto-tenue);
+  line-height: 1.35;
+}
+
+/* Los metodos con derechos no se copian: se dice donde mirarlos. */
+#practica-referencias {
+  width: 100%;
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  padding: 16px 20px;
+  box-shadow: 0 4px 0 var(--color-boton-sombra);
+}
+
+#practica-referencias h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+#practica-referencias ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--color-texto-cuerpo);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+#ejercicio-titulo {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+#ejercicio-objetivo {
+  margin: 0;
+  max-width: 480px;
+  text-align: center;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.45;
+}
+
+#ejercicio-partitura {
+  width: 100%;
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  padding: 12px;
+  box-shadow: 0 6px 0 var(--color-boton-sombra);
+}
+
+#ejercicio-partitura:empty {
+  display: none;
+}
+
+#ejercicio-fuente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ejercicio-aviso {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-texto-tenue);
+  text-align: center;
+}
+
+#ejercicio-indicaciones {
+  width: 100%;
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  padding: 16px 20px;
+  box-shadow: 0 4px 0 var(--color-boton-sombra);
+}
+
+#ejercicio-indicaciones h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+#ejercicio-indicaciones ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.45;
+}
+
+#ejercicio-indicaciones li + li {
+  margin-top: 6px;
+}
+
 /* --- Menu: primero la clave, despues el nivel --------------------------- */
 
 #menu-clave,
@@ -579,10 +771,18 @@ body[data-estado="terminado"] #resultado {
   margin-bottom: auto;
 }
 
-/* El menu de niveles arranca arriba: centrado en vertical dejaba los botones
+/* Estas pantallas arrancan arriba: centradas en vertical dejaban los botones
    demasiado abajo en pantallas altas. */
-body[data-estado="menu-nivel"] #menu-nivel {
+body[data-estado="menu-nivel"] #menu-nivel,
+body[data-estado="practica-nivel"] #practica-nivel,
+body[data-estado="practica-lista"] #practica-lista,
+body[data-estado="practica-ejercicio"] #practica-ejercicio {
   margin-top: 12px;
+}
+
+body[data-estado="menu-programa"] #menu-programa {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .boton-control {

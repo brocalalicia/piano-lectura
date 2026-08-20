@@ -1,4 +1,5 @@
-import { Renderer, Stave, StaveNote, Formatter, Annotation } from "vexflow";
+import { Renderer, Stave, StaveNote, Formatter, Annotation, BarNote, StaveConnector } from "vexflow";
+import { NIVELES_PRACTICA } from "./programa.js";
 import * as Tone from "tone";
 import "./style.css";
 
@@ -76,7 +77,20 @@ const IDIOMA_GUARDADO_KEY = "piano-lectura-idioma";
 
 const TRADUCCIONES = {
   es: {
-    tituloPagina: "Lectura musical",
+    tituloPagina: "Clase de piano",
+    programaTitulo: "Clase de piano",
+    programaSubtitulo: "Elige en qué quieres trabajar hoy.",
+    programas: {
+      lectura: { nombre: "Lectura", descripcion: "Leer notas en el pentagrama" },
+      practica: { nombre: "Práctica", descripcion: "Ejercicios técnicos con partitura" },
+    },
+    practicaNivelTitulo: "Elige un nivel",
+    practicaEnPreparacion: "En preparación",
+    practicaCuentaEjercicios: (n) => (n === 1 ? "1 ejercicio" : `${n} ejercicios`),
+    practicaReferenciasTitulo: "En tus métodos",
+    verPartitura: "Ver la partitura en IMSLP",
+    partituraFuera: "La partitura se abre en IMSLP, en otra pestaña.",
+    comoTrabajarlo: "Cómo trabajarlo",
     portadaTitulo: "Ejercicios de lectura",
     portadaObjetivo:
       "Reconocer de un vistazo el nombre de cada nota escrita, sin contar líneas. Es la base para leer una partitura con soltura.",
@@ -152,7 +166,20 @@ const TRADUCCIONES = {
     total: "Total",
   },
   fr: {
-    tituloPagina: "Lecture musicale",
+    tituloPagina: "Cours de piano",
+    programaTitulo: "Cours de piano",
+    programaSubtitulo: "Choisis ce que tu veux travailler aujourd'hui.",
+    programas: {
+      lectura: { nombre: "Lecture", descripcion: "Lire les notes sur la portée" },
+      practica: { nombre: "Pratique", descripcion: "Exercices techniques avec partition" },
+    },
+    practicaNivelTitulo: "Choisis un niveau",
+    practicaEnPreparacion: "En préparation",
+    practicaCuentaEjercicios: (n) => (n === 1 ? "1 exercice" : `${n} exercices`),
+    practicaReferenciasTitulo: "Dans tes méthodes",
+    verPartitura: "Voir la partition sur IMSLP",
+    partituraFuera: "La partition s'ouvre sur IMSLP, dans un autre onglet.",
+    comoTrabajarlo: "Comment le travailler",
     portadaTitulo: "Exercices de lecture",
     portadaObjetivo:
       "Reconnaître d'un coup d'œil le nom de chaque note écrite, sans compter les lignes. C'est la base pour lire une partition avec aisance.",
@@ -248,6 +275,26 @@ const indicadorEjercicioEl = document.getElementById("indicador-ejercicio");
 const marcadorEl = document.getElementById("marcador");
 const indicadorNivelEl = document.getElementById("indicador-nivel");
 const menuClaveEl = document.getElementById("menu-clave");
+const menuProgramaEl = document.getElementById("menu-programa");
+const programaTituloEl = document.getElementById("programa-titulo");
+const programaSubtituloEl = document.getElementById("programa-subtitulo");
+const menuProgramaOpcionesEl = document.getElementById("menu-programa-opciones");
+const practicaNivelEl = document.getElementById("practica-nivel");
+const practicaNivelTituloEl = document.getElementById("practica-nivel-titulo");
+const practicaNivelOpcionesEl = document.getElementById("practica-nivel-opciones");
+const practicaListaEl = document.getElementById("practica-lista");
+const practicaListaTituloEl = document.getElementById("practica-lista-titulo");
+const practicaListaObjetivoEl = document.getElementById("practica-lista-objetivo");
+const practicaListaEjerciciosEl = document.getElementById("practica-lista-ejercicios");
+const practicaReferenciasEl = document.getElementById("practica-referencias");
+const practicaReferenciasTituloEl = document.getElementById("practica-referencias-titulo");
+const practicaReferenciasListaEl = document.getElementById("practica-referencias-lista");
+const practicaEjercicioEl = document.getElementById("practica-ejercicio");
+const ejercicioTituloEl = document.getElementById("ejercicio-titulo");
+const ejercicioObjetivoEl = document.getElementById("ejercicio-objetivo");
+const ejercicioPartituraEl = document.getElementById("ejercicio-partitura");
+const ejercicioFuenteEl = document.getElementById("ejercicio-fuente");
+const ejercicioIndicacionesEl = document.getElementById("ejercicio-indicaciones");
 const portadaTituloEl = document.getElementById("portada-titulo");
 const portadaObjetivoEl = document.getElementById("portada-objetivo");
 const consisteTituloEl = document.getElementById("portada-consiste-titulo");
@@ -284,9 +331,15 @@ const feedbackIconoEl = document.getElementById("feedback-icono");
 const DURACION_FEEDBACK = 500;
 const SEGUNDOS_MEMORIZACION = 10;
 
-// estados posibles: "menu-clave", "menu-nivel", "inicio", "memorizando",
-// "jugando", "pausado", "terminado"
-let estado = "menu-clave";
+// estados posibles:
+//   "menu-programa"                      raiz: lectura o practica
+//   "menu-clave", "menu-nivel", "inicio", "memorizando", "jugando",
+//   "pausado", "terminado"               programa de lectura
+//   "practica-nivel", "practica-lista", "practica-ejercicio"
+let estado = "menu-programa";
+
+let nivelPractica = null;
+let ejercicioPractica = null;
 let cuentaAtrasIntervalId = null;
 
 let aciertos = 0;
@@ -846,6 +899,264 @@ function renderizarMenuNivel() {
   });
 }
 
+// --- Programa de practica ------------------------------------------------
+
+// Los textos del catalogo vienen en los dos idiomas.
+function txt(valor) {
+  return valor && typeof valor === "object" && !Array.isArray(valor) ? valor[idioma] : valor;
+}
+
+const SEPARACION_SISTEMAS = 95;
+
+function dibujarPartituraEjercicio(contenedor, partitura) {
+  contenedor.innerHTML = "";
+
+  const cuentaNotas = partitura.sistemas[0].notas.filter((nota) => !nota.barra).length;
+  const ancho = 70 + cuentaNotas * 42;
+
+  const renderer = new Renderer(contenedor, Renderer.Backends.SVG);
+  renderer.resize(ancho + 40, 140 + partitura.sistemas.length * SEPARACION_SISTEMAS);
+  const contexto = renderer.getContext();
+
+  const pentagramas = partitura.sistemas.map((sistema, indice) => {
+    const pentagrama = new Stave(0, 40 + indice * SEPARACION_SISTEMAS, ancho);
+    pentagrama.addClef(sistema.clef);
+    if (partitura.compas) pentagrama.addTimeSignature(partitura.compas);
+    pentagrama.setContext(contexto).draw();
+    return pentagrama;
+  });
+
+  // Manos juntas: llave y linea que unen los dos pentagramas.
+  if (pentagramas.length > 1) {
+    const primero = pentagramas[0];
+    const ultimo = pentagramas[pentagramas.length - 1];
+    new StaveConnector(primero, ultimo).setType(StaveConnector.type.BRACE).setContext(contexto).draw();
+    new StaveConnector(primero, ultimo).setType(StaveConnector.type.SINGLE_LEFT).setContext(contexto).draw();
+  }
+
+  partitura.sistemas.forEach((sistema, indice) => {
+    const notas = sistema.notas.map((nota) => {
+      if (nota.barra) return new BarNote();
+
+      const staveNote = new StaveNote({ keys: [nota.n], duration: nota.f || "q", clef: sistema.clef });
+      if (nota.d) {
+        // La digitacion va encima en la mano derecha y debajo en la izquierda.
+        const dedo = new Annotation(nota.d);
+        dedo.setVerticalJustification(
+          sistema.clef === "bass" ? Annotation.VerticalJustify.BOTTOM : Annotation.VerticalJustify.TOP
+        );
+        dedo.setFont("Nunito, sans-serif", 13, "bold");
+        dedo.setStyle({ fillStyle: "#3a322c", strokeStyle: "#3a322c" });
+        staveNote.addModifier(dedo, 0);
+      }
+      return staveNote;
+    });
+
+    Formatter.FormatAndDraw(contexto, pentagramas[indice], notas);
+  });
+
+  const svg = contenedor.querySelector("svg");
+  if (!svg) return;
+
+  const arriba = pentagramas[0].getYForLine(0) - 42;
+  const abajo = pentagramas[pentagramas.length - 1].getYForLine(4) + 42;
+  svg.setAttribute("viewBox", `-6 ${arriba} ${ancho + 12} ${abajo - arriba}`);
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  svg.removeAttribute("width");
+  svg.removeAttribute("height");
+  svg.style.width = "100%";
+  svg.style.height = "auto";
+}
+
+function renderizarMenuPrograma() {
+  programaTituloEl.textContent = t().programaTitulo;
+  programaSubtituloEl.textContent = t().programaSubtitulo;
+  menuProgramaOpcionesEl.innerHTML = "";
+
+  const opciones = [
+    { id: "lectura", alPulsar: volverAlMenuClave },
+    { id: "practica", alPulsar: irAPracticaNivel },
+  ];
+
+  opciones.forEach((opcion) => {
+    const boton = document.createElement("button");
+    boton.className = "boton-menu boton-programa";
+
+    const nombre = document.createElement("span");
+    nombre.className = "menu-nombre";
+    nombre.textContent = t().programas[opcion.id].nombre;
+    boton.appendChild(nombre);
+
+    const descripcion = document.createElement("span");
+    descripcion.className = "menu-rango";
+    descripcion.textContent = t().programas[opcion.id].descripcion;
+    boton.appendChild(descripcion);
+
+    boton.addEventListener("click", () => {
+      vibrar(15);
+      opcion.alPulsar();
+    });
+
+    menuProgramaOpcionesEl.appendChild(boton);
+  });
+}
+
+function renderizarPracticaNiveles() {
+  practicaNivelTituloEl.textContent = t().practicaNivelTitulo;
+  practicaNivelOpcionesEl.innerHTML = "";
+
+  NIVELES_PRACTICA.forEach((nivel) => {
+    const boton = document.createElement("button");
+    boton.className = "boton-menu boton-nivel";
+    boton.disabled = nivel.ejercicios.length === 0;
+
+    const nombre = document.createElement("span");
+    nombre.className = "menu-nombre";
+    nombre.textContent = txt(nivel.nombre);
+    boton.appendChild(nombre);
+
+    const detalle = document.createElement("span");
+    detalle.className = "menu-rango";
+    detalle.textContent = nivel.ejercicios.length
+      ? t().practicaCuentaEjercicios(nivel.ejercicios.length)
+      : t().practicaEnPreparacion;
+    boton.appendChild(detalle);
+
+    boton.addEventListener("click", () => {
+      vibrar(15);
+      irAPracticaLista(nivel);
+    });
+
+    practicaNivelOpcionesEl.appendChild(boton);
+  });
+}
+
+function renderizarPracticaLista() {
+  if (!nivelPractica) return;
+
+  practicaListaTituloEl.textContent = txt(nivelPractica.nombre);
+  practicaListaObjetivoEl.textContent = txt(nivelPractica.objetivo);
+  practicaListaEjerciciosEl.innerHTML = "";
+
+  nivelPractica.ejercicios.forEach((ejercicio, indice) => {
+    const boton = document.createElement("button");
+    boton.className = "ejercicio-fila";
+
+    const numero = document.createElement("span");
+    numero.className = "ejercicio-numero";
+    numero.textContent = indice + 1;
+    boton.appendChild(numero);
+
+    const texto = document.createElement("span");
+    texto.className = "ejercicio-texto";
+
+    const titulo = document.createElement("span");
+    titulo.className = "ejercicio-nombre";
+    titulo.textContent = txt(ejercicio.titulo);
+    texto.appendChild(titulo);
+
+    const objetivo = document.createElement("span");
+    objetivo.className = "ejercicio-objetivo";
+    objetivo.textContent = txt(ejercicio.objetivo);
+    texto.appendChild(objetivo);
+
+    boton.appendChild(texto);
+
+    boton.addEventListener("click", () => {
+      vibrar(15);
+      irAPracticaEjercicio(ejercicio);
+    });
+
+    practicaListaEjerciciosEl.appendChild(boton);
+  });
+
+  const hayReferencias = nivelPractica.referencias.length > 0;
+  practicaReferenciasEl.classList.toggle("oculto", !hayReferencias);
+  practicaReferenciasTituloEl.textContent = t().practicaReferenciasTitulo;
+  practicaReferenciasListaEl.innerHTML = "";
+
+  nivelPractica.referencias.forEach((referencia) => {
+    const linea = document.createElement("li");
+
+    const metodo = document.createElement("strong");
+    metodo.textContent = referencia.metodo;
+    linea.appendChild(metodo);
+    linea.appendChild(document.createTextNode(` — ${txt(referencia.donde)}: ${txt(referencia.detalle)}`));
+
+    practicaReferenciasListaEl.appendChild(linea);
+  });
+}
+
+function renderizarPracticaEjercicio() {
+  if (!ejercicioPractica) return;
+
+  const partitura = ejercicioPractica.partitura;
+  ejercicioTituloEl.textContent = txt(ejercicioPractica.titulo);
+  ejercicioObjetivoEl.textContent = txt(ejercicioPractica.objetivo);
+
+  ejercicioPartituraEl.innerHTML = "";
+  ejercicioFuenteEl.innerHTML = "";
+
+  if (partitura.tipo === "dibujada") {
+    dibujarPartituraEjercicio(ejercicioPartituraEl, partitura);
+  } else if (partitura.tipo === "enlace") {
+    const enlace = document.createElement("a");
+    enlace.className = "boton-control";
+    enlace.href = partitura.url;
+    enlace.target = "_blank";
+    enlace.rel = "noopener noreferrer";
+    enlace.textContent = t().verPartitura;
+    ejercicioFuenteEl.appendChild(enlace);
+
+    const aviso = document.createElement("p");
+    aviso.className = "ejercicio-aviso";
+    aviso.textContent = t().partituraFuera;
+    ejercicioFuenteEl.appendChild(aviso);
+  }
+
+  ejercicioIndicacionesEl.innerHTML = "";
+  const titulo = document.createElement("h3");
+  titulo.textContent = t().comoTrabajarlo;
+  ejercicioIndicacionesEl.appendChild(titulo);
+
+  const lista = document.createElement("ul");
+  txt(ejercicioPractica.indicaciones).forEach((indicacion) => {
+    const punto = document.createElement("li");
+    punto.textContent = indicacion;
+    lista.appendChild(punto);
+  });
+  ejercicioIndicacionesEl.appendChild(lista);
+}
+
+function irAMenuPrograma() {
+  detenerCuentaAtras();
+  estado = "menu-programa";
+  renderizarMenuPrograma();
+  actualizarUI();
+}
+
+function irAPracticaNivel() {
+  estado = "practica-nivel";
+  renderizarPracticaNiveles();
+  actualizarUI();
+}
+
+function irAPracticaLista(nivel) {
+  nivelPractica = nivel;
+  estado = "practica-lista";
+  renderizarPracticaLista();
+  actualizarUI();
+}
+
+function irAPracticaEjercicio(ejercicio) {
+  ejercicioPractica = ejercicio;
+  estado = "practica-ejercicio";
+  renderizarPracticaEjercicio();
+  actualizarUI();
+}
+
+// --- Programa de lectura -------------------------------------------------
+
 function seleccionarClave(clave) {
   claveActual = clave;
   estado = "menu-nivel";
@@ -876,11 +1187,24 @@ function volverAlMenuNivel() {
 }
 
 // Un unico boton de volver, siempre en el mismo sitio: deshace el ultimo paso
-// que dio el alumno. Desde la eleccion de clave ya no hay nada detras.
+// que dio el alumno. La raiz es la eleccion de programa, que ya no tiene nada
+// detras.
+const PANTALLA_ANTERIOR = {
+  "menu-clave": volverAlMenuClave,
+  "menu-nivel": volverAlMenuClave,
+  "practica-nivel": irAMenuPrograma,
+  "practica-lista": irAPracticaNivel,
+  "practica-ejercicio": () => irAPracticaLista(nivelPractica),
+};
+
 function volverAtras() {
-  if (estado === "menu-nivel") {
-    volverAlMenuClave();
-  } else if (estado !== "menu-clave") {
+  if (estado === "menu-programa") return;
+  if (estado === "menu-clave") {
+    irAMenuPrograma();
+  } else if (PANTALLA_ANTERIOR[estado]) {
+    PANTALLA_ANTERIOR[estado]();
+  } else {
+    // Cualquier pantalla del ejercicio de lectura vuelve a la lista de niveles.
     volverAlMenuNivel();
   }
 }
@@ -1031,16 +1355,21 @@ function finalizarEjercicioActual() {
 function actualizarUI() {
   const enMemorizacion = estado === "memorizando";
   const enProgreso = estado === "memorizando" || estado === "jugando" || estado === "pausado";
-  const enMenu = estado === "menu-clave" || estado === "menu-nivel";
+  const enLectura = enProgreso || estado === "inicio" || estado === "terminado";
+  const enMenu = !enLectura;
 
   // El estado tambien va en el body para que el CSS pueda centrar las
   // pantallas que no tienen la zona de juego (menus, inicio y resumen).
   document.body.dataset.estado = estado;
 
+  menuProgramaEl.classList.toggle("oculto", estado !== "menu-programa");
   menuClaveEl.classList.toggle("oculto", estado !== "menu-clave");
   menuNivelEl.classList.toggle("oculto", estado !== "menu-nivel");
-  indicadorNivelEl.classList.toggle("oculto", enMenu);
-  botonAtras.classList.toggle("oculto", estado === "menu-clave");
+  practicaNivelEl.classList.toggle("oculto", estado !== "practica-nivel");
+  practicaListaEl.classList.toggle("oculto", estado !== "practica-lista");
+  practicaEjercicioEl.classList.toggle("oculto", estado !== "practica-ejercicio");
+  indicadorNivelEl.classList.toggle("oculto", !enLectura);
+  botonAtras.classList.toggle("oculto", estado === "menu-programa");
 
   // El marcador no aporta nada antes de empezar (todo a cero) ni en el
   // resumen (la tarjeta ya da esos datos).
@@ -1091,8 +1420,12 @@ function aplicarIdioma(nuevoIdioma) {
   menuClaveTituloEl.textContent = t().menuClaveTitulo;
   menuNivelTituloEl.textContent = t().menuNivelTitulo;
   renderizarPortada();
+  renderizarMenuPrograma();
   renderizarMenuClave();
   renderizarMenuNivel();
+  renderizarPracticaNiveles();
+  renderizarPracticaLista();
+  if (estado === "practica-ejercicio") renderizarPracticaEjercicio();
   actualizarIndicadorNivel();
 
   actualizarNombresBotonesNota();

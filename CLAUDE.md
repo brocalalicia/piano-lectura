@@ -58,6 +58,23 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - Feedback triple siempre: color + icono + sonido. Nunca solo color (daltonismo).
 - Micro-animaciones rápidas (bajo 200ms). Nada que bloquee al alumno.
 
+## Programa de práctica
+- La app tiene dos programas: **Lectura** (leer notas) y **Práctica**
+  (ejercicios técnicos). Se elige en la primera pantalla.
+- Práctica: nivel → lista de ejercicios → ficha con partitura e indicaciones.
+  Cuatro niveles: Principiante 1 y 2, Intermedio 1 y 2.
+- El catálogo vive en `src/programa.js`, separado del resto para poder editarlo
+  sin tocar la lógica. Cada ejercicio lleva sus textos en español y francés.
+- **Derechos de autor, importante**: la app se publica en internet, así que
+  sólo puede mostrar partituras en dominio público (Czerny, Hanon, Beyer,
+  Burgmüller, Duvernoy, Le Couppey...). Los métodos con derechos —Pouillard,
+  Faber, Alfred, Hal Leonard, Chornet, los de la carpeta «Programme Piano»—
+  se citan indicando dónde mirarlos, nunca reproduciendo la página.
+- Por eso cada partitura es de uno de estos tres tipos:
+  `dibujada` (fórmulas técnicas, hechas con VexFlow), `enlace` (obra en
+  dominio público, a IMSLP) o `referencia` (método con derechos: método,
+  página y ejercicio).
+
 ## Niveles
 - Se entra por un menú: primero la clave (sol o fa) y después el nivel.
   Cualquier alumno puede ir directo al nivel que quiera; no se desbloquea nada.
