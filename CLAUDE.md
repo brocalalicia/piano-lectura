@@ -61,8 +61,9 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 ## Programa de práctica
 - La app tiene dos programas: **Lectura** (leer notas) y **Práctica**
   (ejercicios técnicos). Se elige en la primera pantalla.
-- Práctica: nivel → lista de ejercicios → ficha con partitura e indicaciones.
-  Cuatro niveles: Principiante 1 y 2, Intermedio 1 y 2.
+- Práctica: nivel → curso → lista de ejercicios → ficha. Cuatro niveles
+  (Principiante 1 y 2, Intermedio 1 y 2), **8 cursos cada uno** y entre 4 y 6
+  ejercicios por curso, con dificultad progresiva de un curso al siguiente.
 - El catálogo vive en `src/programa.js`, separado del resto para poder editarlo
   sin tocar la lógica. Cada ejercicio lleva sus textos en español y francés.
 - **Derechos de autor, importante**: la app se publica en internet, así que
@@ -72,10 +73,10 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   se citan indicando dónde mirarlos, nunca reproduciendo la página.
 - Al citar un método, la página es **la impresa en el papel**, no la del PDF:
   en el Pouillard hay seis de diferencia y ya provocó una referencia mal puesta.
-- Por eso cada partitura es de uno de estos tres tipos:
-  `dibujada` (fórmulas técnicas, hechas con VexFlow), `enlace` (obra en
-  dominio público, a IMSLP) o `referencia` (método con derechos: método,
-  página y ejercicio).
+- Cada ejercicio es de uno de estos dos tipos: `dibujada` (fórmula técnica,
+  hecha con VexFlow) o `referencia` (uno de los métodos de la profesora:
+  método y página, sin copiar nada). **No se enlaza a partituras de fuera**:
+  o está dibujada dentro de la app, o remite a un libro que ella ya tiene.
 
 ## Niveles
 - Se entra por un menú: primero la clave (sol o fa) y después el nivel.

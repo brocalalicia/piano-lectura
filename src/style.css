@@ -245,6 +245,7 @@ body {
 
 #menu-programa,
 #practica-nivel,
+#practica-curso,
 #practica-lista,
 #practica-ejercicio {
   display: flex;
@@ -344,27 +345,44 @@ body {
   line-height: 1.35;
 }
 
-/* Los metodos con derechos no se copian: se dice donde mirarlos. */
-#practica-referencias {
+#practica-curso-objetivo {
+  margin: 0;
+  max-width: 480px;
+  text-align: center;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.45;
+}
+
+/* Ficha de un ejercicio que remite a un metodo con derechos: no hay partitura,
+   se dice de que libro es y en que pagina. */
+#ejercicio-referencia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   width: 100%;
   background: var(--color-tarjeta);
   border-radius: var(--radio);
-  padding: 16px 20px;
-  box-shadow: 0 4px 0 var(--color-boton-sombra);
+  padding: 22px 20px;
+  box-shadow: 0 6px 0 var(--color-boton-sombra);
+  text-align: center;
 }
 
-#practica-referencias h3 {
-  margin: 0 0 8px;
-  font-size: 0.95rem;
+.referencia-etiqueta {
+  font-size: 0.8rem;
   font-weight: 800;
+  color: var(--color-texto-tenue);
 }
 
-#practica-referencias ul {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--color-texto-cuerpo);
-  font-size: 0.9rem;
-  line-height: 1.45;
+.referencia-metodo {
+  font-size: 1.05rem;
+  color: var(--color-texto);
+}
+
+.referencia-donde {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-primario);
 }
 
 #ejercicio-titulo {
@@ -775,6 +793,7 @@ body[data-estado="terminado"] #resultado {
    demasiado abajo en pantallas altas. */
 body[data-estado="menu-nivel"] #menu-nivel,
 body[data-estado="practica-nivel"] #practica-nivel,
+body[data-estado="practica-curso"] #practica-curso,
 body[data-estado="practica-lista"] #practica-lista,
 body[data-estado="practica-ejercicio"] #practica-ejercicio {
   margin-top: 12px;

@@ -86,10 +86,9 @@ const TRADUCCIONES = {
     },
     practicaNivelTitulo: "Elige un nivel",
     practicaEnPreparacion: "En preparación",
-    practicaCuentaEjercicios: (n) => (n === 1 ? "1 ejercicio" : `${n} ejercicios`),
-    practicaReferenciasTitulo: "En tus métodos",
-    verPartitura: "Ver la partitura en IMSLP",
-    partituraFuera: "La partitura se abre en IMSLP, en otra pestaña.",
+    practicaCursoTitulo: (n) => `Curso ${n}`,
+    practicaCuentaCursos: (n) => `${n} de 8 cursos preparados`,
+    referenciaEn: "En tu método",
     comoTrabajarlo: "Cómo trabajarlo",
     portadaTitulo: "Ejercicios de lectura",
     portadaObjetivo:
@@ -175,10 +174,9 @@ const TRADUCCIONES = {
     },
     practicaNivelTitulo: "Choisis un niveau",
     practicaEnPreparacion: "En préparation",
-    practicaCuentaEjercicios: (n) => (n === 1 ? "1 exercice" : `${n} exercices`),
-    practicaReferenciasTitulo: "Dans tes méthodes",
-    verPartitura: "Voir la partition sur IMSLP",
-    partituraFuera: "La partition s'ouvre sur IMSLP, dans un autre onglet.",
+    practicaCursoTitulo: (n) => `Cours ${n}`,
+    practicaCuentaCursos: (n) => `${n} cours sur 8 préparés`,
+    referenciaEn: "Dans ta méthode",
     comoTrabajarlo: "Comment le travailler",
     portadaTitulo: "Exercices de lecture",
     portadaObjetivo:
@@ -282,18 +280,19 @@ const menuProgramaOpcionesEl = document.getElementById("menu-programa-opciones")
 const practicaNivelEl = document.getElementById("practica-nivel");
 const practicaNivelTituloEl = document.getElementById("practica-nivel-titulo");
 const practicaNivelOpcionesEl = document.getElementById("practica-nivel-opciones");
+const practicaCursoEl = document.getElementById("practica-curso");
+const practicaCursoTituloEl = document.getElementById("practica-curso-titulo");
+const practicaCursoObjetivoEl = document.getElementById("practica-curso-objetivo");
+const practicaCursoOpcionesEl = document.getElementById("practica-curso-opciones");
 const practicaListaEl = document.getElementById("practica-lista");
 const practicaListaTituloEl = document.getElementById("practica-lista-titulo");
 const practicaListaObjetivoEl = document.getElementById("practica-lista-objetivo");
 const practicaListaEjerciciosEl = document.getElementById("practica-lista-ejercicios");
-const practicaReferenciasEl = document.getElementById("practica-referencias");
-const practicaReferenciasTituloEl = document.getElementById("practica-referencias-titulo");
-const practicaReferenciasListaEl = document.getElementById("practica-referencias-lista");
 const practicaEjercicioEl = document.getElementById("practica-ejercicio");
 const ejercicioTituloEl = document.getElementById("ejercicio-titulo");
 const ejercicioObjetivoEl = document.getElementById("ejercicio-objetivo");
 const ejercicioPartituraEl = document.getElementById("ejercicio-partitura");
-const ejercicioFuenteEl = document.getElementById("ejercicio-fuente");
+const ejercicioReferenciaEl = document.getElementById("ejercicio-referencia");
 const ejercicioIndicacionesEl = document.getElementById("ejercicio-indicaciones");
 const portadaTituloEl = document.getElementById("portada-titulo");
 const portadaObjetivoEl = document.getElementById("portada-objetivo");
@@ -335,10 +334,11 @@ const SEGUNDOS_MEMORIZACION = 10;
 //   "menu-programa"                      raiz: lectura o practica
 //   "menu-clave", "menu-nivel", "inicio", "memorizando", "jugando",
 //   "pausado", "terminado"               programa de lectura
-//   "practica-nivel", "practica-lista", "practica-ejercicio"
+//   "practica-nivel", "practica-curso", "practica-lista", "practica-ejercicio"
 let estado = "menu-programa";
 
 let nivelPractica = null;
+let cursoPractica = null;
 let ejercicioPractica = null;
 let cuentaAtrasIntervalId = null;
 
@@ -1013,37 +1013,69 @@ function renderizarPracticaNiveles() {
   NIVELES_PRACTICA.forEach((nivel) => {
     const boton = document.createElement("button");
     boton.className = "boton-menu boton-nivel";
-    boton.disabled = nivel.ejercicios.length === 0;
 
     const nombre = document.createElement("span");
     nombre.className = "menu-nombre";
     nombre.textContent = txt(nivel.nombre);
     boton.appendChild(nombre);
 
+    const preparados = nivel.cursos.filter((curso) => curso.ejercicios.length > 0).length;
+    boton.disabled = preparados === 0;
+
     const detalle = document.createElement("span");
     detalle.className = "menu-rango";
-    detalle.textContent = nivel.ejercicios.length
-      ? t().practicaCuentaEjercicios(nivel.ejercicios.length)
-      : t().practicaEnPreparacion;
+    detalle.textContent = preparados ? t().practicaCuentaCursos(preparados) : t().practicaEnPreparacion;
     boton.appendChild(detalle);
 
     boton.addEventListener("click", () => {
       vibrar(15);
-      irAPracticaLista(nivel);
+      irAPracticaCurso(nivel);
     });
 
     practicaNivelOpcionesEl.appendChild(boton);
   });
 }
 
-function renderizarPracticaLista() {
+function renderizarPracticaCursos() {
   if (!nivelPractica) return;
 
-  practicaListaTituloEl.textContent = txt(nivelPractica.nombre);
-  practicaListaObjetivoEl.textContent = txt(nivelPractica.objetivo);
+  practicaCursoTituloEl.textContent = txt(nivelPractica.nombre);
+  practicaCursoObjetivoEl.textContent = txt(nivelPractica.objetivo);
+  practicaCursoOpcionesEl.innerHTML = "";
+
+  nivelPractica.cursos.forEach((curso, indice) => {
+    const preparado = curso.ejercicios.length > 0;
+    const boton = document.createElement("button");
+    boton.className = "boton-menu boton-nivel";
+    boton.disabled = !preparado;
+
+    const nombre = document.createElement("span");
+    nombre.className = "menu-nombre";
+    nombre.textContent = t().practicaCursoTitulo(indice + 1);
+    boton.appendChild(nombre);
+
+    const detalle = document.createElement("span");
+    detalle.className = "menu-rango";
+    detalle.textContent = preparado ? txt(curso.titulo) : t().practicaEnPreparacion;
+    boton.appendChild(detalle);
+
+    boton.addEventListener("click", () => {
+      vibrar(15);
+      irAPracticaLista(curso, indice + 1);
+    });
+
+    practicaCursoOpcionesEl.appendChild(boton);
+  });
+}
+
+function renderizarPracticaLista() {
+  if (!cursoPractica) return;
+
+  practicaListaTituloEl.textContent = `${t().practicaCursoTitulo(cursoPractica.numero)} · ${txt(cursoPractica.titulo)}`;
+  practicaListaObjetivoEl.textContent = txt(cursoPractica.objetivo);
   practicaListaEjerciciosEl.innerHTML = "";
 
-  nivelPractica.ejercicios.forEach((ejercicio, indice) => {
+  cursoPractica.ejercicios.forEach((ejercicio, indice) => {
     const boton = document.createElement("button");
     boton.className = "ejercicio-fila";
 
@@ -1075,21 +1107,6 @@ function renderizarPracticaLista() {
     practicaListaEjerciciosEl.appendChild(boton);
   });
 
-  const hayReferencias = nivelPractica.referencias.length > 0;
-  practicaReferenciasEl.classList.toggle("oculto", !hayReferencias);
-  practicaReferenciasTituloEl.textContent = t().practicaReferenciasTitulo;
-  practicaReferenciasListaEl.innerHTML = "";
-
-  nivelPractica.referencias.forEach((referencia) => {
-    const linea = document.createElement("li");
-
-    const metodo = document.createElement("strong");
-    metodo.textContent = referencia.metodo;
-    linea.appendChild(metodo);
-    linea.appendChild(document.createTextNode(` — ${txt(referencia.donde)}: ${txt(referencia.detalle)}`));
-
-    practicaReferenciasListaEl.appendChild(linea);
-  });
 }
 
 function renderizarPracticaEjercicio() {
@@ -1100,23 +1117,27 @@ function renderizarPracticaEjercicio() {
   ejercicioObjetivoEl.textContent = txt(ejercicioPractica.objetivo);
 
   ejercicioPartituraEl.innerHTML = "";
-  ejercicioFuenteEl.innerHTML = "";
+  ejercicioReferenciaEl.innerHTML = "";
+  ejercicioReferenciaEl.classList.toggle("oculto", partitura.tipo !== "referencia");
 
   if (partitura.tipo === "dibujada") {
     dibujarPartituraEjercicio(ejercicioPartituraEl, partitura);
-  } else if (partitura.tipo === "enlace") {
-    const enlace = document.createElement("a");
-    enlace.className = "boton-control";
-    enlace.href = partitura.url;
-    enlace.target = "_blank";
-    enlace.rel = "noopener noreferrer";
-    enlace.textContent = t().verPartitura;
-    ejercicioFuenteEl.appendChild(enlace);
+  } else if (partitura.tipo === "referencia") {
+    // Los metodos con derechos no se copian: se dice donde esta.
+    const etiqueta = document.createElement("span");
+    etiqueta.className = "referencia-etiqueta";
+    etiqueta.textContent = t().referenciaEn;
+    ejercicioReferenciaEl.appendChild(etiqueta);
 
-    const aviso = document.createElement("p");
-    aviso.className = "ejercicio-aviso";
-    aviso.textContent = t().partituraFuera;
-    ejercicioFuenteEl.appendChild(aviso);
+    const metodo = document.createElement("strong");
+    metodo.className = "referencia-metodo";
+    metodo.textContent = partitura.metodo;
+    ejercicioReferenciaEl.appendChild(metodo);
+
+    const donde = document.createElement("span");
+    donde.className = "referencia-donde";
+    donde.textContent = txt(partitura.donde);
+    ejercicioReferenciaEl.appendChild(donde);
   }
 
   ejercicioIndicacionesEl.innerHTML = "";
@@ -1146,8 +1167,15 @@ function irAPracticaNivel() {
   actualizarUI();
 }
 
-function irAPracticaLista(nivel) {
+function irAPracticaCurso(nivel) {
   nivelPractica = nivel;
+  estado = "practica-curso";
+  renderizarPracticaCursos();
+  actualizarUI();
+}
+
+function irAPracticaLista(curso, numero) {
+  cursoPractica = { ...curso, numero: numero ?? cursoPractica?.numero ?? 1 };
   estado = "practica-lista";
   renderizarPracticaLista();
   actualizarUI();
@@ -1198,8 +1226,9 @@ const PANTALLA_ANTERIOR = {
   "menu-clave": volverAlMenuClave,
   "menu-nivel": volverAlMenuClave,
   "practica-nivel": irAMenuPrograma,
-  "practica-lista": irAPracticaNivel,
-  "practica-ejercicio": () => irAPracticaLista(nivelPractica),
+  "practica-curso": irAPracticaNivel,
+  "practica-lista": () => irAPracticaCurso(nivelPractica),
+  "practica-ejercicio": () => irAPracticaLista(cursoPractica),
 };
 
 function volverAtras() {
@@ -1371,6 +1400,7 @@ function actualizarUI() {
   menuClaveEl.classList.toggle("oculto", estado !== "menu-clave");
   menuNivelEl.classList.toggle("oculto", estado !== "menu-nivel");
   practicaNivelEl.classList.toggle("oculto", estado !== "practica-nivel");
+  practicaCursoEl.classList.toggle("oculto", estado !== "practica-curso");
   practicaListaEl.classList.toggle("oculto", estado !== "practica-lista");
   practicaEjercicioEl.classList.toggle("oculto", estado !== "practica-ejercicio");
   indicadorNivelEl.classList.toggle("oculto", !enLectura);
@@ -1429,7 +1459,8 @@ function aplicarIdioma(nuevoIdioma) {
   renderizarMenuClave();
   renderizarMenuNivel();
   renderizarPracticaNiveles();
-  renderizarPracticaLista();
+  if (nivelPractica) renderizarPracticaCursos();
+  if (cursoPractica) renderizarPracticaLista();
   if (estado === "practica-ejercicio") renderizarPracticaEjercicio();
   actualizarIndicadorNivel();
 
