@@ -93,6 +93,9 @@ const TRADUCCIONES = {
     clases: { teoria: "Teoría", dibujada: "Técnica", referencia: "Método", lectura: "Lectura" },
     conceptosTitulo: "Conceptos",
     tecnicaTitulo: "Ejercicios de piano",
+    compasArriba: "cuántos tiempos hay en cada compás",
+    compasAbajo: "qué figura vale un tiempo",
+    compasEquivalencia: "El número de abajo, figura por figura:",
     manos: { izquierda: "Mano izquierda", derecha: "Mano derecha" },
     nombresFiguras: {
       redonda: ["redonda", "redondas"], blanca: ["blanca", "blancas"], negra: ["negra", "negras"],
@@ -201,6 +204,9 @@ const TRADUCCIONES = {
     clases: { teoria: "Théorie", dibujada: "Technique", referencia: "Méthode", lectura: "Lecture" },
     conceptosTitulo: "Notions",
     tecnicaTitulo: "Exercices au piano",
+    compasArriba: "combien de temps par mesure",
+    compasAbajo: "quelle figure vaut un temps",
+    compasEquivalencia: "Le chiffre du bas, figure par figure :",
     manos: { izquierda: "Main gauche", derecha: "Main droite" },
     nombresFiguras: {
       redonda: ["ronde", "rondes"], blanca: ["blanche", "blanches"], negra: ["noire", "noires"],
@@ -1249,46 +1255,118 @@ function ramasYEtiquetasArbol(svg, filas, silencios) {
   piezas.reverse().forEach((pieza) => svg.insertBefore(pieza, svg.firstChild));
 }
 
+// Una figura suelta: cabeza, palo y corchetes. La usan el arbol y el esquema
+// del compas.
+function pintarFigura(svg, cx, cy, figura) {
+  const tinta = "#3a322c";
+  const hueca = figura === "redonda" || figura === "blanca";
+
+  const cabeza = document.createElementNS(SVG_NS, "ellipse");
+  cabeza.setAttribute("cx", cx);
+  cabeza.setAttribute("cy", cy);
+  cabeza.setAttribute("rx", figura === "redonda" ? 9 : 7.5);
+  cabeza.setAttribute("ry", 5.5);
+  cabeza.setAttribute("transform", `rotate(-20 ${cx} ${cy})`);
+  cabeza.setAttribute("fill", hueca ? "none" : tinta);
+  cabeza.setAttribute("stroke", tinta);
+  cabeza.setAttribute("stroke-width", figura === "redonda" ? 3 : 2);
+  svg.appendChild(cabeza);
+
+  if (figura === "redonda") return;
+
+  const palo = document.createElementNS(SVG_NS, "line");
+  palo.setAttribute("x1", cx + 7);
+  palo.setAttribute("y1", cy - 1);
+  palo.setAttribute("x2", cx + 7);
+  palo.setAttribute("y2", cy - 30);
+  palo.setAttribute("stroke", tinta);
+  palo.setAttribute("stroke-width", 2);
+  svg.appendChild(palo);
+
+  const corchetes = { corchea: 1, semicorchea: 2 }[figura] || 0;
+  for (let c = 0; c < corchetes; c += 1) {
+    const corchete = document.createElementNS(SVG_NS, "path");
+    corchete.setAttribute("d", `M${cx + 7} ${cy - 30 + c * 9} q 10 6 9 16 q -2 -8 -9 -10 z`);
+    corchete.setAttribute("fill", tinta);
+    svg.appendChild(corchete);
+  }
+}
+
+// Esquema del compas: que dice el numero de arriba y que dice el de abajo, y
+// la equivalencia del de abajo con cada figura.
+function dibujarCompas(contenedor, cifra) {
+  contenedor.innerHTML = "";
+  const [arriba, abajo] = cifra.split("/");
+  const EQUIVALENCIAS = [["2", "blanca"], ["4", "negra"], ["8", "corchea"]];
+
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", "0 0 700 330");
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  svg.style.width = "100%";
+  svg.style.height = "auto";
+  svg.style.maxWidth = "700px";
+
+  const texto = (x, y, contenido, opciones = {}) => {
+    const t = document.createElementNS(SVG_NS, "text");
+    t.setAttribute("x", x);
+    t.setAttribute("y", y);
+    t.setAttribute("font-family", "Nunito, sans-serif");
+    t.setAttribute("font-size", opciones.tamano || 17);
+    t.setAttribute("font-weight", opciones.peso || 400);
+    t.setAttribute("fill", opciones.color || "#3a322c");
+    if (opciones.centrado) t.setAttribute("text-anchor", "middle");
+    t.textContent = contenido;
+    svg.appendChild(t);
+    return t;
+  };
+
+  const flecha = (x1, y, x2) => {
+    const l = document.createElementNS(SVG_NS, "path");
+    l.setAttribute("d", `M${x1} ${y} L${x2 - 9} ${y} M${x2 - 9} ${y - 5} L${x2} ${y} L${x2 - 9} ${y + 5}`);
+    l.setAttribute("stroke", "var(--color-primario)");
+    l.setAttribute("stroke-width", 2.5);
+    l.setAttribute("fill", "none");
+    svg.appendChild(l);
+  };
+
+  texto(66, 74, arriba, { tamano: 58, peso: 800, centrado: true });
+  texto(66, 138, abajo, { tamano: 58, peso: 800, centrado: true });
+
+  flecha(108, 56, 172);
+  texto(184, 62, t().compasArriba, { peso: 700 });
+  flecha(108, 120, 172);
+  texto(184, 126, t().compasAbajo, { peso: 700 });
+
+  const separador = document.createElementNS(SVG_NS, "line");
+  separador.setAttribute("x1", 40);
+  separador.setAttribute("y1", 176);
+  separador.setAttribute("x2", 660);
+  separador.setAttribute("y2", 176);
+  separador.setAttribute("stroke", "var(--color-boton-borde)");
+  separador.setAttribute("stroke-width", 2);
+  svg.appendChild(separador);
+
+  texto(40, 208, t().compasEquivalencia, { peso: 700 });
+
+  EQUIVALENCIAS.forEach(([numero, figura], i) => {
+    const x = 90 + i * 210;
+    texto(x, 288, numero, { tamano: 40, peso: 800, centrado: true });
+    texto(x + 34, 282, "=", { tamano: 24, color: "var(--color-texto-tenue)" });
+    pintarFigura(svg, x + 82, 278, figura);
+    texto(x + 82, 312, t().nombresFiguras[figura][0], { centrado: true, color: "var(--color-texto-tenue)" });
+  });
+
+  contenedor.appendChild(svg);
+}
+
 function dibujarArbolFiguras(contenedor, figuras) {
   contenedor.innerHTML = "";
   const filas = filasArbol(figuras);
   const svg = svgArbol(filas);
-  const tinta = "#3a322c";
 
   filas.forEach((fila) => {
     for (let i = 0; i < fila.cantidad; i += 1) {
-      const cx = posicionArbol(fila, i);
-      const cy = fila.y;
-      const hueca = fila.figura === "redonda" || fila.figura === "blanca";
-
-      const cabeza = document.createElementNS(SVG_NS, "ellipse");
-      cabeza.setAttribute("cx", cx);
-      cabeza.setAttribute("cy", cy);
-      cabeza.setAttribute("rx", fila.figura === "redonda" ? 9 : 7.5);
-      cabeza.setAttribute("ry", 5.5);
-      cabeza.setAttribute("transform", `rotate(-20 ${cx} ${cy})`);
-      cabeza.setAttribute("fill", hueca ? "none" : tinta);
-      cabeza.setAttribute("stroke", tinta);
-      cabeza.setAttribute("stroke-width", fila.figura === "redonda" ? 3 : 2);
-      svg.appendChild(cabeza);
-
-      if (fila.figura === "redonda") continue;
-
-      const palo = document.createElementNS(SVG_NS, "line");
-      palo.setAttribute("x1", cx + 7); palo.setAttribute("y1", cy - 1);
-      palo.setAttribute("x2", cx + 7); palo.setAttribute("y2", cy - 30);
-      palo.setAttribute("stroke", tinta);
-      palo.setAttribute("stroke-width", 2);
-      svg.appendChild(palo);
-
-      const corchetes = { corchea: 1, semicorchea: 2 }[fila.figura] || 0;
-      for (let c = 0; c < corchetes; c += 1) {
-        const corchete = document.createElementNS(SVG_NS, "path");
-        const alto = cy - 30 + c * 9;
-        corchete.setAttribute("d", `M${cx + 7} ${alto} q 10 6 9 16 q -2 -8 -9 -10 z`);
-        corchete.setAttribute("fill", tinta);
-        svg.appendChild(corchete);
-      }
+      pintarFigura(svg, posicionArbol(fila, i), fila.y, fila.figura);
     }
   });
 
@@ -1690,6 +1768,12 @@ function pintarEjercicio(ejercicio, conTitulo, numero) {
     bloque.appendChild(div);
     return div;
   };
+
+  // El esquema del compas va delante, porque explica lo que luego se ve en el
+  // pentagrama.
+  if (partitura.compasEsquema) {
+    dibujarCompas(caja("ficha-partitura"), partitura.compasEsquema);
+  }
 
   if (partitura.sistemas) {
     dibujarPartituraEjercicio(caja("ficha-partitura"), partitura);

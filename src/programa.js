@@ -744,9 +744,10 @@ const NOTAS_DE_LAS_DOS_CLAVES = {
   ],
 };
 
-// El compas: las mismas notas, agrupadas de cuatro en cuatro.
+// El compas: el esquema de los dos numeros y, debajo, las notas agrupadas.
 const COMPAS_CUATRO = {
   compas: "4/4",
+  compasEsquema: "4/4",
   sistemas: [
     {
       clef: "treble",
@@ -814,6 +815,7 @@ function teoria(id, titulo, texto, indicaciones, ejemplo, conceptos) {
       ...(conceptos ? { conceptos } : {}),
       ...(ejemplo && ejemplo.teclado ? { teclado: ejemplo.teclado } : {}),
       ...(ejemplo && ejemplo.manos ? { manos: true } : {}),
+      ...(ejemplo && ejemplo.compasEsquema ? { compasEsquema: ejemplo.compasEsquema } : {}),
       ...(ejemplo && ejemplo.arbol ? { arbol: ejemplo.arbol } : {}),
       ...(ejemplo && ejemplo.sistemas ? { compas: ejemplo.compas, sistemas: ejemplo.sistemas } : {}),
     },
@@ -957,9 +959,15 @@ const NIVELES = [
         },
         ejercicios: [
           teoria("p1c2-compas", { es: "El compás y la barra de compás", fr: "La mesure et la barre de mesure" },
-            { es: "La barra vertical corta la música en compases iguales, y el 4/4 del principio dice que en cada uno caben cuatro negras. El primer tiempo de cada compás pesa un poco más que los otros: es lo que hace que la música se sienta ordenada.", fr: "La barre de mesure découpe la musique en mesures d'égale durée, et le chiffrage 4/4 indique que chacune contient quatre noires. Le premier temps est légèrement appuyé : c'est lui qui donne à la musique sa sensation de régularité." },
-            { es: ["Cuenta 1-2-3-4 en cada compás mientras tocas.", "Marca el primer tiempo con el pie mientras tocas."], fr: ["Compte 1-2-3-4 dans chaque mesure en jouant.", "Marque le premier temps du pied en jouant."] },
-            COMPAS_CUATRO),
+            { es: "La barra de compás corta la música en compases de la misma duración. Al principio, dos números puestos uno encima de otro dicen cómo son. El de arriba cuenta: cuántos tiempos entran en cada compás. El de abajo nombra: qué figura vale un tiempo, y no es un número cualquiera, dice en cuántas partes se ha dividido la redonda. Un 4 significa negra, porque cuatro negras hacen una redonda; un 2 es la blanca y un 8 la corchea. Así que 4/4 se lee «cuatro negras por compás». El primer tiempo va algo más apoyado: es lo que da sensación de orden.", fr: "La barre de mesure découpe la musique en mesures de même durée. Au début, deux chiffres superposés indiquent comment elles sont faites. Celui du haut compte : combien de temps entrent dans chaque mesure. Celui du bas nomme : quelle figure vaut un temps — et ce n'est pas un chiffre arbitraire, il dit en combien de parts la ronde a été divisée. Un 4 désigne la noire, puisque quatre noires font une ronde ; un 2 désigne la blanche et un 8 la croche. Le 4/4 se lit donc « quatre noires par mesure ». Le premier temps est un peu plus appuyé : c'est lui qui donne la sensation d'ordre." },
+            { es: ["Cuenta 1-2-3-4 en cada compás y marca el primero con el pie.", "Truco: el número de abajo es el mismo que en el árbol de duraciones."], fr: ["Compte 1-2-3-4 dans chaque mesure et marque le premier du pied.", "Astuce : le chiffre du bas est le même que dans l'arbre des durées."] },
+            COMPAS_CUATRO,
+            [
+              concepto({ es: "Compás", fr: "Mesure" }, { es: "Cada trozo de música entre dos barras. Todos duran lo mismo.", fr: "Chaque portion de musique comprise entre deux barres. Toutes ont la même durée." }),
+              concepto({ es: "Barra de compás", fr: "Barre de mesure" }, { es: "La línea vertical que separa un compás del siguiente.", fr: "La ligne verticale qui sépare une mesure de la suivante." }),
+              concepto({ es: "Número de arriba", fr: "Chiffre du haut" }, { es: "Cuántos tiempos hay en cada compás: 2, 3 o 4 en los compases que vas a ver ahora.", fr: "Combien de temps compte chaque mesure : 2, 3 ou 4 dans les mesures que tu verras pour l'instant." }),
+              concepto({ es: "Número de abajo", fr: "Chiffre du bas" }, { es: "Qué figura vale un tiempo: 2 es la blanca, 4 la negra y 8 la corchea. Es la redonda dividida en esas partes.", fr: "Quelle figure vaut un temps : 2 pour la blanche, 4 pour la noire, 8 pour la croche. C'est la ronde divisée en autant de parts." }),
+            ]),
           teoria("p1c2-silencios", { es: "Los silencios", fr: "Les silences" },
             { es: "El silencio dice cuánto rato se calla la música, y se cuenta igual que una nota aunque no suene nada. Cada figura tiene el suyo y dura lo mismo: el de redonda cuatro tiempos, el de blanca dos y el de negra uno.", fr: "Le silence indique combien de temps la musique se tait ; il se compte exactement comme une note, même si rien ne sonne. À chaque figure correspond un silence de même durée : quatre temps pour celui de ronde, deux pour celui de blanche, un pour celui de noire." },
             { es: ["Cuenta el silencio en voz alta, igual que cuentas las notas.", "Las manos se quedan sobre las teclas: el silencio no es soltar."], fr: ["Compte le silence à voix haute, comme tu comptes les notes.", "Les mains restent sur les touches : le silence n'est pas un relâchement."] },
