@@ -76,9 +76,16 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - Un curso es **una clase de una hora**, así que lleva bloques de distinto
   tipo, no sólo técnica. Cada ejercicio es de uno de estos cuatro:
   `dibujada` (fórmula técnica hecha con VexFlow), `teoria` (explicación, con
-  ejemplo dibujado si ayuda), `referencia` (método de la profesora: capítulo y
-  página impresa, sin copiar nada) y `lectura` (manda al programa de Lectura
-  de la propia app, a la clave y nivel que toca ese curso).
+  ejemplo dibujado si ayuda), `referencia` (dónde mirarlo en los métodos de la
+  profesora, con página impresa y sin copiar nada) y `lectura` (manda al
+  programa de Lectura de la propia app, a la clave y nivel que toca ese curso).
+- **El programa Principiante está pensado para adultos**: el texto le habla al
+  alumno de tú, no al profesor sobre un niño.
+- Un bloque `referencia` cita **varios métodos a la vez**, porque en clase se
+  combinan. Los tres de Principiante: Alfred's Basic Adult All-in-One Course
+  (lección, teoría y técnica, para adultos), Hervé y Pouillard (técnica
+  clásica: el paso del pulgar y la escala, que el Alfred no da en su nivel 1)
+  y Chornet (ejercicios por tipo, el Czerny op. 599 y el repertorio).
 - **No se enlaza a partituras de fuera**: o está dibujada dentro de la app, o
   remite a un libro que ella ya tiene.
 - Los dos programas están conectados: la práctica manda a la lectura. Si se

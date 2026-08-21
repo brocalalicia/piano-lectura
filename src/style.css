@@ -396,6 +396,18 @@ body {
   box-shadow: 0 6px 0 var(--color-boton-sombra);
 }
 
+.referencia-fuente {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 10px;
+}
+
+.referencia-fuente + .referencia-fuente {
+  border-top: 2px solid var(--color-boton-borde);
+  margin-top: 4px;
+}
+
 .referencia-etiqueta {
   font-size: 0.8rem;
   font-weight: 800;

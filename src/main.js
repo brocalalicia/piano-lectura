@@ -1162,21 +1162,29 @@ function renderizarPracticaEjercicio() {
     });
     ejercicioLecturaEl.appendChild(boton);
   } else if (partitura.tipo === "referencia") {
-    // Los metodos con derechos no se copian: se dice donde esta.
+    // Los metodos con derechos no se copian: se dice donde esta, y pueden ser
+    // varios libros para el mismo contenido.
     const etiqueta = document.createElement("span");
     etiqueta.className = "referencia-etiqueta";
     etiqueta.textContent = t().referenciaEn;
     ejercicioReferenciaEl.appendChild(etiqueta);
 
-    const metodo = document.createElement("strong");
-    metodo.className = "referencia-metodo";
-    metodo.textContent = partitura.metodo;
-    ejercicioReferenciaEl.appendChild(metodo);
+    partitura.fuentes.forEach((fuente) => {
+      const bloque = document.createElement("span");
+      bloque.className = "referencia-fuente";
 
-    const donde = document.createElement("span");
-    donde.className = "referencia-donde";
-    donde.textContent = txt(partitura.donde);
-    ejercicioReferenciaEl.appendChild(donde);
+      const metodo = document.createElement("strong");
+      metodo.className = "referencia-metodo";
+      metodo.textContent = fuente.metodo;
+      bloque.appendChild(metodo);
+
+      const donde = document.createElement("span");
+      donde.className = "referencia-donde";
+      donde.textContent = txt(fuente.donde);
+      bloque.appendChild(donde);
+
+      ejercicioReferenciaEl.appendChild(bloque);
+    });
   }
 
   ejercicioIndicacionesEl.innerHTML = "";
