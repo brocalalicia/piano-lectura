@@ -961,14 +961,24 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   contenedor.innerHTML = "";
 
   const cuentaNotas = partitura.sistemas[0].notas.filter((nota) => !nota.barra).length;
-  const ancho = 70 + cuentaNotas * 42;
+
+  // Si las notas llevan su nombre debajo, cada una necesita el ancho del
+  // rotulo, o el texto se sale del dibujo y se pisa con el de al lado.
+  const nombres = partitura.sistemas.flatMap((sistema) => sistema.notas.map((nota) => nota.t || ""));
+  const rotuloMasLargo = Math.max(0, ...nombres.map((texto) => texto.length * 8 + 20));
+  const hayNombres = rotuloMasLargo > 0;
+  const porNota = Math.max(42, rotuloMasLargo);
+  const ancho = 70 + cuentaNotas * porNota;
+
+  // Los nombres del sistema de arriba caen en el hueco entre los dos.
+  const separacion = hayNombres ? SEPARACION_SISTEMAS + 42 : SEPARACION_SISTEMAS;
 
   const renderer = new Renderer(contenedor, Renderer.Backends.SVG);
-  renderer.resize(ancho + 40, 140 + partitura.sistemas.length * SEPARACION_SISTEMAS);
+  renderer.resize(ancho + 40, 160 + partitura.sistemas.length * separacion);
   const contexto = renderer.getContext();
 
   const pentagramas = partitura.sistemas.map((sistema, indice) => {
-    const pentagrama = new Stave(0, 40 + indice * SEPARACION_SISTEMAS, ancho);
+    const pentagrama = new Stave(0, 40 + indice * separacion, ancho);
     pentagrama.addClef(sistema.clef);
     const compas = sistema.compas || partitura.compas;
     if (compas) pentagrama.addTimeSignature(compas);
@@ -1053,13 +1063,19 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   });
 
   const arriba = pentagramas[0].getYForLine(0) - 42;
-  const abajo = pentagramas[pentagramas.length - 1].getYForLine(4) + 42;
+  const abajo = pentagramas[pentagramas.length - 1].getYForLine(4) + (hayNombres ? 62 : 42);
   svg.setAttribute("viewBox", `-6 ${arriba} ${ancho + 12} ${abajo - arriba}`);
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
   svg.removeAttribute("width");
   svg.removeAttribute("height");
   svg.style.width = "100%";
   svg.style.height = "auto";
+  // Un ejemplo de dos notas no puede estirarse hasta llenar la tarjeta. Se
+  // limita cuanto crece cada unidad del dibujo y, para los que son estrechos
+  // y altos, tambien cuanto puede medir de alto.
+  const anchoVista = ancho + 12;
+  const altoVista = abajo - arriba;
+  svg.style.maxWidth = `${Math.round(Math.min(anchoVista * 2.4, (340 * anchoVista) / altoVista))}px`;
 }
 
 const SVG_NS = "http://www.w3.org/2000/svg";

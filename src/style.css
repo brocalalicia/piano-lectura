@@ -522,6 +522,8 @@ body {
 }
 
 .ficha-partitura {
+  display: flex;
+  justify-content: center;
   width: 100%;
   background: var(--color-tarjeta);
   border-radius: var(--radio);
