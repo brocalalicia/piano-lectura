@@ -82,8 +82,10 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - **El orden de los bloques dentro de un curso no se toca a mano**: lo impone
   `ordenarClase()` en `programa.js`, y sale del método de la profesora —
   primero se lee la nota, después se sitúa en el teclado, luego se piensa el
-  dedo y al final el ritmo. Es decir: **teoría → lectura → piano → métodos**.
-  Un curso empieza por teoría y acaba en el piano, nunca al revés.
+  dedo y al final el ritmo. El orden es: **la teoría que abre → lectura → el
+  resto de la teoría → piano → métodos**. La lectura va pegada a la teoría que
+  la explica, no al final de toda la teoría. Un curso empieza por teoría y
+  acaba en el piano, nunca al revés.
 - Cada bloque lleva su etiqueta visible: Teoría, Lectura, Técnica o Método.
 - Los bloques de teoría pueden llevar, además de la explicación, una lista de
   **conceptos con su definición** y una ilustración. La ilustración es un

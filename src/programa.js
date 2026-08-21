@@ -489,17 +489,25 @@ function teoria(id, titulo, texto, indicaciones, ejemplo, conceptos) {
 // Un concepto con su definicion, para el bloque de teoria.
 const concepto = (termino, definicion) => ({ termino, definicion });
 
-// El orden de la clase es siempre el mismo, y sale del metodo de la profesora:
-// primero se lee la nota, despues se situa en el teclado, luego se piensa el
-// dedo y al final el ritmo. Es decir: teoria, lectura, piano y metodos.
-const ORDEN_CLASE = { teoria: 0, lectura: 1, dibujada: 2, referencia: 3 };
-
+// El orden de la clase sale del metodo de la profesora: primero se lee la nota,
+// despues se situa en el teclado, luego se piensa el dedo y al final el ritmo.
+//
+// La lectura no va al final de toda la teoria, sino pegada a la teoria que la
+// abre: se explica como se lee y se lee ahi mismo. Despues viene el resto de
+// la teoria, luego el piano y al final los metodos.
 function ordenarClase(niveles) {
   niveles.forEach((nivel) => {
     nivel.cursos.forEach((curso) => {
-      curso.ejercicios.sort(
-        (a, b) => ORDEN_CLASE[a.partitura.tipo] - ORDEN_CLASE[b.partitura.tipo]
-      );
+      if (curso.ejercicios.length === 0) return;
+      const de = (tipo) => curso.ejercicios.filter((e) => e.partitura.tipo === tipo);
+      const teoria = de("teoria");
+      curso.ejercicios = [
+        ...teoria.slice(0, 1),
+        ...de("lectura"),
+        ...teoria.slice(1),
+        ...de("dibujada"),
+        ...de("referencia"),
+      ];
     });
   });
   return niveles;
