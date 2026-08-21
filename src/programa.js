@@ -338,6 +338,86 @@ const DOS_NOTAS = {
   ],
 };
 
+// --- Ilustraciones de teoria -------------------------------------------
+
+// Las cinco primeras notas sobre el pentagrama, con su nombre debajo.
+const PENTAGRAMA_DO_SOL = {
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", t: "do", f: "w" }, { n: "d/4", t: "re", f: "w" },
+        { n: "e/4", t: "mi", f: "w" }, { n: "f/4", t: "fa", f: "w" },
+        { n: "g/4", t: "sol", f: "w" },
+      ],
+    },
+  ],
+};
+
+// Dos octavas de teclado con las cinco notas marcadas: los grupos de dos y
+// tres teclas negras son la referencia para encontrarlas.
+const TECLADO_DO_SOL = {
+  teclado: {
+    octavas: 2,
+    marcadas: [{ indice: 7 }, { indice: 8 }, { indice: 9 }, { indice: 10 }, { indice: 11 }],
+  },
+};
+
+// El mismo do central, escrito en las dos claves.
+const DO_CENTRAL_DOS_CLAVES = {
+  sistemas: [
+    { clef: "treble", notas: [{ n: "c/4", t: "do central", f: "w" }] },
+    { clef: "bass", notas: [{ n: "c/4", t: "do central", f: "w" }] },
+  ],
+};
+
+// El compas: las mismas notas, agrupadas de cuatro en cuatro.
+const COMPAS_CUATRO = {
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4" }, { n: "d/4" }, { n: "e/4" }, { n: "f/4" },
+        { barra: true },
+        { n: "g/4" }, { n: "f/4" }, { n: "e/4" }, { n: "d/4" },
+      ],
+    },
+  ],
+};
+
+// Tres tiempos arriba, dos abajo: se cuenta distinto.
+const COMPASES_TRES_DOS = {
+  sistemas: [
+    {
+      clef: "treble",
+      compas: "3/4",
+      notas: [{ n: "c/4" }, { n: "d/4" }, { n: "e/4" }, { barra: true }, { n: "d/4" }, { n: "c/4", f: "h" }],
+    },
+    {
+      clef: "treble",
+      compas: "2/4",
+      notas: [{ n: "c/4" }, { n: "e/4" }, { barra: true }, { n: "d/4" }, { n: "c/4" }],
+    },
+  ],
+};
+
+// El acorde se construye por terceras: primero la nota, luego la de encima.
+const ACORDE_CONSTRUCCION = {
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", t: "do", f: "w" }, { barra: true },
+        { n: ["c/4", "e/4"], t: "do + mi", f: "w" }, { barra: true },
+        { n: ["c/4", "e/4", "g/4"], t: "do + mi + sol", f: "w" },
+      ],
+    },
+  ],
+};
+
+
 function ejercicio(id, titulo, objetivo, indicaciones, partitura) {
   return { id, titulo, objetivo, indicaciones, partitura };
 }
@@ -359,7 +439,8 @@ function teoria(id, titulo, texto, indicaciones, ejemplo, conceptos) {
       tipo: "teoria",
       texto,
       ...(conceptos ? { conceptos } : {}),
-      ...(ejemplo ? { compas: ejemplo.compas, sistemas: ejemplo.sistemas } : {}),
+      ...(ejemplo && ejemplo.teclado ? { teclado: ejemplo.teclado } : {}),
+      ...(ejemplo && ejemplo.sistemas ? { compas: ejemplo.compas, sistemas: ejemplo.sistemas } : {}),
     },
   };
 }
@@ -438,7 +519,7 @@ const NIVELES = [
           teoria("p1c1-pentagrama", { es: "El pentagrama y las notas de do a sol", fr: "La portée et les notes de do à sol" },
             { es: "La música se escribe sobre cinco líneas y cuatro espacios: el pentagrama. La clave de sol, al principio, fija que la segunda línea es el sol, y a partir de ahí se cuenta todo lo demás pasando de línea a espacio. Tus cinco primeras notas son do, re, mi, fa y sol: el do va en una línea adicional por debajo del pentagrama y el sol en la segunda línea.", fr: "La musique s'écrit sur cinq lignes et quatre espaces : la portée. La clé de sol, au début, fixe que la deuxième ligne est le sol, et tout le reste se compte à partir de là en passant de ligne en espace. Tes cinq premières notes sont do, ré, mi, fa et sol : le do est sur une ligne supplémentaire sous la portée et le sol sur la deuxième ligne." },
             { es: ["Señala el sol en el papel antes de leer nada más.", "Sube y baja nombrando las notas en voz alta, sin tocar."], fr: ["Montre le sol sur le papier avant de lire autre chose.", "Monte et descends en nommant les notes à voix haute, sans jouer."] },
-            null,
+            PENTAGRAMA_DO_SOL,
             [
               concepto({ es: "Pentagrama", fr: "Portée" }, { es: "Las cinco líneas y los cuatro espacios sobre los que se escribe la música.", fr: "Les cinq lignes et les quatre espaces sur lesquels s'écrit la musique." }),
               concepto({ es: "Clave de sol", fr: "Clé de sol" }, { es: "El signo del principio, que fija que la segunda línea es el sol.", fr: "Le signe du début, qui fixe que la deuxième ligne est le sol." }),
@@ -448,7 +529,7 @@ const NIVELES = [
           teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au clavier" },
             { es: "Cada nota escrita es una tecla concreta. El do central está a la izquierda del grupo de dos teclas negras, hacia la mitad del piano; re, mi, fa y sol son las cuatro teclas blancas siguientes hacia la derecha. El orden es siempre el mismo: lee la nota, dila en voz alta y sólo entonces búscala en el teclado.", fr: "Chaque note écrite est une touche précise. Le do central est à gauche du groupe de deux touches noires, vers le milieu du piano ; ré, mi, fa et sol sont les quatre touches blanches suivantes vers la droite. L'ordre est toujours le même : lis la note, dis-la à voix haute et cherche-la ensuite sur le clavier." },
             { es: ["Busca todos los do del piano sin contar.", "Después, todos los fa: a la izquierda del grupo de tres."], fr: ["Trouve tous les do du piano sans compter.", "Ensuite tous les fa : à gauche du groupe de trois."] },
-            null,
+            TECLADO_DO_SOL,
             [
               concepto({ es: "Do central", fr: "Do central" }, { es: "El do que queda hacia el centro del piano, a la izquierda de un grupo de dos teclas negras.", fr: "Le do situé vers le centre du piano, à gauche d'un groupe de deux touches noires." }),
               concepto({ es: "Teclas negras", fr: "Touches noires" }, { es: "Van en grupos de dos y de tres, y sirven para orientarse sin contar desde el extremo.", fr: "Elles vont par groupes de deux et de trois, et servent à se repérer sans compter depuis le bout." }),
@@ -494,7 +575,8 @@ const NIVELES = [
             TERCERAS_MD),
           teoria("p1c2-compas", { es: "El compás y la barra de compás", fr: "La mesure et la barre de mesure" },
             { es: "La barra vertical corta la música en compases iguales, y el 4/4 del principio dice que en cada uno caben cuatro negras. El primer tiempo de cada compás pesa un poco más que los otros: es lo que hace que la música se sienta ordenada.", fr: "La barre verticale coupe la musique en mesures égales, et le 4/4 du début dit que quatre noires tiennent dans chacune. Le premier temps de chaque mesure pèse un peu plus que les autres : c'est ce qui rend la musique ordonnée." },
-            { es: ["Cuenta 1-2-3-4 en cada compás mientras tocas.", "Marca el primer tiempo con el pie mientras tocas."], fr: ["Compte 1-2-3-4 dans chaque mesure en jouant.", "Marque le premier temps du pied en jouant."] }),
+            { es: ["Cuenta 1-2-3-4 en cada compás mientras tocas.", "Marca el primer tiempo con el pie mientras tocas."], fr: ["Compte 1-2-3-4 dans chaque mesure en jouant.", "Marque le premier temps du pied en jouant."] },
+            COMPAS_CUATRO),
           referencia("p1c2-ref", { es: "Legato, matices y fraseo", fr: "Legato, nuances et phrasé" },
             [alfred({ es: "págs. 13-17", fr: "p. 13-17" }), pouillard({ es: "cap. I págs. 9-13", fr: "chap. I p. 9-13" }), chornet({ es: "págs. 22 y 29", fr: "p. 22 et 29" })],
             { es: "Negras, blancas y redonda, el compás y la clave de sol, con Ode to Joy y Aura Lee.", fr: "La préparation au legato, lier pour de bon et les premières indications de nuance." },
@@ -526,7 +608,8 @@ const NIVELES = [
             MANOS_JUNTAS),
           teoria("p1c3-clavefa", { es: "La clave de fa y el do central", fr: "La clé de fa et le do central" },
             { es: "La mano izquierda se escribe en clave de fa, donde la cuarta línea es el fa. El do central queda justo encima del pentagrama, en su línea adicional.", fr: "La main gauche s'écrit en clé de fa, où la quatrième ligne est le fa. Le do central se place juste au-dessus de la portée, sur sa ligne supplémentaire." },
-            { es: ["La llevas viendo desde el primer día en tus ejercicios.", "El do central es una sola tecla, escrita de dos maneras."], fr: ["Tu la vois depuis le premier jour dans tes exercices.", "Le do central est une seule touche, écrite de deux façons."] }),
+            { es: ["La llevas viendo desde el primer día en tus ejercicios.", "El do central es una sola tecla, escrita de dos maneras."], fr: ["Tu la vois depuis le premier jour dans tes exercices.", "Le do central est une seule touche, écrite de deux façons."] },
+            DO_CENTRAL_DOS_CLAVES),
           referencia("p1c3-ref", { es: "Manos juntas, polifonía en do y en sol", fr: "Mains ensemble, polyphonie en do et en sol" },
             [alfred({ es: "págs. 16-20", fr: "p. 16-20" }), pouillard({ es: "cap. II págs. 18-20", fr: "chap. II p. 18-20" }), chornet({ es: "pág. 14", fr: "p. 14" })],
             { es: "Posición de do de la izquierda, la clave de fa y el sistema de dos pentagramas.", fr: "Premières pièces à deux mains, avec les deux voix qui sonnent." },
@@ -582,7 +665,8 @@ const NIVELES = [
             ALTERACIONES),
           teoria("p1c5-compases", { es: "Los compases de 3/4 y 2/4", fr: "Les mesures à 3/4 et 2/4" },
             { es: "El número de abajo dice qué figura vale un tiempo y el de arriba cuántos hay por compás. En 3/4 se cuenta 1-2-3, como un vals.", fr: "Le chiffre du bas dit quelle figure vaut un temps et celui du haut combien il y en a par mesure. À 3/4 on compte 1-2-3, comme une valse." },
-            { es: ["Dar palmas en 3/4 y en 2/4 antes de tocarlo."], fr: ["Frapper dans les mains à 3/4 et à 2/4 avant de jouer."] }),
+            { es: ["Da palmas en 3/4 y en 2/4 antes de tocarlo."], fr: ["Frappe dans les mains à 3/4 et à 2/4 avant de jouer."] },
+            COMPASES_TRES_DOS),
           referencia("p1c5-ref", { es: "Los acordes y las alteraciones", fr: "Les accords et les altérations" },
             [alfred({ es: "págs. 24-31", fr: "p. 24-31" }), pouillard({ es: "cap. III págs. 28-30", fr: "chap. III p. 28-30" }), chornet({ es: "págs. 26 y 30", fr: "p. 26 et 30" })],
             { es: "Intervalos melódicos y armónicos, de segunda a quinta, y los primeros matices.", fr: "Premier contact avec deux et trois notes ensemble, et avec les altérations." },
@@ -634,7 +718,8 @@ const NIVELES = [
             ESCALA_DO_IZQUIERDA),
           teoria("p1c7-escala", { es: "Por qué la escala se digita así", fr: "Pourquoi la gamme se doigte ainsi" },
             { es: "La mano tiene cinco dedos y la escala ocho notas, así que hay que pasar el pulgar una vez. Se pasa donde menos se nota, entre el mi y el fa.", fr: "La main a cinq doigts et la gamme huit notes, il faut donc passer le pouce une fois. On le passe là où ça s'entend le moins, entre le mi et le fa." },
-            { es: ["Dilo en voz alta antes de tocar: dónde pasa el pulgar y por qué.", "La digitación es la misma en todas las escalas de teclas blancas."], fr: ["Dis-le à voix haute avant de jouer : où passe le pouce et pourquoi.", "Le doigté est le même dans toutes les gammes de touches blanches."] }),
+            { es: ["Dilo en voz alta antes de tocar: dónde pasa el pulgar y por qué.", "La digitación es la misma en todas las escalas de teclas blancas."], fr: ["Dis-le à voix haute avant de jouer : où passe le pouce et pourquoi.", "Le doigté est le même dans toutes les gammes de touches blanches."] },
+            ESCALA_DO_DERECHA),
           referencia("p1c7-ref", { es: "Paso del pulgar y escala de do mayor", fr: "Passage du pouce et gamme de do majeur" },
             [alfred({ es: "págs. 56-57", fr: "p. 56-57" }), pouillard({ es: "cap. IV págs. 34-35", fr: "chap. IV p. 34-35" }), chornet({ es: "págs. 43-46, preparatorios y escalas", fr: "p. 43-46, préparatoires et gammes" })],
             { es: "El Alfred trabaja la igualdad de los dedos; la escala y el paso del pulgar los da el Pouillard, que el Alfred no toca en su nivel 1.", fr: "Le mécanisme expliqué, ses exercices préparatoires et la gamme complète." },
@@ -662,7 +747,8 @@ const NIVELES = [
             ACORDES_TRES_SONIDOS),
           teoria("p1c8-acorde", { es: "Qué es un acorde de tres sonidos", fr: "Qu'est-ce qu'un accord de trois sons" },
             { es: "Se toma una nota y se le añaden la tercera y la quinta por encima, saltando una tecla blanca cada vez. Do, fa y sol son los tres acordes que sostienen casi toda la música que va a tocar.", fr: "On prend une note et on ajoute la tierce et la quinte au-dessus, en sautant une touche blanche à chaque fois. Do, fa et sol sont les trois accords qui soutiennent presque toute la musique qu'il va jouer." },
-            { es: ["Construye tú el acorde de re y el de mi.", "El arpegio es el mismo acorde, nota a nota."], fr: ["Construis l'accord de ré et celui de mi toi-même.", "L'arpège est le même accord, note par note."] }),
+            { es: ["Construye tú el acorde de re y el de mi.", "El arpegio es el mismo acorde, nota a nota."], fr: ["Construis l'accord de ré et celui de mi toi-même.", "L'arpège est le même accord, note par note."] },
+            ACORDE_CONSTRUCCION),
           referencia("p1c8-ref", { es: "Acordes de tres sonidos", fr: "Accords de trois sons" },
             [alfred({ es: "págs. 44-49 y 60", fr: "p. 44-49 et 60" }), pouillard({ es: "cap. IV pág. 38 y cap. V págs. 51-52", fr: "chap. IV p. 38 et chap. V p. 51-52" }), chornet({ es: "págs. 51 y 59, Bach y Mozart", fr: "p. 51 et 59, Bach et Mozart" })],
             { es: "Los acordes de do, fa y sol, y la diferencia entre acorde y acorde quebrado.", fr: "Les accords sur la partition et comment ils s'enchaînent." },

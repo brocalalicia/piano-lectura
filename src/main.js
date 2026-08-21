@@ -938,7 +938,8 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   const pentagramas = partitura.sistemas.map((sistema, indice) => {
     const pentagrama = new Stave(0, 40 + indice * SEPARACION_SISTEMAS, ancho);
     pentagrama.addClef(sistema.clef);
-    if (partitura.compas) pentagrama.addTimeSignature(partitura.compas);
+    const compas = sistema.compas || partitura.compas;
+    if (compas) pentagrama.addTimeSignature(compas);
     pentagrama.setContext(contexto).draw();
     return pentagrama;
   });
@@ -962,6 +963,17 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
         clef: sistema.clef,
       });
       if (nota.alt) staveNote.addModifier(new Accidental(nota.alt), 0);
+
+      // "t" es el nombre de la nota y va siempre debajo; "d" es la digitacion.
+      if (nota.t) {
+        const nombre = new Annotation(nota.t);
+        nombre.setVerticalJustification(Annotation.VerticalJustify.BOTTOM);
+        nombre.setFont("Nunito, sans-serif", 14, "normal");
+        nombre.setStyle({ fillStyle: "#3a322c", strokeStyle: "#3a322c" });
+        nombre.setYShift(12);
+        staveNote.addModifier(nombre, 0);
+      }
+
       if (nota.d) {
         // La digitacion va encima en la mano derecha y debajo en la izquierda.
         const dedo = new Annotation(nota.d);
@@ -989,6 +1001,75 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   svg.removeAttribute("height");
   svg.style.width = "100%";
   svg.style.height = "auto";
+}
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+// Teclado de piano dibujado a mano: el renderizador de partituras no sirve
+// para esto y es justo lo que hace falta para situar las notas en las teclas.
+function dibujarTeclado(contenedor, teclado) {
+  contenedor.innerHTML = "";
+
+  const ANCHO_BLANCA = 26;
+  const ALTO_BLANCA = 116;
+  const ANCHO_NEGRA = 15;
+  const ALTO_NEGRA = 72;
+  // Dentro de una octava, las negras van detras de la 1.ª, 2.ª, 4.ª, 5.ª y 6.ª.
+  const CON_NEGRA = [0, 1, 3, 4, 5];
+  const NOMBRES = ["do", "re", "mi", "fa", "sol", "la", "si"];
+
+  const blancas = teclado.octavas * 7;
+  const ancho = blancas * ANCHO_BLANCA;
+  const alto = ALTO_BLANCA + 26;
+
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", `-1 -1 ${ancho + 2} ${alto + 2}`);
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  svg.style.width = "100%";
+  svg.style.height = "auto";
+
+  const marcadas = new Map((teclado.marcadas || []).map((m) => [m.indice, m]));
+
+  for (let i = 0; i < blancas; i += 1) {
+    const tecla = document.createElementNS(SVG_NS, "rect");
+    tecla.setAttribute("x", i * ANCHO_BLANCA);
+    tecla.setAttribute("y", 0);
+    tecla.setAttribute("width", ANCHO_BLANCA);
+    tecla.setAttribute("height", ALTO_BLANCA);
+    tecla.setAttribute("rx", 3);
+    tecla.setAttribute("fill", marcadas.has(i) ? "var(--color-primario)" : "#ffffff");
+    tecla.setAttribute("stroke", "#3a322c");
+    tecla.setAttribute("stroke-width", 1.5);
+    svg.appendChild(tecla);
+
+    const marca = marcadas.get(i);
+    if (marca) {
+      const texto = document.createElementNS(SVG_NS, "text");
+      texto.setAttribute("x", i * ANCHO_BLANCA + ANCHO_BLANCA / 2);
+      texto.setAttribute("y", alto - 6);
+      texto.setAttribute("text-anchor", "middle");
+      texto.setAttribute("font-family", "Nunito, sans-serif");
+      texto.setAttribute("font-size", 15);
+      texto.setAttribute("font-weight", 800);
+      texto.setAttribute("fill", "#3a322c");
+      texto.textContent = marca.texto || NOMBRES[i % 7];
+      svg.appendChild(texto);
+    }
+  }
+
+  for (let i = 0; i < blancas; i += 1) {
+    if (!CON_NEGRA.includes(i % 7) || i === blancas - 1) continue;
+    const negra = document.createElementNS(SVG_NS, "rect");
+    negra.setAttribute("x", (i + 1) * ANCHO_BLANCA - ANCHO_NEGRA / 2);
+    negra.setAttribute("y", 0);
+    negra.setAttribute("width", ANCHO_NEGRA);
+    negra.setAttribute("height", ALTO_NEGRA);
+    negra.setAttribute("rx", 2);
+    negra.setAttribute("fill", "#3a322c");
+    svg.appendChild(negra);
+  }
+
+  contenedor.appendChild(svg);
 }
 
 function renderizarMenuPrograma() {
@@ -1159,6 +1240,8 @@ function renderizarPracticaEjercicio() {
   // programa de la app en el nivel que toca.
   if (partitura.sistemas) {
     dibujarPartituraEjercicio(ejercicioPartituraEl, partitura);
+  } else if (partitura.teclado) {
+    dibujarTeclado(ejercicioPartituraEl, partitura.teclado);
   }
 
   if (partitura.tipo === "teoria") {

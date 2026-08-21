@@ -86,7 +86,11 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   Un curso empieza por teoría y acaba en el piano, nunca al revés.
 - Cada bloque lleva su etiqueta visible: Teoría, Lectura, Técnica o Método.
 - Los bloques de teoría pueden llevar, además de la explicación, una lista de
-  **conceptos con su definición**, y un ejemplo dibujado.
+  **conceptos con su definición** y una ilustración. La ilustración es un
+  pentagrama dibujado con VexFlow o **un teclado de piano**, que se dibuja
+  aparte porque el renderizador de partituras no sirve para eso.
+- En las partituras, `d` es la digitación y va encima; `t` es el nombre de la
+  nota y va debajo.
 - **El programa Principiante está pensado para adultos**: el texto le habla al
   alumno de tú, no al profesor sobre un niño.
 - Un bloque `referencia` cita **varios métodos a la vez**, porque en clase se
