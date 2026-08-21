@@ -984,6 +984,9 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
     new StaveConnector(primero, ultimo).setType(StaveConnector.type.SINGLE_LEFT).setContext(contexto).draw();
   }
 
+  const digitaciones = [];
+  let pintadas = 0;
+
   partitura.sistemas.forEach((sistema, indice) => {
     const notas = sistema.notas.map((nota) => {
       if (nota.barra) return new BarNote();
@@ -1006,24 +1009,48 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
         staveNote.addModifier(nombre, 0);
       }
 
-      if (nota.d) {
-        // La digitacion va encima en la mano derecha y debajo en la izquierda.
-        const dedo = new Annotation(nota.d);
-        dedo.setVerticalJustification(
-          sistema.clef === "bass" ? Annotation.VerticalJustify.BOTTOM : Annotation.VerticalJustify.TOP
-        );
-        dedo.setFont("Nunito, sans-serif", 13, "bold");
-        dedo.setStyle({ fillStyle: "#3a322c", strokeStyle: "#3a322c" });
-        staveNote.addModifier(dedo, 0);
-      }
       return staveNote;
     });
 
     Formatter.FormatAndDraw(contexto, pentagramas[indice], notas);
+
+    // La digitacion se pinta aparte. Puesta como anotacion de VexFlow queda
+    // pegada a la cabeza de la nota, y en las redondas, que no tienen palo,
+    // acaba dentro del pentagrama. Asi van todas a la misma altura: encima
+    // del pentagrama en la mano derecha y debajo en la izquierda.
+    sistema.notas
+      .filter((nota) => !nota.barra)
+      .forEach((nota, i) => {
+        if (nota.d) digitaciones.push({ texto: nota.d, sistema: indice, orden: pintadas + i });
+      });
+    pintadas += sistema.notas.filter((nota) => !nota.barra).length;
   });
 
   const svg = contenedor.querySelector("svg");
   if (!svg) return;
+
+  const cabezas = [...svg.querySelectorAll(".vf-stavenote")].map((grupo) => {
+    const texto = grupo.querySelector("text");
+    return texto ? +texto.getAttribute("x") + 5 : null;
+  });
+
+  digitaciones.forEach((dedo) => {
+    const x = cabezas[dedo.orden];
+    if (x === null || x === undefined) return;
+    const pentagrama = pentagramas[dedo.sistema];
+    const esGrave = partitura.sistemas[dedo.sistema].clef === "bass";
+
+    const texto = document.createElementNS(SVG_NS, "text");
+    texto.setAttribute("x", x);
+    texto.setAttribute("y", esGrave ? pentagrama.getYForLine(4) + 26 : pentagrama.getYForLine(0) - 12);
+    texto.setAttribute("text-anchor", "middle");
+    texto.setAttribute("font-family", "Nunito, sans-serif");
+    texto.setAttribute("font-size", 13);
+    texto.setAttribute("font-weight", 700);
+    texto.setAttribute("fill", "#3a322c");
+    texto.textContent = dedo.texto;
+    svg.appendChild(texto);
+  });
 
   const arriba = pentagramas[0].getYForLine(0) - 42;
   const abajo = pentagramas[pentagramas.length - 1].getYForLine(4) + 42;
