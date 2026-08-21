@@ -310,7 +310,44 @@ const FIGURAS = {
 };
 
 // El mismo ejemplo, mas el arbol de duraciones debajo.
-const FIGURAS_Y_ARBOL = { ...FIGURAS, arbol: true };
+const FIGURAS_Y_ARBOL = { ...FIGURAS, arbol: { figuras: ["redonda", "blanca", "negra"] } };
+
+// Los mismos tres compases, pero callados.
+const SILENCIOS = {
+  compas: "4/4",
+  arbol: { silencios: true, figuras: ["redonda", "blanca", "negra"] },
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { silencio: true, f: "w" }, { barra: true },
+        { silencio: true, f: "h" }, { silencio: true, f: "h" }, { barra: true },
+        { silencio: true }, { silencio: true }, { silencio: true }, { silencio: true },
+      ],
+    },
+  ],
+};
+
+// Un compas de negras y otro de corcheas: el doble de notas en el mismo sitio.
+const CORCHEAS = {
+  compas: "4/4",
+  arbol: { figuras: ["redonda", "blanca", "negra", "corchea"] },
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4" }, { n: "d/4" }, { n: "e/4" }, { n: "f/4" },
+        { barra: true },
+        { n: "c/4", f: "8" }, { n: "c/4", f: "8" }, { n: "d/4", f: "8" }, { n: "d/4", f: "8" },
+        { n: "e/4", f: "8" }, { n: "e/4", f: "8" }, { n: "f/4", f: "8" }, { n: "f/4", f: "8" },
+      ],
+    },
+  ],
+};
+
+const SEMICORCHEAS = {
+  arbol: { figuras: ["negra", "corchea", "semicorchea"] },
+};
 
 const ALTERACIONES = {
   tipo: "teoria",
@@ -443,7 +480,7 @@ function teoria(id, titulo, texto, indicaciones, ejemplo, conceptos) {
       texto,
       ...(conceptos ? { conceptos } : {}),
       ...(ejemplo && ejemplo.teclado ? { teclado: ejemplo.teclado } : {}),
-      ...(ejemplo && ejemplo.arbol ? { arbol: true } : {}),
+      ...(ejemplo && ejemplo.arbol ? { arbol: ejemplo.arbol } : {}),
       ...(ejemplo && ejemplo.sistemas ? { compas: ejemplo.compas, sistemas: ejemplo.sistemas } : {}),
     },
   };
@@ -546,7 +583,6 @@ const NIVELES = [
               concepto({ es: "Redonda", fr: "Ronde" }, { es: "Cuatro tiempos. Se escribe hueca y sin palo.", fr: "Quatre temps. Elle s'écrit vide et sans queue." }),
               concepto({ es: "Blanca", fr: "Blanche" }, { es: "Dos tiempos. Hueca y con palo.", fr: "Deux temps. Vide et avec une queue." }),
               concepto({ es: "Negra", fr: "Noire" }, { es: "Un tiempo. Rellena y con palo.", fr: "Un temps. Pleine et avec une queue." }),
-              concepto({ es: "Corchea", fr: "Croche" }, { es: "Medio tiempo. Como la negra, pero con un corchete en el palo. Aparece más adelante.", fr: "Un demi-temps. Comme la noire, mais avec un crochet sur la queue. Elle arrive plus tard." }),
               concepto({ es: "Tiempo", fr: "Temps" }, { es: "La unidad del pulso, lo que marcas con el pie o el metrónomo.", fr: "L'unité de la pulsation, ce que tu marques du pied ou au métronome." }),
             ]),
           referencia("p1c1-ref", { es: "Sentarse, digitación y primeras melodías", fr: "S'asseoir, doigté et premières mélodies" },
@@ -582,6 +618,15 @@ const NIVELES = [
             { es: "La barra vertical corta la música en compases iguales, y el 4/4 del principio dice que en cada uno caben cuatro negras. El primer tiempo de cada compás pesa un poco más que los otros: es lo que hace que la música se sienta ordenada.", fr: "La barre verticale coupe la musique en mesures égales, et le 4/4 du début dit que quatre noires tiennent dans chacune. Le premier temps de chaque mesure pèse un peu plus que les autres : c'est ce qui rend la musique ordonnée." },
             { es: ["Cuenta 1-2-3-4 en cada compás mientras tocas.", "Marca el primer tiempo con el pie mientras tocas."], fr: ["Compte 1-2-3-4 dans chaque mesure en jouant.", "Marque le premier temps du pied en jouant."] },
             COMPAS_CUATRO),
+          teoria("p1c2-silencios", { es: "Los silencios", fr: "Les silences" },
+            { es: "El silencio dice cuánto rato se calla la música, y se cuenta igual que una nota aunque no suene nada. Cada figura tiene el suyo y dura lo mismo: el de redonda cuatro tiempos, el de blanca dos y el de negra uno.", fr: "Le silence dit combien de temps la musique se tait, et il se compte comme une note même si rien ne sonne. Chaque figure a le sien et il dure autant : celui de ronde quatre temps, celui de blanche deux et celui de noire un." },
+            { es: ["Cuenta el silencio en voz alta, igual que cuentas las notas.", "Las manos se quedan sobre las teclas: el silencio no es soltar."], fr: ["Compte le silence à voix haute, comme tu comptes les notes.", "Les mains restent sur les touches : le silence n'est pas un relâchement."] },
+            SILENCIOS,
+            [
+              concepto({ es: "Silencio de redonda", fr: "Silence de ronde" }, { es: "Cuatro tiempos callados. Es un rectángulo colgando de la cuarta línea.", fr: "Quatre temps de silence. Un rectangle suspendu à la quatrième ligne." }),
+              concepto({ es: "Silencio de blanca", fr: "Silence de blanche" }, { es: "Dos tiempos. El mismo rectángulo, pero apoyado encima de la tercera línea.", fr: "Deux temps. Le même rectangle, mais posé sur la troisième ligne." }),
+              concepto({ es: "Silencio de negra", fr: "Silence de noire" }, { es: "Un tiempo. Es el garabato que ocupa el centro del pentagrama.", fr: "Un temps. C'est le signe en zigzag au centre de la portée." }),
+            ]),
           referencia("p1c2-ref", { es: "Legato, matices y fraseo", fr: "Legato, nuances et phrasé" },
             [alfred({ es: "págs. 13-17", fr: "p. 13-17" }), pouillard({ es: "cap. I págs. 9-13", fr: "chap. I p. 9-13" }), chornet({ es: "págs. 22 y 29", fr: "p. 22 et 29" })],
             { es: "Negras, blancas y redonda, el compás y la clave de sol, con Ode to Joy y Aura Lee.", fr: "La préparation au legato, lier pour de bon et les premières indications de nuance." },
@@ -643,6 +688,15 @@ const NIVELES = [
           teoria("p1c4-independencia", { es: "Cada mano, un papel", fr: "Chaque main, un rôle" },
             { es: "Casi siempre una mano lleva la melodía y la otra acompaña. La que acompaña suena más floja: no toca menos, pesa menos.", fr: "Presque toujours une main porte la mélodie et l'autre accompagne. Celle qui accompagne sonne plus doux : elle ne joue pas moins, elle pèse moins." },
             { es: ["Toca la melodía en f y el acompañamiento en p."], fr: ["Joue la mélodie en f et l'accompagnement en p."] }),
+          teoria("p1c4-corchea", { es: "La corchea", fr: "La croche" },
+            { es: "Hasta ahora la figura más corta era la negra, de un tiempo. La corchea dura la mitad, así que entran dos en cada negra: se cuenta uno-y, dos-y. Se escribe como la negra pero con un corchete en el palo.", fr: "Jusqu'ici la figure la plus courte était la noire, d'un temps. La croche dure la moitié, donc il en entre deux dans chaque noire : on compte un-et, deux-et. Elle s'écrit comme la noire mais avec un crochet sur la queue." },
+            { es: ["Cuenta uno-y dos-y tres-y cuatro-y sin cambiar la velocidad del pie.", "Con las manos ya juntas, es el momento de partir el tiempo."], fr: ["Compte un-et deux-et trois-et quatre-et sans changer la vitesse du pied.", "Les mains étant déjà ensemble, c'est le moment de partager le temps."] },
+            CORCHEAS,
+            [
+              concepto({ es: "Corchea", fr: "Croche" }, { es: "Medio tiempo. Dos corcheas ocupan lo mismo que una negra.", fr: "Un demi-temps. Deux croches occupent autant qu'une noire." }),
+              concepto({ es: "Corchete", fr: "Crochet" }, { es: "El rabito del palo que distingue la corchea de la negra.", fr: "La petite queue recourbée qui distingue la croche de la noire." }),
+              concepto({ es: "Barra de unión", fr: "Barre de liaison" }, { es: "Cuando van varias corcheas seguidas, los corchetes se sustituyen por una barra que las agrupa por tiempos.", fr: "Quand plusieurs croches se suivent, les crochets sont remplacés par une barre qui les groupe par temps." }),
+            ]),
           referencia("p1c4-ref", { es: "Independencia de manos", fr: "Indépendance des mains" },
             [alfred({ es: "págs. 21-23", fr: "p. 21-23" }), pouillard({ es: "cap. III pág. 26", fr: "chap. III p. 26" }), chornet({ es: "pág. 17", fr: "p. 17" })],
             { es: "Tocar de do a sol sobre los dos pentagramas, con Lightly Row y Aunt Rhody.", fr: "Que chaque main fasse quelque chose de différent sans entraîner l'autre." },
@@ -695,7 +749,14 @@ const NIVELES = [
             MOVIMIENTO_CONTRARIO),
           teoria("p1c6-leer", { es: "Cómo empezar una partitura nueva", fr: "Comment aborder une partition nouvelle" },
             { es: "Antes de tocar: mirar la clave, el compás, dónde empieza cada mano y si hay alteraciones. Después, solfear el ritmo con palmas.", fr: "Avant de jouer : regarder la clé, la mesure, où commence chaque main et s'il y a des altérations. Ensuite, solfier le rythme en frappant dans les mains." },
-            { es: ["Este orden, siempre el mismo, hasta que le salga solo.", "Tocar es lo último, no lo primero."], fr: ["Cet ordre, toujours le même, jusqu'à ce qu'il vienne tout seul.", "Jouer est la dernière étape, pas la première."] }),
+            { es: ["Este orden, siempre el mismo, hasta que te salga solo.", "Tocar es lo último, no lo primero."], fr: ["Cet ordre, toujours le même, jusqu'à ce qu'il vienne tout seul.", "Jouer est la dernière étape, pas la première."] }),
+          teoria("p1c6-semicorchea", { es: "La semicorchea", fr: "La double croche" },
+            { es: "La semicorchea dura la mitad que la corchea, así que entran cuatro en cada negra. Lleva dos corchetes en vez de uno. Aparece en cuanto empiezas a tocar piezas de verdad, aunque sea de paso.", fr: "La double croche dure la moitié de la croche, donc il en entre quatre dans chaque noire. Elle porte deux crochets au lieu d'un. Elle apparaît dès que tu joues de vraies pièces, ne serait-ce qu'au passage." },
+            { es: ["Reconocerla es suficiente por ahora: cuéntala despacio antes de tocarla.", "Si una pieza va llena de ellas, todavía no te toca."], fr: ["La reconnaître suffit pour l'instant : compte-la lentement avant de la jouer.", "Si un morceau en est plein, ce n'est pas encore pour toi."] },
+            SEMICORCHEAS,
+            [
+              concepto({ es: "Semicorchea", fr: "Double croche" }, { es: "Un cuarto de tiempo. Cuatro semicorcheas ocupan lo mismo que una negra.", fr: "Un quart de temps. Quatre doubles croches occupent autant qu'une noire." }),
+            ]),
           referencia("p1c6-ref1", { es: "Estudios progresivos y piezas", fr: "Études progressives et pièces" },
             [alfred({ es: "págs. 32-37 y 42-43", fr: "p. 32-37 et 42-43" }), pouillard({ es: "cap. VII págs. 64-68", fr: "chap. VII p. 64-68" }), chornet({ es: "págs. 33-36, Czerny op. 599 nº 1-8", fr: "p. 33-36, Czerny op. 599 nº 1-8" })],
             { es: "El acorde de do mayor, las ligaduras y el legato, con Brother John y Mary Ann.", fr: "Le répertoire de la méthode, avec tout ce qui a été appris jusqu'ici." },

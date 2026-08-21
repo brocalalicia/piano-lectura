@@ -92,7 +92,19 @@ const TRADUCCIONES = {
     teoriaTitulo: "Teoría",
     clases: { teoria: "Teoría", dibujada: "Técnica", referencia: "Método", lectura: "Lectura" },
     conceptosTitulo: "Conceptos",
-    arbolFiguras: ["1 redonda", "2 blancas", "4 negras", "8 corcheas"],
+    nombresFiguras: {
+      redonda: ["redonda", "redondas"], blanca: ["blanca", "blancas"], negra: ["negra", "negras"],
+      corchea: ["corchea", "corcheas"], semicorchea: ["semicorchea", "semicorcheas"],
+    },
+    nombresSilencios: {
+      redonda: ["de redonda", "de redonda"], blanca: ["de blanca", "de blanca"],
+      negra: ["de negra", "de negra"], corchea: ["de corchea", "de corchea"],
+      semicorchea: ["de semicorchea", "de semicorchea"],
+    },
+    tiemposFiguras: {
+      redonda: "4 tiempos", blanca: "2 tiempos", negra: "1 tiempo",
+      corchea: "medio tiempo", semicorchea: "un cuarto de tiempo",
+    },
     irALectura: "Practicar en Lectura",
     lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
     comoTrabajarlo: "Cómo trabajarlo",
@@ -186,7 +198,19 @@ const TRADUCCIONES = {
     teoriaTitulo: "Théorie",
     clases: { teoria: "Théorie", dibujada: "Technique", referencia: "Méthode", lectura: "Lecture" },
     conceptosTitulo: "Notions",
-    arbolFiguras: ["1 ronde", "2 blanches", "4 noires", "8 croches"],
+    nombresFiguras: {
+      redonda: ["ronde", "rondes"], blanca: ["blanche", "blanches"], negra: ["noire", "noires"],
+      corchea: ["croche", "croches"], semicorchea: ["double croche", "doubles croches"],
+    },
+    nombresSilencios: {
+      redonda: ["de ronde", "de ronde"], blanca: ["de blanche", "de blanche"],
+      negra: ["de noire", "de noire"], corchea: ["de croche", "de croche"],
+      semicorchea: ["de double croche", "de double croche"],
+    },
+    tiemposFiguras: {
+      redonda: "4 temps", blanca: "2 temps", negra: "1 temps",
+      corchea: "un demi-temps", semicorchea: "un quart de temps",
+    },
     irALectura: "S'entraîner en Lecture",
     lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
     comoTrabajarlo: "Comment le travailler",
@@ -958,10 +982,11 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
     const notas = sistema.notas.map((nota) => {
       if (nota.barra) return new BarNote();
 
-      // "n" es una nota suelta o, en los acordes, varias a la vez.
+      // "n" es una nota suelta o, en los acordes, varias a la vez. Los
+      // silencios no llevan altura: se escriben siempre en el mismo sitio.
       const staveNote = new StaveNote({
-        keys: Array.isArray(nota.n) ? nota.n : [nota.n],
-        duration: nota.f || "q",
+        keys: nota.silencio ? ["b/4"] : Array.isArray(nota.n) ? nota.n : [nota.n],
+        duration: nota.silencio ? `${nota.f || "q"}r` : nota.f || "q",
         clef: sistema.clef,
       });
       if (nota.alt) staveNote.addModifier(new Accidental(nota.alt), 0);
@@ -1074,67 +1099,96 @@ function dibujarTeclado(contenedor, teclado) {
   contenedor.appendChild(svg);
 }
 
-// Arbol de duraciones: una redonda vale dos blancas, cada blanca dos negras y
-// cada negra dos corcheas. Se dibuja a mano porque no es notacion sobre un
-// pentagrama, sino un esquema.
-function dibujarArbolFiguras(contenedor) {
-  contenedor.innerHTML = "";
+// Arbol de duraciones: cada figura vale dos de la siguiente. Se puede pedir
+// el trozo que interese, porque la corchea y la semicorchea no se ven hasta
+// los cursos mas avanzados.
+const ANCHO_ARBOL = 760;
+const IZQUIERDA_ARBOL = 132;
+const DERECHA_ARBOL = 122;
+const TREE_ARBOL = ANCHO_ARBOL - IZQUIERDA_ARBOL - DERECHA_ARBOL;
+const ALTO_FILA = 74;
 
-  const ANCHO = 640;
-  const IZQUIERDA = 132;
-  const TREE = ANCHO - IZQUIERDA - 16;
-  const FILAS = [
-    { cantidad: 1, figura: "redonda", y: 36 },
-    { cantidad: 2, figura: "blanca", y: 110 },
-    { cantidad: 4, figura: "negra", y: 184 },
-    { cantidad: 8, figura: "corchea", y: 258 },
-  ];
+function filasArbol(figuras) {
+  return figuras.map((figura, i) => ({ figura, cantidad: 2 ** i, y: 36 + i * ALTO_FILA }));
+}
 
+function posicionArbol(fila, i) {
+  return IZQUIERDA_ARBOL + (TREE_ARBOL / fila.cantidad) * (i + 0.5);
+}
+
+function svgArbol(filas) {
   const svg = document.createElementNS(SVG_NS, "svg");
-  svg.setAttribute("viewBox", `0 0 ${ANCHO} 292`);
+  svg.setAttribute("viewBox", `0 0 ${ANCHO_ARBOL} ${filas[filas.length - 1].y + 34}`);
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
   svg.style.width = "100%";
   svg.style.height = "auto";
+  return svg;
+}
 
-  const tinta = "#3a322c";
-  const linea = (x1, y1, x2, y2) => {
-    const l = document.createElementNS(SVG_NS, "line");
-    l.setAttribute("x1", x1); l.setAttribute("y1", y1);
-    l.setAttribute("x2", x2); l.setAttribute("y2", y2);
-    l.setAttribute("stroke", "#c9b8a3");
-    l.setAttribute("stroke-width", 2);
-    svg.appendChild(l);
-  };
+// Ramas y textos. Se insertan al principio del SVG para que las ramas queden
+// por detras de las figuras.
+function ramasYEtiquetasArbol(svg, filas, silencios) {
+  const piezas = [];
 
-  const posicion = (fila, i) => IZQUIERDA + (TREE / fila.cantidad) * (i + 0.5);
-
-  // Primero las uniones, para que queden por detras de las figuras.
-  FILAS.slice(0, -1).forEach((fila, f) => {
-    const hija = FILAS[f + 1];
+  filas.slice(0, -1).forEach((fila, f) => {
+    const hija = filas[f + 1];
     for (let i = 0; i < fila.cantidad; i += 1) {
-      const px = posicion(fila, i);
-      const izq = posicion(hija, i * 2);
-      const der = posicion(hija, i * 2 + 1);
-      linea(px, fila.y + 12, px, fila.y + 28);
-      linea(izq, fila.y + 28, der, fila.y + 28);
-      linea(izq, fila.y + 28, izq, hija.y - 34);
-      linea(der, fila.y + 28, der, hija.y - 34);
+      const px = posicionArbol(fila, i);
+      const izq = posicionArbol(hija, i * 2);
+      const der = posicionArbol(hija, i * 2 + 1);
+      [
+        [px, fila.y + 12, px, fila.y + 28],
+        [izq, fila.y + 28, der, fila.y + 28],
+        [izq, fila.y + 28, izq, hija.y - 34],
+        [der, fila.y + 28, der, hija.y - 34],
+      ].forEach(([x1, y1, x2, y2]) => {
+        const l = document.createElementNS(SVG_NS, "line");
+        l.setAttribute("x1", x1); l.setAttribute("y1", y1);
+        l.setAttribute("x2", x2); l.setAttribute("y2", y2);
+        l.setAttribute("stroke", "#c9b8a3");
+        l.setAttribute("stroke-width", 2);
+        piezas.push(l);
+      });
     }
   });
 
-  FILAS.forEach((fila, f) => {
+  filas.forEach((fila) => {
+    const nombres = silencios ? t().nombresSilencios : t().nombresFiguras;
+    const par = nombres[fila.figura];
+
     const etiqueta = document.createElementNS(SVG_NS, "text");
     etiqueta.setAttribute("x", 0);
     etiqueta.setAttribute("y", fila.y + 6);
     etiqueta.setAttribute("font-family", "Nunito, sans-serif");
     etiqueta.setAttribute("font-size", 17);
     etiqueta.setAttribute("font-weight", 800);
-    etiqueta.setAttribute("fill", tinta);
-    etiqueta.textContent = t().arbolFiguras[f];
-    svg.appendChild(etiqueta);
+    etiqueta.setAttribute("fill", "#3a322c");
+    etiqueta.textContent = `${fila.cantidad} ${fila.cantidad === 1 ? par[0] : par[1]}`;
+    piezas.push(etiqueta);
 
+    const tiempos = document.createElementNS(SVG_NS, "text");
+    tiempos.setAttribute("x", ANCHO_ARBOL);
+    tiempos.setAttribute("y", fila.y + 6);
+    tiempos.setAttribute("text-anchor", "end");
+    tiempos.setAttribute("font-family", "Nunito, sans-serif");
+    tiempos.setAttribute("font-size", 15);
+    tiempos.setAttribute("fill", "#8a7f72");
+    tiempos.textContent = t().tiemposFiguras[fila.figura];
+    piezas.push(tiempos);
+  });
+
+  piezas.reverse().forEach((pieza) => svg.insertBefore(pieza, svg.firstChild));
+}
+
+function dibujarArbolFiguras(contenedor, figuras) {
+  contenedor.innerHTML = "";
+  const filas = filasArbol(figuras);
+  const svg = svgArbol(filas);
+  const tinta = "#3a322c";
+
+  filas.forEach((fila) => {
     for (let i = 0; i < fila.cantidad; i += 1) {
-      const cx = posicion(fila, i);
+      const cx = posicionArbol(fila, i);
       const cy = fila.y;
       const hueca = fila.figura === "redonda" || fila.figura === "blanca";
 
@@ -1158,16 +1212,50 @@ function dibujarArbolFiguras(contenedor) {
       palo.setAttribute("stroke-width", 2);
       svg.appendChild(palo);
 
-      if (fila.figura === "corchea") {
+      const corchetes = { corchea: 1, semicorchea: 2 }[fila.figura] || 0;
+      for (let c = 0; c < corchetes; c += 1) {
         const corchete = document.createElementNS(SVG_NS, "path");
-        corchete.setAttribute("d", `M${cx + 7} ${cy - 30} q 10 6 9 16 q -2 -8 -9 -10 z`);
+        const alto = cy - 30 + c * 9;
+        corchete.setAttribute("d", `M${cx + 7} ${alto} q 10 6 9 16 q -2 -8 -9 -10 z`);
         corchete.setAttribute("fill", tinta);
         svg.appendChild(corchete);
       }
     }
   });
 
+  ramasYEtiquetasArbol(svg, filas, false);
   contenedor.appendChild(svg);
+}
+
+// Los silencios se dibujan con VexFlow sobre pentagramas que no se pintan:
+// asi salen con su grafia real, que a mano no sale bien.
+function dibujarArbolSilencios(contenedor, figuras) {
+  contenedor.innerHTML = "";
+  const filas = filasArbol(figuras);
+  const DURACION = { redonda: "w", blanca: "h", negra: "q", corchea: "8", semicorchea: "16" };
+
+  const renderer = new Renderer(contenedor, Renderer.Backends.SVG);
+  renderer.resize(ANCHO_ARBOL, filas[filas.length - 1].y + 34);
+  const contexto = renderer.getContext();
+
+  filas.forEach((fila) => {
+    // El silencio cae sobre la linea central, asi que el pentagrama se coloca
+    // de forma que esa linea quede a la altura de la fila.
+    const pentagrama = new Stave(IZQUIERDA_ARBOL - 24, fila.y - 60, TREE_ARBOL + 48);
+    const silencios = Array.from({ length: fila.cantidad }, () =>
+      new StaveNote({ keys: ["b/4"], duration: `${DURACION[fila.figura]}r` })
+    );
+    pentagrama.setContext(contexto);
+    Formatter.FormatAndDraw(contexto, pentagrama, silencios);
+  });
+
+  const svg = contenedor.querySelector("svg");
+  svg.setAttribute("viewBox", `0 0 ${ANCHO_ARBOL} ${filas[filas.length - 1].y + 34}`);
+  svg.removeAttribute("width");
+  svg.removeAttribute("height");
+  svg.style.width = "100%";
+  svg.style.height = "auto";
+  ramasYEtiquetasArbol(svg, filas, true);
 }
 
 function renderizarMenuPrograma() {
@@ -1352,7 +1440,8 @@ function renderizarPracticaEjercicio() {
   if (partitura.arbol) {
     const contenedorArbol = caja();
     contenedorArbol.className = "arbol-figuras";
-    dibujarArbolFiguras(contenedorArbol);
+    const dibujar = partitura.arbol.silencios ? dibujarArbolSilencios : dibujarArbolFiguras;
+    dibujar(contenedorArbol, partitura.arbol.figuras);
   }
 
   if (partitura.tipo === "teoria") {

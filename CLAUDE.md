@@ -90,7 +90,11 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   pentagrama dibujado con VexFlow o **un teclado de piano**, que se dibuja
   aparte porque el renderizador de partituras no sirve para eso.
 - En las partituras, `d` es la digitación y va encima; `t` es el nombre de la
-  nota y va debajo.
+  nota y va debajo; `silencio: true` la convierte en silencio.
+- **Ritmo, orden de aparición**: redonda, blanca y negra en el curso 1; los
+  silencios de esas tres en el 2; la corchea en el 4, cuando las manos ya van
+  juntas y tiene sentido partir el tiempo; y la semicorchea en el 6, antes del
+  repertorio, sólo para reconocerla. Nada de corcheas antes del curso 4.
 - **El programa Principiante está pensado para adultos**: el texto le habla al
   alumno de tú, no al profesor sobre un niño.
 - Un bloque `referencia` cita **varios métodos a la vez**, porque en clase se
