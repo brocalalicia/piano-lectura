@@ -313,6 +313,8 @@ const FIGURAS = {
 const FIGURAS_Y_ARBOL = { ...FIGURAS, arbol: { figuras: ["redonda", "blanca", "negra"] } };
 
 // Los mismos tres compases, pero callados.
+const MANOS = { manos: true };
+
 const SILENCIOS = {
   compas: "4/4",
   arbol: { silencios: true, figuras: ["redonda", "blanca", "negra"] },
@@ -480,6 +482,7 @@ function teoria(id, titulo, texto, indicaciones, ejemplo, conceptos) {
       texto,
       ...(conceptos ? { conceptos } : {}),
       ...(ejemplo && ejemplo.teclado ? { teclado: ejemplo.teclado } : {}),
+      ...(ejemplo && ejemplo.manos ? { manos: true } : {}),
       ...(ejemplo && ejemplo.arbol ? { arbol: ejemplo.arbol } : {}),
       ...(ejemplo && ejemplo.sistemas ? { compas: ejemplo.compas, sistemas: ejemplo.sistemas } : {}),
     },
@@ -592,6 +595,14 @@ const NIVELES = [
               concepto({ es: "Blanca", fr: "Blanche" }, { es: "Dos tiempos. Hueca y con palo.", fr: "Deux temps. Vide et avec une queue." }),
               concepto({ es: "Negra", fr: "Noire" }, { es: "Un tiempo. Rellena y con palo.", fr: "Un temps. Pleine et avec une queue." }),
               concepto({ es: "Tiempo", fr: "Temps" }, { es: "La unidad del pulso, lo que marcas con el pie o el metrónomo.", fr: "L'unité de la pulsation, ce que tu marques du pied ou au métronome." }),
+            ]),
+          teoria("p1c1-digitacion", { es: "La digitación: qué dedo es cada número", fr: "Le doigté : quel doigt pour chaque numéro" },
+            { es: "Los dedos se numeran del 1 al 5 empezando por el pulgar, y es igual en las dos manos: el pulgar siempre es el 1 y el meñique siempre el 5. Por eso los números van en espejo, y los dos pulgares se encuentran en el centro del teclado. En la partitura, el número pequeño junto a la nota dice con qué dedo tocarla.", fr: "Les doigts se numérotent de 1 à 5 en partant du pouce, et c'est pareil aux deux mains : le pouce est toujours le 1 et l'auriculaire toujours le 5. Les numéros vont donc en miroir, et les deux pouces se rejoignent au centre du clavier. Sur la partition, le petit chiffre à côté de la note indique avec quel doigt la jouer." },
+            { es: ["Que sepas decir el número de cada dedo sin mirar el dibujo.", "Cuidado: no es el orden de izquierda a derecha, es desde el pulgar."], fr: ["Sache dire le numéro de chaque doigt sans regarder le dessin.", "Attention : ce n'est pas l'ordre de gauche à droite, c'est à partir du pouce."] },
+            MANOS,
+            [
+              concepto({ es: "Pulgar, el 1", fr: "Pouce, le 1" }, { es: "En la mano derecha queda a la izquierda; en la izquierda, a la derecha. Los dos hacia el centro.", fr: "À la main droite il est à gauche ; à la main gauche, à droite. Tous deux vers le centre." }),
+              concepto({ es: "Meñique, el 5", fr: "Auriculaire, le 5" }, { es: "El dedo más corto y el más débil: es el que hay que vigilar para que no se hunda.", fr: "Le doigt le plus court et le plus faible : c'est celui qu'il faut surveiller pour qu'il ne s'affaisse pas." }),
             ]),
           referencia("p1c1-ref", { es: "Sentarse, digitación y primeras melodías", fr: "S'asseoir, doigté et premières mélodies" },
             [alfred({ es: "págs. 4-12", fr: "p. 4-12" }), pouillard({ es: "Presentación págs. 4-6 y cap. I pág. 8", fr: "Présentation p. 4-6 et chap. I p. 8" }), chornet({ es: "págs. 7 y 11", fr: "p. 7 et 11" })],

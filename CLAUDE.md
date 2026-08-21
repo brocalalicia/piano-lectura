@@ -89,8 +89,9 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - Cada bloque lleva su etiqueta visible: Teoría, Lectura, Técnica o Método.
 - Los bloques de teoría pueden llevar, además de la explicación, una lista de
   **conceptos con su definición** y una ilustración. La ilustración es un
-  pentagrama dibujado con VexFlow o **un teclado de piano**, que se dibuja
-  aparte porque el renderizador de partituras no sirve para eso.
+  pentagrama dibujado con VexFlow, **un teclado de piano**, **las dos manos con
+  los dedos numerados** o el **árbol de duraciones**. Todo lo que no es
+  notación sobre un pentagrama se dibuja aparte, en SVG.
 - En las partituras, `d` es la digitación y va encima; `t` es el nombre de la
   nota y va debajo; `silencio: true` la convierte en silencio.
 - **Ritmo, orden de aparición**: redonda, blanca y negra en el curso 1; los

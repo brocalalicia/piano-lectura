@@ -92,6 +92,7 @@ const TRADUCCIONES = {
     teoriaTitulo: "Teoría",
     clases: { teoria: "Teoría", dibujada: "Técnica", referencia: "Método", lectura: "Lectura" },
     conceptosTitulo: "Conceptos",
+    manos: { izquierda: "Mano izquierda", derecha: "Mano derecha" },
     nombresFiguras: {
       redonda: ["redonda", "redondas"], blanca: ["blanca", "blancas"], negra: ["negra", "negras"],
       corchea: ["corchea", "corcheas"], semicorchea: ["semicorchea", "semicorcheas"],
@@ -198,6 +199,7 @@ const TRADUCCIONES = {
     teoriaTitulo: "Théorie",
     clases: { teoria: "Théorie", dibujada: "Technique", referencia: "Méthode", lectura: "Lecture" },
     conceptosTitulo: "Notions",
+    manos: { izquierda: "Main gauche", derecha: "Main droite" },
     nombresFiguras: {
       redonda: ["ronde", "rondes"], blanca: ["blanche", "blanches"], negra: ["noire", "noires"],
       corchea: ["croche", "croches"], semicorchea: ["double croche", "doubles croches"],
@@ -1291,6 +1293,133 @@ function dibujarArbolSilencios(contenedor, figuras) {
   ramasYEtiquetasArbol(svg, filas, true);
 }
 
+// Las dos manos vistas desde arriba, con el numero de cada dedo. El pulgar es
+// el 1 en las dos, asi que los numeros van en espejo: es lo que hay que ver.
+const ANCHO_MANO = 150;
+const ALTO_MANO = 200;
+
+function dibujarManos(contenedor) {
+  contenedor.innerHTML = "";
+
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", `0 0 ${ANCHO_MANO * 2 + 40} ${ALTO_MANO}`);
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  svg.style.width = "100%";
+  svg.style.height = "auto";
+
+  // Dedos largos del 2 al 5, medidos sobre la mano derecha.
+  const DEDOS = [
+    { numero: 2, cx: 61, punta: 30, ancho: 19 },
+    { numero: 3, cx: 83, punta: 18, ancho: 20 },
+    { numero: 4, cx: 105, punta: 26, ancho: 19 },
+    { numero: 5, cx: 125, punta: 50, ancho: 17 },
+  ];
+  const PULGAR = { x: 4, y: 100, largo: 50, ancho: 19, giro: -22, pivoteX: 54, pivoteY: 109.5 };
+
+  const girar = (x, y, cx, cy, grados) => {
+    const a = (grados * Math.PI) / 180;
+    const dx = x - cx;
+    const dy = y - cy;
+    return [cx + dx * Math.cos(a) - dy * Math.sin(a), cy + dx * Math.sin(a) + dy * Math.cos(a)];
+  };
+
+  ["izquierda", "derecha"].forEach((mano, indice) => {
+    const base = indice * (ANCHO_MANO + 40);
+    const espejo = mano === "izquierda";
+    // En la izquierda todo se refleja dentro de su propia caja.
+    const ex = (x) => base + (espejo ? ANCHO_MANO - x : x);
+
+    const grupo = document.createElementNS(SVG_NS, "g");
+
+    const palma = document.createElementNS(SVG_NS, "rect");
+    palma.setAttribute("x", ex(espejo ? 137 : 45));
+    palma.setAttribute("y", 82);
+    palma.setAttribute("width", 92);
+    palma.setAttribute("height", 78);
+    palma.setAttribute("rx", 18);
+    palma.setAttribute("fill", "#ffffff");
+    palma.setAttribute("stroke", "#3a322c");
+    palma.setAttribute("stroke-width", 2);
+    grupo.appendChild(palma);
+
+    const numeros = [];
+
+    DEDOS.forEach((dedo) => {
+      const izquierdaDedo = dedo.cx - dedo.ancho / 2;
+      const dedoEl = document.createElementNS(SVG_NS, "rect");
+      dedoEl.setAttribute("x", ex(espejo ? izquierdaDedo + dedo.ancho : izquierdaDedo));
+      dedoEl.setAttribute("y", dedo.punta);
+      dedoEl.setAttribute("width", dedo.ancho);
+      dedoEl.setAttribute("height", 105 - dedo.punta);
+      dedoEl.setAttribute("rx", dedo.ancho / 2);
+      dedoEl.setAttribute("fill", "#ffffff");
+      dedoEl.setAttribute("stroke", "#3a322c");
+      dedoEl.setAttribute("stroke-width", 2);
+      grupo.appendChild(dedoEl);
+
+      numeros.push({ x: ex(dedo.cx), y: dedo.punta + 16, texto: dedo.numero });
+    });
+
+    const pulgar = document.createElementNS(SVG_NS, "rect");
+    pulgar.setAttribute("x", ex(espejo ? PULGAR.x + PULGAR.largo : PULGAR.x));
+    pulgar.setAttribute("y", PULGAR.y);
+    pulgar.setAttribute("width", PULGAR.largo);
+    pulgar.setAttribute("height", PULGAR.ancho);
+    pulgar.setAttribute("rx", PULGAR.ancho / 2);
+    pulgar.setAttribute("fill", "#ffffff");
+    pulgar.setAttribute("stroke", "#3a322c");
+    pulgar.setAttribute("stroke-width", 2);
+    const giro = espejo ? -PULGAR.giro : PULGAR.giro;
+    pulgar.setAttribute("transform", `rotate(${giro} ${ex(PULGAR.pivoteX)} ${PULGAR.pivoteY})`);
+    grupo.appendChild(pulgar);
+
+    // La punta del pulgar es un punto, no un rectangulo: "ex" ya la refleja.
+    const [px, py] = girar(
+      ex(PULGAR.x + 14),
+      PULGAR.y + PULGAR.ancho / 2,
+      ex(PULGAR.pivoteX),
+      PULGAR.pivoteY,
+      giro
+    );
+    numeros.push({ x: px, y: py, texto: 1 });
+
+    numeros.forEach((n) => {
+      const circulo = document.createElementNS(SVG_NS, "circle");
+      circulo.setAttribute("cx", n.x);
+      circulo.setAttribute("cy", n.y);
+      circulo.setAttribute("r", 12);
+      circulo.setAttribute("fill", "var(--color-primario)");
+      grupo.appendChild(circulo);
+
+      const texto = document.createElementNS(SVG_NS, "text");
+      texto.setAttribute("x", n.x);
+      texto.setAttribute("y", n.y + 5);
+      texto.setAttribute("text-anchor", "middle");
+      texto.setAttribute("font-family", "Nunito, sans-serif");
+      texto.setAttribute("font-size", 15);
+      texto.setAttribute("font-weight", 800);
+      texto.setAttribute("fill", "#ffffff");
+      texto.textContent = n.texto;
+      grupo.appendChild(texto);
+    });
+
+    const nombre = document.createElementNS(SVG_NS, "text");
+    nombre.setAttribute("x", base + ANCHO_MANO / 2);
+    nombre.setAttribute("y", ALTO_MANO - 8);
+    nombre.setAttribute("text-anchor", "middle");
+    nombre.setAttribute("font-family", "Nunito, sans-serif");
+    nombre.setAttribute("font-size", 16);
+    nombre.setAttribute("font-weight", 800);
+    nombre.setAttribute("fill", "#3a322c");
+    nombre.textContent = t().manos[mano];
+    grupo.appendChild(nombre);
+
+    svg.appendChild(grupo);
+  });
+
+  contenedor.appendChild(svg);
+}
+
 function renderizarMenuPrograma() {
   programaTituloEl.textContent = t().programaTitulo;
   programaSubtituloEl.textContent = t().programaSubtitulo;
@@ -1468,6 +1597,8 @@ function renderizarPracticaEjercicio() {
     dibujarPartituraEjercicio(caja(), partitura);
   } else if (partitura.teclado) {
     dibujarTeclado(caja(), partitura.teclado);
+  } else if (partitura.manos) {
+    dibujarManos(caja());
   }
 
   if (partitura.arbol) {
