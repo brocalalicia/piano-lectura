@@ -484,6 +484,13 @@ function elegirSiguienteNota() {
 const MARGEN_CLAVE = 22; // lo que sobresale el dibujo de la clave
 const MARGEN_NOTA = 14; // cabeza de la nota y su linea adicional
 
+// El silencio de redonda cuelga de la cuarta linea y el resto se apoyan en la
+// central, contando siempre desde la linea inferior de la clave que sea.
+function alturaSilencio(figura, clef) {
+  const pasos = figura === "w" ? 6 : 4;
+  return notaDeGrado(gradoDeNota(LINEA_INFERIOR[clef]) + pasos).vex;
+}
+
 // Altura a la que cae una nota escrita sobre este pentagrama.
 function yDeNota(pentagrama, vexKey, clef) {
   const pasos = gradoDeNota(vexKey) - gradoDeNota(LINEA_INFERIOR[clef]);
@@ -982,10 +989,9 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
     const notas = sistema.notas.map((nota) => {
       if (nota.barra) return new BarNote();
 
-      // "n" es una nota suelta o, en los acordes, varias a la vez. Los
-      // silencios no llevan altura: se escriben siempre en el mismo sitio.
+      // "n" es una nota suelta o, en los acordes, varias a la vez.
       const staveNote = new StaveNote({
-        keys: nota.silencio ? ["b/4"] : Array.isArray(nota.n) ? nota.n : [nota.n],
+        keys: nota.silencio ? [alturaSilencio(nota.f, sistema.clef)] : Array.isArray(nota.n) ? nota.n : [nota.n],
         duration: nota.silencio ? `${nota.f || "q"}r` : nota.f || "q",
         clef: sistema.clef,
       });
@@ -1238,18 +1244,45 @@ function dibujarArbolSilencios(contenedor, figuras) {
   renderer.resize(ANCHO_ARBOL, filas[filas.length - 1].y + 34);
   const contexto = renderer.getContext();
 
+  const objetivos = [];
+
   filas.forEach((fila) => {
-    // El silencio cae sobre la linea central, asi que el pentagrama se coloca
-    // de forma que esa linea quede a la altura de la fila.
-    const pentagrama = new Stave(IZQUIERDA_ARBOL - 24, fila.y - 60, TREE_ARBOL + 48);
+    // Cada silencio tiene su linea: el de redonda cuelga de ella y el de
+    // blanca se apoya encima. Se coloca el pentagrama (que no se pinta) de
+    // forma que esa linea caiga justo en la altura de la fila.
+    const desdeArriba = fila.figura === "redonda" ? 1 : 2;
+    const pentagrama = new Stave(IZQUIERDA_ARBOL - 24, fila.y - 40 - desdeArriba * 10, TREE_ARBOL + 48);
     const silencios = Array.from({ length: fila.cantidad }, () =>
-      new StaveNote({ keys: ["b/4"], duration: `${DURACION[fila.figura]}r` })
+      new StaveNote({ keys: [alturaSilencio(DURACION[fila.figura], "treble")], duration: `${DURACION[fila.figura]}r` })
     );
     pentagrama.setContext(contexto);
     Formatter.FormatAndDraw(contexto, pentagrama, silencios);
+
+    for (let i = 0; i < fila.cantidad; i += 1) objetivos.push(posicionArbol(fila, i));
   });
 
   const svg = contenedor.querySelector("svg");
+
+  // El formateador reparte los silencios a su manera; se recolocan uno a uno
+  // para que queden centrados bajo su rama.
+  [...svg.querySelectorAll(".vf-stavenote")].forEach((grupo, i) => {
+    const caja = grupo.getBBox();
+    grupo.setAttribute("transform", `translate(${objetivos[i] - (caja.x + caja.width / 2)} 0)`);
+  });
+
+  // La linea de referencia de la que cuelga o sobre la que se apoya la barra.
+  filas.forEach((fila) => {
+    if (fila.figura !== "redonda" && fila.figura !== "blanca") return;
+    for (let i = 0; i < fila.cantidad; i += 1) {
+      const x = posicionArbol(fila, i);
+      const l = document.createElementNS(SVG_NS, "line");
+      l.setAttribute("x1", x - 16); l.setAttribute("y1", fila.y);
+      l.setAttribute("x2", x + 16); l.setAttribute("y2", fila.y);
+      l.setAttribute("stroke", "#3a322c");
+      l.setAttribute("stroke-width", 1.5);
+      svg.appendChild(l);
+    }
+  });
   svg.setAttribute("viewBox", `0 0 ${ANCHO_ARBOL} ${filas[filas.length - 1].y + 34}`);
   svg.removeAttribute("width");
   svg.removeAttribute("height");
@@ -1556,8 +1589,10 @@ function irAPracticaLista(curso, numero) {
 function irAPracticaEjercicio(ejercicio) {
   ejercicioPractica = ejercicio;
   estado = "practica-ejercicio";
-  renderizarPracticaEjercicio();
+  // Se muestra la ficha antes de dibujarla: medir un elemento oculto da cero,
+  // y el arbol de silencios necesita medir para centrarlos.
   actualizarUI();
+  renderizarPracticaEjercicio();
 }
 
 // --- Programa de lectura -------------------------------------------------
