@@ -349,7 +349,7 @@ function primeraFrase(texto) {
   return { es: cortar(texto.es), fr: cortar(texto.fr) };
 }
 
-function teoria(id, titulo, texto, indicaciones, ejemplo) {
+function teoria(id, titulo, texto, indicaciones, ejemplo, conceptos) {
   return {
     id,
     titulo,
@@ -358,9 +358,29 @@ function teoria(id, titulo, texto, indicaciones, ejemplo) {
     partitura: {
       tipo: "teoria",
       texto,
+      ...(conceptos ? { conceptos } : {}),
       ...(ejemplo ? { compas: ejemplo.compas, sistemas: ejemplo.sistemas } : {}),
     },
   };
+}
+
+// Un concepto con su definicion, para el bloque de teoria.
+const concepto = (termino, definicion) => ({ termino, definicion });
+
+// El orden de la clase es siempre el mismo, y sale del metodo de la profesora:
+// primero se lee la nota, despues se situa en el teclado, luego se piensa el
+// dedo y al final el ritmo. Es decir: teoria, lectura, piano y metodos.
+const ORDEN_CLASE = { teoria: 0, lectura: 1, dibujada: 2, referencia: 3 };
+
+function ordenarClase(niveles) {
+  niveles.forEach((nivel) => {
+    nivel.cursos.forEach((curso) => {
+      curso.ejercicios.sort(
+        (a, b) => ORDEN_CLASE[a.partitura.tipo] - ORDEN_CLASE[b.partitura.tipo]
+      );
+    });
+  });
+  return niveles;
 }
 
 // Manda al otro programa de la app, al nivel de lectura que toca ese curso.
@@ -391,7 +411,7 @@ function referencia(id, titulo, fuentes, detalle, indicaciones) {
 
 const CURSO_PENDIENTE = { ejercicios: [] };
 
-export const NIVELES_PRACTICA = [
+const NIVELES = [
   {
     id: "principiante1",
     nombre: { es: "Principiante 1", fr: "Débutant 1" },
@@ -415,13 +435,34 @@ export const NIVELES_PRACTICA = [
             { es: "Lo mismo con la izquierda, que empieza por el meñique.", fr: "La même chose à gauche, qui commence par l'auriculaire." },
             { es: ["El 5 tiende a hundirse: mantenlo curvo.", "Fíjate en que ya estás leyendo en clave de fa."], fr: ["Le 5 a tendance à s'affaisser : garde-le arrondi.", "Remarque que tu lis déjà en clé de fa."] },
             CINCO_DEDOS_REDONDAS_MI),
-          teoria("p1c1-teclado", { es: "El teclado: encontrar el do", fr: "Le clavier : trouver le do" },
-            { es: "Las teclas negras van en grupos de dos y de tres. El do está siempre a la izquierda del grupo de dos.", fr: "Les touches noires vont par groupes de deux et de trois. Le do est toujours à gauche du groupe de deux." },
-            { es: ["Busca todos los do del piano sin contar.", "Después, todos los fa: a la izquierda del grupo de tres."], fr: ["Trouve tous les do du piano sans compter.", "Ensuite tous les fa : à gauche du groupe de trois."] }),
+          teoria("p1c1-pentagrama", { es: "El pentagrama y las notas de do a sol", fr: "La portée et les notes de do à sol" },
+            { es: "La música se escribe sobre cinco líneas y cuatro espacios: el pentagrama. La clave de sol, al principio, fija que la segunda línea es el sol, y a partir de ahí se cuenta todo lo demás pasando de línea a espacio. Tus cinco primeras notas son do, re, mi, fa y sol: el do va en una línea adicional por debajo del pentagrama y el sol en la segunda línea.", fr: "La musique s'écrit sur cinq lignes et quatre espaces : la portée. La clé de sol, au début, fixe que la deuxième ligne est le sol, et tout le reste se compte à partir de là en passant de ligne en espace. Tes cinq premières notes sont do, ré, mi, fa et sol : le do est sur une ligne supplémentaire sous la portée et le sol sur la deuxième ligne." },
+            { es: ["Señala el sol en el papel antes de leer nada más.", "Sube y baja nombrando las notas en voz alta, sin tocar."], fr: ["Montre le sol sur le papier avant de lire autre chose.", "Monte et descends en nommant les notes à voix haute, sans jouer."] },
+            null,
+            [
+              concepto({ es: "Pentagrama", fr: "Portée" }, { es: "Las cinco líneas y los cuatro espacios sobre los que se escribe la música.", fr: "Les cinq lignes et les quatre espaces sur lesquels s'écrit la musique." }),
+              concepto({ es: "Clave de sol", fr: "Clé de sol" }, { es: "El signo del principio, que fija que la segunda línea es el sol.", fr: "Le signe du début, qui fixe que la deuxième ligne est le sol." }),
+              concepto({ es: "Línea adicional", fr: "Ligne supplémentaire" }, { es: "Una línea corta que se añade para las notas que no caben en el pentagrama, como el do central.", fr: "Une petite ligne ajoutée pour les notes qui ne tiennent pas sur la portée, comme le do central." }),
+              concepto({ es: "Grado conjunto", fr: "Degré conjoint" }, { es: "Pasar de una línea al espacio siguiente, sin saltarse ninguna nota: do, re, mi, fa, sol.", fr: "Passer d'une ligne à l'espace suivant, sans sauter de note : do, ré, mi, fa, sol." }),
+            ]),
+          teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au clavier" },
+            { es: "Cada nota escrita es una tecla concreta. El do central está a la izquierda del grupo de dos teclas negras, hacia la mitad del piano; re, mi, fa y sol son las cuatro teclas blancas siguientes hacia la derecha. El orden es siempre el mismo: lee la nota, dila en voz alta y sólo entonces búscala en el teclado.", fr: "Chaque note écrite est une touche précise. Le do central est à gauche du groupe de deux touches noires, vers le milieu du piano ; ré, mi, fa et sol sont les quatre touches blanches suivantes vers la droite. L'ordre est toujours le même : lis la note, dis-la à voix haute et cherche-la ensuite sur le clavier." },
+            { es: ["Busca todos los do del piano sin contar.", "Después, todos los fa: a la izquierda del grupo de tres."], fr: ["Trouve tous les do du piano sans compter.", "Ensuite tous les fa : à gauche du groupe de trois."] },
+            null,
+            [
+              concepto({ es: "Do central", fr: "Do central" }, { es: "El do que queda hacia el centro del piano, a la izquierda de un grupo de dos teclas negras.", fr: "Le do situé vers le centre du piano, à gauche d'un groupe de deux touches noires." }),
+              concepto({ es: "Teclas negras", fr: "Touches noires" }, { es: "Van en grupos de dos y de tres, y sirven para orientarse sin contar desde el extremo.", fr: "Elles vont par groupes de deux et de trois, et servent à se repérer sans compter depuis le bout." }),
+            ]),
           teoria("p1c1-figuras", { es: "Redonda, blanca y negra", fr: "Ronde, blanche et noire" },
             { es: "La redonda dura cuatro tiempos, la blanca dos y la negra uno. Los tres compases del ejemplo duran lo mismo.", fr: "La ronde dure quatre temps, la blanche deux et la noire un. Les trois mesures de l'exemple durent la même chose." },
-            { es: ["Dar palmas contando en voz alta antes de tocarlo.", "Hoy sólo redondas; las negras llegan en el curso 2."], fr: ["Frapper dans les mains en comptant à voix haute avant de jouer.", "Aujourd'hui seulement des rondes ; les noires arrivent au cours 2."] },
-            FIGURAS),
+            { es: ["Da palmas contando en voz alta antes de tocarlo.", "Hoy sólo redondas; las negras llegan en el curso 2."], fr: ["Frappe dans les mains en comptant à voix haute avant de jouer.", "Aujourd'hui seulement des rondes ; les noires arrivent au cours 2."] },
+            FIGURAS,
+            [
+              concepto({ es: "Redonda", fr: "Ronde" }, { es: "Cuatro tiempos. Se escribe hueca y sin palo.", fr: "Quatre temps. Elle s'écrit vide et sans queue." }),
+              concepto({ es: "Blanca", fr: "Blanche" }, { es: "Dos tiempos. Hueca y con palo.", fr: "Deux temps. Vide et avec une queue." }),
+              concepto({ es: "Negra", fr: "Noire" }, { es: "Un tiempo. Rellena y con palo.", fr: "Un temps. Pleine et avec une queue." }),
+              concepto({ es: "Tiempo", fr: "Temps" }, { es: "La unidad del pulso, lo que marcas con el pie o el metrónomo.", fr: "L'unité de la pulsation, ce que tu marques du pied ou au métronome." }),
+            ]),
           referencia("p1c1-ref", { es: "Sentarse, digitación y primeras melodías", fr: "S'asseoir, doigté et premières mélodies" },
             [alfred({ es: "págs. 4-12", fr: "p. 4-12" }), pouillard({ es: "Presentación págs. 4-6 y cap. I pág. 8", fr: "Présentation p. 4-6 et chap. I p. 8" }), chornet({ es: "págs. 7 y 11", fr: "p. 7 et 11" })],
             { es: "Ejercicios preliminares, cómo sentarse, los números de los dedos, el teclado y la posición de do de la derecha.", fr: "Position du corps et de la main, les numéros des doigts et les mélodies à 2, 3 et 4 doigts." },
@@ -451,9 +492,9 @@ export const NIVELES_PRACTICA = [
             { es: "Saltar un dedo sin que la mano se mueva de sitio.", fr: "Sauter un doigt sans que la main bouge de place." },
             { es: ["Los dedos que no tocan se quedan sobre sus teclas.", "El salto se prepara antes, no en el último momento."], fr: ["Les doigts qui ne jouent pas restent sur leurs touches.", "Le saut se prépare à l'avance, pas au dernier moment."] },
             TERCERAS_MD),
-          teoria("p1c2-compas", { es: "El compás y el pentagrama", fr: "La mesure et la portée" },
-            { es: "La barra vertical corta la música en compases iguales y el 4/4 dice que caben cuatro negras. En el pentagrama, la clave de sol marca que la segunda línea es el sol.", fr: "La barre verticale coupe la musique en mesures égales et le 4/4 dit que quatre noires y tiennent. Sur la portée, la clé de sol indique que la deuxième ligne est le sol." },
-            { es: ["Cuenta 1-2-3-4 en cada compás mientras tocas.", "Señala el sol en el papel antes de leer nada."], fr: ["Compte 1-2-3-4 dans chaque mesure en jouant.", "Montre le sol sur le papier avant de lire quoi que ce soit."] }),
+          teoria("p1c2-compas", { es: "El compás y la barra de compás", fr: "La mesure et la barre de mesure" },
+            { es: "La barra vertical corta la música en compases iguales, y el 4/4 del principio dice que en cada uno caben cuatro negras. El primer tiempo de cada compás pesa un poco más que los otros: es lo que hace que la música se sienta ordenada.", fr: "La barre verticale coupe la musique en mesures égales, et le 4/4 du début dit que quatre noires tiennent dans chacune. Le premier temps de chaque mesure pèse un peu plus que les autres : c'est ce qui rend la musique ordonnée." },
+            { es: ["Cuenta 1-2-3-4 en cada compás mientras tocas.", "Marca el primer tiempo con el pie mientras tocas."], fr: ["Compte 1-2-3-4 dans chaque mesure en jouant.", "Marque le premier temps du pied en jouant."] }),
           referencia("p1c2-ref", { es: "Legato, matices y fraseo", fr: "Legato, nuances et phrasé" },
             [alfred({ es: "págs. 13-17", fr: "p. 13-17" }), pouillard({ es: "cap. I págs. 9-13", fr: "chap. I p. 9-13" }), chornet({ es: "págs. 22 y 29", fr: "p. 22 et 29" })],
             { es: "Negras, blancas y redonda, el compás y la clave de sol, con Ode to Joy y Aura Lee.", fr: "La préparation au legato, lier pour de bon et les premières indications de nuance." },
@@ -665,3 +706,5 @@ export const NIVELES_PRACTICA = [
              CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE],
   },
 ];
+
+export const NIVELES_PRACTICA = ordenarClase(NIVELES);

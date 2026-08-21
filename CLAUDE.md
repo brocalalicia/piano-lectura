@@ -79,6 +79,14 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   ejemplo dibujado si ayuda), `referencia` (dónde mirarlo en los métodos de la
   profesora, con página impresa y sin copiar nada) y `lectura` (manda al
   programa de Lectura de la propia app, a la clave y nivel que toca ese curso).
+- **El orden de los bloques dentro de un curso no se toca a mano**: lo impone
+  `ordenarClase()` en `programa.js`, y sale del método de la profesora —
+  primero se lee la nota, después se sitúa en el teclado, luego se piensa el
+  dedo y al final el ritmo. Es decir: **teoría → lectura → piano → métodos**.
+  Un curso empieza por teoría y acaba en el piano, nunca al revés.
+- Cada bloque lleva su etiqueta visible: Teoría, Lectura, Técnica o Método.
+- Los bloques de teoría pueden llevar, además de la explicación, una lista de
+  **conceptos con su definición**, y un ejemplo dibujado.
 - **El programa Principiante está pensado para adultos**: el texto le habla al
   alumno de tú, no al profesor sobre un niño.
 - Un bloque `referencia` cita **varios métodos a la vez**, porque en clase se

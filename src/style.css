@@ -333,6 +333,50 @@ body {
   gap: 3px;
 }
 
+.ejercicio-cabecera {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Etiqueta de que tipo de bloque es: teoria, tecnica, lectura o metodo. */
+.ejercicio-clase {
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-tarjeta);
+  background: var(--color-texto-tenue);
+  white-space: nowrap;
+}
+
+.clase-teoria { background: #6a7f9c; }
+.clase-dibujada { background: var(--color-primario); }
+.clase-lectura { background: #4f9a72; }
+.clase-referencia { background: #a3846a; }
+
+#ejercicio-teoria h3 {
+  margin: 16px 0 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+#ejercicio-teoria dl {
+  margin: 0;
+}
+
+#ejercicio-teoria dt {
+  font-weight: 800;
+  color: var(--color-texto);
+}
+
+#ejercicio-teoria dd {
+  margin: 2px 0 10px;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.5;
+}
+
 .ejercicio-nombre {
   font-size: 1rem;
   font-weight: 800;

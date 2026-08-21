@@ -90,6 +90,8 @@ const TRADUCCIONES = {
     practicaCuentaCursos: (n) => `${n} de 8 cursos preparados`,
     referenciaEn: "En tu método",
     teoriaTitulo: "Teoría",
+    clases: { teoria: "Teoría", dibujada: "Técnica", referencia: "Método", lectura: "Lectura" },
+    conceptosTitulo: "Conceptos",
     irALectura: "Practicar en Lectura",
     lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
     comoTrabajarlo: "Cómo trabajarlo",
@@ -181,6 +183,8 @@ const TRADUCCIONES = {
     practicaCuentaCursos: (n) => `${n} cours sur 8 préparés`,
     referenciaEn: "Dans ta méthode",
     teoriaTitulo: "Théorie",
+    clases: { teoria: "Théorie", dibujada: "Technique", referencia: "Méthode", lectura: "Lecture" },
+    conceptosTitulo: "Notions",
     irALectura: "S'entraîner en Lecture",
     lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
     comoTrabajarlo: "Comment le travailler",
@@ -296,6 +300,7 @@ const practicaListaObjetivoEl = document.getElementById("practica-lista-objetivo
 const practicaListaEjerciciosEl = document.getElementById("practica-lista-ejercicios");
 const practicaEjercicioEl = document.getElementById("practica-ejercicio");
 const ejercicioTituloEl = document.getElementById("ejercicio-titulo");
+const ejercicioClaseEl = document.getElementById("ejercicio-clase");
 const ejercicioObjetivoEl = document.getElementById("ejercicio-objetivo");
 const ejercicioPartituraEl = document.getElementById("ejercicio-partitura");
 const ejercicioReferenciaEl = document.getElementById("ejercicio-referencia");
@@ -1096,10 +1101,21 @@ function renderizarPracticaLista() {
     const texto = document.createElement("span");
     texto.className = "ejercicio-texto";
 
+    const cabecera = document.createElement("span");
+    cabecera.className = "ejercicio-cabecera";
+
     const titulo = document.createElement("span");
     titulo.className = "ejercicio-nombre";
     titulo.textContent = txt(ejercicio.titulo);
-    texto.appendChild(titulo);
+    cabecera.appendChild(titulo);
+
+    // Que se vea de un vistazo si toca teoria, piano, lectura o metodo.
+    const clase = document.createElement("span");
+    clase.className = `ejercicio-clase clase-${ejercicio.partitura.tipo}`;
+    clase.textContent = t().clases[ejercicio.partitura.tipo];
+    cabecera.appendChild(clase);
+
+    texto.appendChild(cabecera);
 
     const objetivo = document.createElement("span");
     objetivo.className = "ejercicio-objetivo";
@@ -1123,6 +1139,8 @@ function renderizarPracticaEjercicio() {
 
   const partitura = ejercicioPractica.partitura;
   ejercicioTituloEl.textContent = txt(ejercicioPractica.titulo);
+  ejercicioClaseEl.className = `ejercicio-clase clase-${partitura.tipo}`;
+  ejercicioClaseEl.textContent = t().clases[partitura.tipo];
   ejercicioObjetivoEl.textContent = txt(ejercicioPractica.objetivo);
 
   ejercicioPartituraEl.innerHTML = "";
@@ -1143,6 +1161,24 @@ function renderizarPracticaEjercicio() {
     const texto = document.createElement("p");
     texto.textContent = txt(partitura.texto);
     ejercicioTeoriaEl.appendChild(texto);
+
+    if (partitura.conceptos) {
+      const titulo = document.createElement("h3");
+      titulo.textContent = t().conceptosTitulo;
+      ejercicioTeoriaEl.appendChild(titulo);
+
+      const lista = document.createElement("dl");
+      partitura.conceptos.forEach((entrada) => {
+        const termino = document.createElement("dt");
+        termino.textContent = txt(entrada.termino);
+        lista.appendChild(termino);
+
+        const definicion = document.createElement("dd");
+        definicion.textContent = txt(entrada.definicion);
+        lista.appendChild(definicion);
+      });
+      ejercicioTeoriaEl.appendChild(lista);
+    }
   } else if (partitura.tipo === "lectura") {
     const clave = CLAVES.find((c) => c.id === partitura.clave);
     const nivel = clave.niveles.find((n) => n.id === partitura.nivel);
