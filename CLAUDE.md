@@ -93,6 +93,11 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   pentagrama dibujado con VexFlow, **un teclado de piano**, **las dos manos con
   los dedos numerados** o el **árbol de duraciones**. Todo lo que no es
   notación sobre un pentagrama se dibuja aparte, en SVG.
+- **Toda la técnica se practica con las dos manos**: cada ejercicio lleva los
+  dos pentagramas, no hay fichas de una sola mano. Se juntan con `aDosManos()`,
+  y los dos sistemas deben tener el **mismo número de figuras** o no quedan
+  alineados. En los primeros cursos las indicaciones dicen que se toque una
+  mano y después la otra; juntas llegan en el curso 3.
 - En las partituras, `d` es la digitación y va encima; `t` es el nombre de la
   nota y va debajo; `silencio: true` la convierte en silencio.
 - **Ritmo, orden de aparición**: redonda, blanca y negra en el curso 1; los

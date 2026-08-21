@@ -445,6 +445,226 @@ const DOS_NOTAS = {
   ],
 };
 
+
+// --- Las dos manos en una sola ficha -------------------------------------
+//
+// Toda la tecnica se practica con las dos manos, asi que cada ejercicio lleva
+// los dos pentagramas. Primero una mano, despues la otra y, cuando las dos
+// salgan, juntas. Los dos sistemas tienen que llevar el mismo numero de
+// figuras, o no quedan alineados.
+function aDosManos(derecha, izquierda) {
+  return { ...derecha, sistemas: [derecha.sistemas[0], izquierda.sistemas[0]] };
+}
+
+const TOCAR_Y_CALLAR_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5" }, { silencio: true }, { n: "d/3", d: "4" }, { silencio: true },
+        { barra: true },
+        { n: "e/3", d: "3" }, { silencio: true }, { n: "f/3", d: "2" }, { silencio: true },
+        { barra: true },
+        { n: "g/3", d: "1", f: "h" }, { silencio: true, f: "h" },
+      ],
+    },
+  ],
+};
+
+const SILENCIO_LARGO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "h" }, { silencio: true, f: "h" },
+        { barra: true },
+        { n: "e/3", d: "3", f: "h" }, { silencio: true, f: "h" },
+        { barra: true },
+        { n: "g/3", d: "1", f: "h" }, { silencio: true, f: "h" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+const BLANCAS_Y_NEGRAS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "h" }, { n: "d/3", d: "4", f: "h" },
+        { barra: true },
+        { n: "e/3", d: "3" }, { n: "f/3", d: "2" }, { n: "g/3", d: "1", f: "h" },
+        { barra: true },
+        { n: "g/3", d: "1" }, { n: "f/3", d: "2" }, { n: "e/3", d: "3" }, { n: "d/3", d: "4" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+const DOS_NOTAS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: ["c/3", "e/3"], d: "5-3", f: "h" }, { n: ["d/3", "f/3"], d: "4-2", f: "h" },
+        { barra: true },
+        { n: ["e/3", "g/3"], d: "3-1", f: "h" }, { n: ["c/3", "e/3"], d: "5-3", f: "h" },
+      ],
+    },
+  ],
+};
+
+const ARPEGIO_DO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5" }, { n: "e/3", d: "3" }, { n: "g/3", d: "2" }, { n: "c/4", d: "1" },
+        { barra: true },
+        { n: "g/3", d: "2" }, { n: "e/3", d: "3" }, { n: "c/3", d: "5", f: "h" },
+      ],
+    },
+  ],
+};
+
+const ACORDES_TRES_SONIDOS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: ["c/3", "e/3", "g/3"], d: "5-3-1", f: "w" },
+        { barra: true },
+        { n: ["f/3", "a/3", "c/4"], d: "5-3-1", f: "w" },
+        { barra: true },
+        { n: ["g/3", "b/3", "d/4"], d: "5-3-1", f: "w" },
+        { barra: true },
+        { n: ["c/3", "e/3", "g/3"], d: "5-3-1", f: "w" },
+      ],
+    },
+  ],
+};
+
+// --- Ejercicios nuevos de los cursos avanzados ---------------------------
+
+// La misma posicion, trasladada al sol: sacar la mano del do.
+const POSICION_SOL = aDosManos(
+  {
+    tipo: "dibujada",
+    compas: "4/4",
+    sistemas: [
+      {
+        clef: "treble",
+        notas: [
+          { n: "g/4", d: "1" }, { n: "a/4", d: "2" }, { n: "b/4", d: "3" }, { n: "c/5", d: "4" },
+          { barra: true },
+          { n: "d/5", d: "5" }, { n: "c/5", d: "4" }, { n: "b/4", d: "3" }, { n: "a/4", d: "2" },
+          { barra: true },
+          { n: "g/4", d: "1", f: "w" },
+        ],
+      },
+    ],
+  },
+  {
+    sistemas: [
+      {
+        clef: "bass",
+        notas: [
+          { n: "g/2", d: "5" }, { n: "a/2", d: "4" }, { n: "b/2", d: "3" }, { n: "c/3", d: "2" },
+          { barra: true },
+          { n: "d/3", d: "1" }, { n: "c/3", d: "2" }, { n: "b/2", d: "3" }, { n: "a/2", d: "4" },
+          { barra: true },
+          { n: "g/2", d: "5", f: "w" },
+        ],
+      },
+    ],
+  }
+);
+
+// Las manos empiezan separadas y se juntan en el do central.
+const CONTRARIO_HACIA_DENTRO = aDosManos(
+  {
+    tipo: "dibujada",
+    compas: "4/4",
+    sistemas: [
+      {
+        clef: "treble",
+        notas: [
+          { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3" }, { n: "d/4", d: "2" },
+          { barra: true },
+          { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
+          { barra: true },
+          { n: "g/4", d: "5", f: "w" },
+        ],
+      },
+    ],
+  },
+  {
+    sistemas: [
+      {
+        clef: "bass",
+        notas: [
+          { n: "f/3", d: "5" }, { n: "g/3", d: "4" }, { n: "a/3", d: "3" }, { n: "b/3", d: "2" },
+          { barra: true },
+          { n: "c/4", d: "1" }, { n: "b/3", d: "2" }, { n: "a/3", d: "3" }, { n: "g/3", d: "4" },
+          { barra: true },
+          { n: "f/3", d: "5", f: "w" },
+        ],
+      },
+    ],
+  }
+);
+
+// El pulgar pasa por debajo en la derecha; en la izquierda cruza el 3.
+const PREPARACION_PULGAR = aDosManos(
+  {
+    tipo: "dibujada",
+    compas: "4/4",
+    sistemas: [
+      {
+        clef: "treble",
+        notas: [
+          { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "1" },
+          { barra: true },
+          { n: "f/4", d: "1" }, { n: "e/4", d: "3" }, { n: "d/4", d: "2" }, { n: "c/4", d: "1" },
+          { barra: true },
+          { n: "c/4", d: "1", f: "w" },
+        ],
+      },
+    ],
+  },
+  {
+    sistemas: [
+      {
+        clef: "bass",
+        notas: [
+          { n: "g/3", d: "1" }, { n: "a/3", d: "3" }, { n: "b/3", d: "2" }, { n: "c/4", d: "1" },
+          { barra: true },
+          { n: "c/4", d: "1" }, { n: "b/3", d: "2" }, { n: "a/3", d: "3" }, { n: "g/3", d: "1" },
+          { barra: true },
+          { n: "g/3", d: "1", f: "w" },
+        ],
+      },
+    ],
+  }
+);
+
+// --- Las de una mano, ya unificadas --------------------------------------
+const CINCO_DEDOS_REDONDAS = aDosManos(CINCO_DEDOS_REDONDAS_MD, CINCO_DEDOS_REDONDAS_MI);
+const CINCO_DEDOS_NEGRAS = aDosManos(CINCO_DEDOS_DERECHA, CINCO_DEDOS_IZQUIERDA);
+const NOTAS_REPETIDAS_DOS = aDosManos(NOTAS_REPETIDAS, NOTAS_REPETIDAS_MI);
+const TERCERAS = aDosManos(TERCERAS_MD, TERCERAS_MI);
+const BLANCAS_Y_NEGRAS = aDosManos(BLANCAS_Y_NEGRAS_MD, BLANCAS_Y_NEGRAS_MI);
+const TOCAR_Y_CALLAR_DOS = aDosManos(TOCAR_Y_CALLAR, TOCAR_Y_CALLAR_MI);
+const SILENCIO_LARGO_DOS = aDosManos(SILENCIO_LARGO, SILENCIO_LARGO_MI);
+const DOS_NOTAS_DOS = aDosManos(DOS_NOTAS, DOS_NOTAS_MI);
+const ESCALA_DO = aDosManos(ESCALA_DO_DERECHA, ESCALA_DO_IZQUIERDA);
+const ARPEGIO_DO_DOS = aDosManos(ARPEGIO_DO, ARPEGIO_DO_MI);
+const ACORDES_DOS = aDosManos(ACORDES_TRES_SONIDOS, ACORDES_TRES_SONIDOS_MI);
+
 // --- Ilustraciones de teoria -------------------------------------------
 
 // Las cinco primeras notas sobre el pentagrama, con su nombre debajo.
@@ -625,22 +845,18 @@ const NIVELES = [
           fr: "Se placer, trouver le do, jouer les cinq doigts et lire ses premières notes.",
         },
         ejercicios: [
-          ejercicio("p1c1-md", { es: "Cinco dedos en redondas, mano derecha", fr: "Cinq doigts en rondes, main droite" },
+          ejercicio("p1c1-md", { es: "Cinco dedos en redondas", fr: "Cinq doigts en rondes" },
             { es: "Una nota por compás: tiempo de sobra para colocar el dedo y escuchar.", fr: "Une note par mesure : tout le temps de placer le doigt et d'écouter." },
-            { es: ["Cuenta cuatro en cada nota, en voz alta.", "Dedos curvos y muñeca a la altura de los nudillos."], fr: ["Compte quatre sur chaque note, à voix haute.", "Doigts arrondis et poignet à hauteur des articulations."] },
-            CINCO_DEDOS_REDONDAS_MD),
-          ejercicio("p1c1-mi", { es: "Cinco dedos en redondas, mano izquierda", fr: "Cinq doigts en rondes, main gauche" },
-            { es: "Lo mismo con la izquierda, que empieza por el meñique.", fr: "La même chose à gauche, qui commence par l'auriculaire." },
-            { es: ["El 5 tiende a hundirse: mantenlo curvo.", "Fíjate en que ya estás leyendo en clave de fa."], fr: ["Le 5 a tendance à s'affaisser : garde-le arrondi.", "Remarque que tu lis déjà en clé de fa."] },
-            CINCO_DEDOS_REDONDAS_MI),
-          ejercicio("p1c1-negras", { es: "Cinco dedos en negras, mano derecha", fr: "Cinq doigts en noires, main droite" },
+            { es: ["Primero la mano derecha, después la izquierda. Todavía no a la vez.", "Cuenta cuatro en cada nota, en voz alta, y dedos curvos."], fr: ["D'abord la main droite, ensuite la gauche. Pas encore ensemble.", "Compte quatre sur chaque note, à voix haute, et garde les doigts arrondis."] },
+            CINCO_DEDOS_REDONDAS),
+          ejercicio("p1c1-negras", { es: "Cinco dedos en negras", fr: "Cinq doigts en noires" },
             { es: "Subir y bajar sin parar entre nota y nota.", fr: "Monter et descendre sans s'arrêter entre les notes." },
-            { es: ["Metrónomo a 60, una negra por clic.", "Después, lo mismo con la izquierda."], fr: ["Métronome à 60, une noire par clic.", "Ensuite, la même chose à gauche."] },
-            CINCO_DEDOS_DERECHA),
+            { es: ["Metrónomo a 60, una negra por clic.", "Una mano y después la otra, a la misma velocidad las dos."], fr: ["Métronome à 60, une noire par clic.", "Une main puis l'autre, à la même vitesse toutes les deux."] },
+            CINCO_DEDOS_NEGRAS),
           ejercicio("p1c1-repetidas", { es: "Notas repetidas", fr: "Notes répétées" },
             { es: "Que el sonido salga del dedo y no del brazo.", fr: "Que le son vienne du doigt et non du bras." },
             { es: ["El brazo se queda quieto; sólo se mueve el dedo.", "Las dos notas iguales tienen que sonar iguales."], fr: ["Le bras reste immobile ; seul le doigt bouge.", "Les deux notes identiques doivent sonner pareil."] },
-            NOTAS_REPETIDAS),
+            NOTAS_REPETIDAS_DOS),
           teoria("p1c1-pentagrama", { es: "El pentagrama y las notas de do a sol", fr: "La portée et les notes de do à sol" },
             { es: "La música se escribe sobre cinco líneas y cuatro espacios: el pentagrama. La clave de sol, al principio, fija que la segunda línea es el sol, y a partir de ahí se cuenta todo lo demás pasando de línea a espacio. Tus cinco primeras notas son do, re, mi, fa y sol: el do va en una línea adicional por debajo del pentagrama y el sol en la segunda línea.", fr: "La musique s'écrit sur cinq lignes et quatre espaces : la portée. La clé de sol, au début, fixe que la deuxième ligne est le sol, et tout le reste se compte à partir de là en passant de ligne en espace. Tes cinq premières notes sont do, ré, mi, fa et sol : le do est sur une ligne supplémentaire sous la portée et le sol sur la deuxième ligne." },
             { es: ["Señala el sol en el papel antes de leer nada más.", "Sube y baja nombrando las notas en voz alta, sin tocar."], fr: ["Montre le sol sur le papier avant de lire autre chose.", "Monte et descends en nommant les notes à voix haute, sans jouer."] },
@@ -710,11 +926,11 @@ const NIVELES = [
           ejercicio("p1c2-callar", { es: "Tocar y callar", fr: "Jouer et se taire" },
             { es: "Levantar el dedo justo a tiempo: el silencio dura tanto como la nota.", fr: "Lever le doigt juste à temps : le silence dure autant que la note." },
             { es: ["Cuenta 1-2-3-4 en voz alta y no dejes de contar en el silencio.", "El dedo se levanta en el tiempo, no antes ni después."], fr: ["Compte 1-2-3-4 à voix haute et ne t'arrête pas de compter pendant le silence.", "Le doigt se lève sur le temps, ni avant ni après."] },
-            TOCAR_Y_CALLAR),
+            TOCAR_Y_CALLAR_DOS),
           ejercicio("p1c2-silencio-largo", { es: "El silencio de blanca", fr: "Le silence de blanche" },
             { es: "Aguantar dos tiempos callado sin adelantar la entrada siguiente.", fr: "Tenir deux temps de silence sans anticiper l'entrée suivante." },
             { es: ["Es más difícil callar dos tiempos que uno: sigue contando.", "La mano se queda quieta sobre las teclas mientras callas."], fr: ["Il est plus difficile de se taire deux temps qu'un : continue de compter.", "La main reste immobile sur les touches pendant le silence."] },
-            SILENCIO_LARGO),
+            SILENCIO_LARGO_DOS),
           ejercicio("p1c2-alternas", { es: "Manos alternas", fr: "Mains alternées" },
             { es: "Mientras una mano toca, la otra calla: el primer reparto entre las dos.", fr: "Pendant qu'une main joue, l'autre se tait : le premier partage entre les deux." },
             { es: ["La mano que calla se queda preparada sobre sus teclas.", "El paso de una mano a otra no puede notarse: sin hueco ni tropiezo."], fr: ["La main qui se tait reste prête sur ses touches.", "Le passage d'une main à l'autre ne doit pas s'entendre : sans trou ni accroc."] },
@@ -722,7 +938,7 @@ const NIVELES = [
           ejercicio("p1c2-terceras", { es: "Terceras", fr: "Tierces" },
             { es: "Saltar un dedo sin que la mano se mueva de sitio.", fr: "Sauter un doigt sans que la main bouge de place." },
             { es: ["Los dedos que no tocan se quedan sobre sus teclas.", "El salto se prepara antes, no en el último momento."], fr: ["Les doigts qui ne jouent pas restent sur leurs touches.", "Le saut se prépare à l'avance, pas au dernier moment."] },
-            TERCERAS_MD),
+            TERCERAS),
           referencia("p1c2-ref", { es: "Legato, matices y fraseo", fr: "Legato, nuances et phrasé" },
             [alfred({ es: "págs. 13-17", fr: "p. 13-17" }), pouillard({ es: "cap. I págs. 9-13", fr: "chap. I p. 9-13" }), chornet({ es: "págs. 17, 22 y 29", fr: "p. 17, 22 et 29" })],
             { es: "Negras, blancas y redonda, el compás y la clave de sol, con Ode to Joy y Aura Lee.", fr: "La préparation au legato, lier pour de bon et les premières indications de nuance." },
@@ -740,14 +956,6 @@ const NIVELES = [
           fr: "Les deux mains à la fois, et lire la main gauche dans sa propre clé.",
         },
         ejercicios: [
-          ejercicio("p1c3-mi", { es: "Cinco dedos en negras, mano izquierda", fr: "Cinq doigts en noires, main gauche" },
-            { es: "Poner la izquierda a la altura de la derecha antes de juntarlas.", fr: "Mettre la gauche au niveau de la droite avant de les réunir." },
-            { es: ["No la dejes ir más lenta que la derecha.", "Mira que el pulgar no se despegue del teclado."], fr: ["Ne la laisse pas aller plus lentement que la droite.", "Veille à ce que le pouce ne quitte pas le clavier."] },
-            CINCO_DEDOS_IZQUIERDA),
-          ejercicio("p1c3-repetidas", { es: "Notas repetidas, mano izquierda", fr: "Notes répétées, main gauche" },
-            { es: "Igualar los dedos de la izquierda, donde cuesta más.", fr: "Égaliser les doigts de la gauche, où c'est plus difficile." },
-            { es: ["El 5 y el 4 son los que se quedan atrás."], fr: ["Le 5 et le 4 sont ceux qui restent en arrière."] },
-            NOTAS_REPETIDAS_MI),
           ejercicio("p1c3-paralelo", { es: "Manos juntas en paralelo", fr: "Mains ensemble en parallèle" },
             { es: "Coordinar las dos manos tocando lo mismo a la vez.", fr: "Coordonner les deux mains en jouant la même chose en même temps." },
             { es: ["Los dedos van cruzados: el 1 con el 5, el 2 con el 4.", "Si una mano se adelanta, vuelve a manos separadas."], fr: ["Les doigts vont croisés : le 1 avec le 5, le 2 avec le 4.", "Si une main prend de l'avance, reviens aux mains séparées."] },
@@ -756,6 +964,14 @@ const NIVELES = [
             { es: "La mano izquierda se escribe en clave de fa, donde la cuarta línea es el fa. El do central queda justo encima del pentagrama, en su línea adicional.", fr: "La main gauche s'écrit en clé de fa, où la quatrième ligne est le fa. Le do central se place juste au-dessus de la portée, sur sa ligne supplémentaire." },
             { es: ["La llevas viendo desde el primer día en tus ejercicios.", "El do central es una sola tecla, escrita de dos maneras."], fr: ["Tu la vois depuis le premier jour dans tes exercices.", "Le do central est une seule touche, écrite de deux façons."] },
             DO_CENTRAL_DOS_CLAVES),
+          ejercicio("p1c3-blancasnegras", { es: "Manos juntas: blancas y negras", fr: "Mains ensemble : blanches et noires" },
+            { es: "Juntar las manos cuando las figuras no son todas iguales.", fr: "Réunir les mains quand les figures ne sont pas toutes égales." },
+            { es: ["Cuenta en voz alta: la blanca dura dos y no se suelta antes.", "Si una mano se adelanta, vuelve a manos separadas y sube el tempo despacio."], fr: ["Compte à voix haute : la blanche dure deux et ne se lâche pas avant.", "Si une main prend de l'avance, reviens aux mains séparées et monte le tempo lentement."] },
+            BLANCAS_Y_NEGRAS),
+          ejercicio("p1c3-posicionsol", { es: "La posición de sol", fr: "La position de sol" },
+            { es: "Sacar la mano del do: la misma fórmula, cinco notas más arriba.", fr: "Sortir la main du do : la même formule, cinq notes plus haut." },
+            { es: ["Mira primero dónde cae el sol en el teclado y en el papel.", "Es la posición del nivel de lectura que trabajas ahora."], fr: ["Regarde d'abord où tombe le sol sur le clavier et sur le papier.", "C'est la position du niveau de lecture que tu travailles maintenant."] },
+            POSICION_SOL),
           referencia("p1c3-ref", { es: "Manos juntas, polifonía en do y en sol", fr: "Mains ensemble, polyphonie en do et en sol" },
             [alfred({ es: "págs. 16-20", fr: "p. 16-20" }), pouillard({ es: "cap. II págs. 18-20", fr: "chap. II p. 18-20" }), chornet({ es: "pág. 14", fr: "p. 14" })],
             { es: "Posición de do de la izquierda, la clave de fa y el sistema de dos pentagramas.", fr: "Premières pièces à deux mains, avec les deux voix qui sonnent." },
@@ -777,10 +993,6 @@ const NIVELES = [
             { es: "Las manos hacen lo mismo pero hacia lados opuestos.", fr: "Les mains font la même chose mais en sens opposé." },
             { es: ["Los dos pulgares comparten el do central: cada uno toca el suyo.", "Es más fácil que el paralelo: los dedos van emparejados, 1 con 1."], fr: ["Les deux pouces partagent le do central : chacun joue le sien.", "C'est plus facile que le parallèle : les doigts vont par paires, 1 avec 1."] },
             MOVIMIENTO_CONTRARIO),
-          ejercicio("p1c4-terceras", { es: "Terceras, mano izquierda", fr: "Tierces, main gauche" },
-            { es: "Dedos alternos también en la izquierda.", fr: "Doigts alternés aussi à la gauche." },
-            { es: ["Vigila que la muñeca no gire en cada salto."], fr: ["Veille à ce que le poignet ne tourne pas à chaque saut."] },
-            TERCERAS_MI),
           teoria("p1c4-independencia", { es: "Cada mano, un papel", fr: "Chaque main, un rôle" },
             { es: "Casi siempre una mano lleva la melodía y la otra acompaña. La que acompaña suena más floja: no toca menos, pesa menos.", fr: "Presque toujours une main porte la mélodie et l'autre accompagne. Celle qui accompagne sonne plus doux : elle ne joue pas moins, elle pèse moins." },
             { es: ["Toca la melodía en f y el acompañamiento en p."], fr: ["Joue la mélodie en f et l'accompagnement en p."] }),
@@ -793,6 +1005,10 @@ const NIVELES = [
               concepto({ es: "Corchete", fr: "Crochet" }, { es: "El rabito del palo que distingue la corchea de la negra.", fr: "La petite queue recourbée qui distingue la croche de la noire." }),
               concepto({ es: "Barra de unión", fr: "Barre de liaison" }, { es: "Cuando van varias corcheas seguidas, los corchetes se sustituyen por una barra que las agrupa por tiempos.", fr: "Quand plusieurs croches se suivent, les crochets sont remplacés par une barre qui les groupe par temps." }),
             ]),
+          ejercicio("p1c4-hacia-dentro", { es: "Contrario hacia dentro", fr: "Contraire vers l'intérieur" },
+            { es: "Al revés que el anterior: las manos empiezan separadas y se encuentran en el do central.", fr: "À l'inverse du précédent : les mains partent écartées et se rejoignent sur le do central." },
+            { es: ["Los dos pulgares llegan al do central a la vez, en el mismo tiempo.", "Cuesta más que hacia fuera: ahí es donde se nota la independencia."], fr: ["Les deux pouces arrivent au do central en même temps, sur le même temps.", "C'est plus difficile que vers l'extérieur : c'est là que se voit l'indépendance."] },
+            CONTRARIO_HACIA_DENTRO),
           referencia("p1c4-ref", { es: "Independencia de manos", fr: "Indépendance des mains" },
             [alfred({ es: "págs. 21-23", fr: "p. 21-23" }), pouillard({ es: "cap. III pág. 26", fr: "chap. III p. 26" }), chornet({ es: "pág. 17", fr: "p. 17" })],
             { es: "Tocar de do a sol sobre los dos pentagramas, con Lightly Row y Aunt Rhody.", fr: "Que chaque main fasse quelque chose de différent sans entraîner l'autre." },
@@ -813,7 +1029,7 @@ const NIVELES = [
           ejercicio("p1c5-dosnotas", { es: "Dos notas a la vez", fr: "Deux notes à la fois" },
             { es: "Que las dos suenen exactamente juntas y con el mismo peso.", fr: "Que les deux sonnent exactement ensemble et avec le même poids." },
             { es: ["Deja caer el brazo; no aprietes con los dedos.", "Escucha si una de las dos se adelanta."], fr: ["Laisse tomber le bras ; ne serre pas avec les doigts.", "Écoute si l'une des deux est en avance."] },
-            DOS_NOTAS),
+            DOS_NOTAS_DOS),
           teoria("p1c5-alteraciones", { es: "Sostenidos y bemoles", fr: "Dièses et bémols" },
             { es: "El sostenido sube la nota a la tecla de al lado, hacia la derecha; el bemol la baja hacia la izquierda. Casi siempre son las teclas negras.", fr: "Le dièse monte la note à la touche voisine, vers la droite ; le bémol la descend vers la gauche. Ce sont presque toujours les touches noires." },
             { es: ["Fa sostenido y si bemol son los dos primeros que se encuentra.", "Sólo reconocerlos: tocarlos llega con las escalas."], fr: ["Fa dièse et si bémol sont les deux premiers qu'il rencontre.", "Seulement les reconnaître : les jouer viendra avec les gammes."] },
@@ -870,14 +1086,14 @@ const NIVELES = [
           fr: "Sortir de la position fixe : la gamme de do majeur aux deux mains.",
         },
         ejercicios: [
-          ejercicio("p1c7-md", { es: "Escala de do mayor, mano derecha", fr: "Gamme de do majeur, main droite" },
+          ejercicio("p1c7-preparacion", { es: "Preparación del paso del pulgar", fr: "Préparation du passage du pouce" },
+            { es: "Sólo el movimiento del cruce, sin la escala entera.", fr: "Seulement le mouvement du croisement, sans la gamme entière." },
+            { es: ["Derecha: el pulgar pasa por debajo del 3. Izquierda: el 3 cruza por encima del pulgar.", "Muy lento y repetido, hasta que el cruce no se oiga."], fr: ["Droite : le pouce passe sous le 3. Gauche : le 3 croise par-dessus le pouce.", "Très lentement et en répétant, jusqu'à ce que le croisement ne s'entende plus."] },
+            PREPARACION_PULGAR),
+          ejercicio("p1c7-md", { es: "Escala de do mayor", fr: "Gamme de do majeur" },
             { es: "El pulgar pasa por debajo del 3 para tocar el fa.", fr: "Le pouce passe sous le 3 pour jouer le fa." },
             { es: ["Prepara el pulgar mientras suenan el 2 y el 3.", "La mano no da tirones: el codo acompaña."], fr: ["Prépare le pouce pendant que sonnent le 2 et le 3.", "La main ne sursaute pas : le coude accompagne."] },
-            ESCALA_DO_DERECHA),
-          ejercicio("p1c7-mi", { es: "Escala de do mayor, mano izquierda", fr: "Gamme de do majeur, main gauche" },
-            { es: "Aquí es el 3 el que cruza por encima del pulgar.", fr: "Ici c'est le 3 qui croise par-dessus le pouce." },
-            { es: ["Después del pulgar en el sol, el 3 cruza para tocar el la.", "Muy lento hasta que el cruce no se oiga."], fr: ["Après le pouce sur le sol, le 3 croise pour jouer le la.", "Très lentement jusqu'à ce que le croisement ne s'entende plus."] },
-            ESCALA_DO_IZQUIERDA),
+            ESCALA_DO),
           teoria("p1c7-escala", { es: "Por qué la escala se digita así", fr: "Pourquoi la gamme se doigte ainsi" },
             { es: "La mano tiene cinco dedos y la escala ocho notas, así que hay que pasar el pulgar una vez. Se pasa donde menos se nota, entre el mi y el fa.", fr: "La main a cinq doigts et la gamme huit notes, il faut donc passer le pouce une fois. On le passe là où ça s'entend le moins, entre le mi et le fa." },
             { es: ["Dilo en voz alta antes de tocar: dónde pasa el pulgar y por qué.", "La digitación es la misma en todas las escalas de teclas blancas."], fr: ["Dis-le à voix haute avant de jouer : où passe le pouce et pourquoi.", "Le doigté est le même dans toutes les gammes de touches blanches."] },
@@ -899,14 +1115,14 @@ const NIVELES = [
           fr: "Ouvrir la main au-delà des cinq doigts consécutifs et clore le niveau.",
         },
         ejercicios: [
-          ejercicio("p1c8-arpegio", { es: "Arpegio de do mayor, mano derecha", fr: "Arpège de do majeur, main droite" },
+          ejercicio("p1c8-arpegio", { es: "Arpegio de do mayor", fr: "Arpège de do majeur" },
             { es: "El salto de sol a do lo hace el 5, no la muñeca.", fr: "Le saut de sol à do se fait avec le 5, pas avec le poignet." },
             { es: ["Las cuatro notas suenan igual de fuertes.", "Sin acelerar en la bajada."], fr: ["Les quatre notes sonnent aussi fort les unes que les autres.", "Sans accélérer à la descente."] },
-            ARPEGIO_DO),
+            ARPEGIO_DO_DOS),
           ejercicio("p1c8-acordes", { es: "Acordes de tres sonidos", fr: "Accords de trois sons" },
             { es: "Tres notas a la vez, juntas y con el mismo peso.", fr: "Trois notes à la fois, ensemble et avec le même poids." },
             { es: ["Deja caer el brazo: el acorde no se aprieta con los dedos.", "Escucha si alguna de las tres suena más floja."], fr: ["Laisse tomber le bras : l'accord ne se serre pas avec les doigts.", "Écoute si l'une des trois sonne plus faible."] },
-            ACORDES_TRES_SONIDOS),
+            ACORDES_DOS),
           teoria("p1c8-acorde", { es: "Qué es un acorde de tres sonidos", fr: "Qu'est-ce qu'un accord de trois sons" },
             { es: "Se toma una nota y se le añaden la tercera y la quinta por encima, saltando una tecla blanca cada vez. Do, fa y sol son los tres acordes que sostienen casi toda la música que va a tocar.", fr: "On prend une note et on ajoute la tierce et la quinte au-dessus, en sautant une touche blanche à chaque fois. Do, fa et sol sont les trois accords qui soutiennent presque toute la musique qu'il va jouer." },
             { es: ["Construye tú el acorde de re y el de mi.", "El arpegio es el mismo acorde, nota a nota."], fr: ["Construis l'accord de ré et celui de mi toi-même.", "L'arpège est le même accord, note par note."] },
