@@ -315,6 +315,71 @@ const FIGURAS_Y_ARBOL = { ...FIGURAS, arbol: { figuras: ["redonda", "blanca", "n
 // Los mismos tres compases, pero callados.
 const MANOS = { manos: true };
 
+// --- Ejercicios con silencios (curso 2) ---------------------------------
+
+const TOCAR_Y_CALLAR = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { silencio: true }, { n: "d/4", d: "2" }, { silencio: true },
+        { barra: true },
+        { n: "e/4", d: "3" }, { silencio: true }, { n: "f/4", d: "4" }, { silencio: true },
+        { barra: true },
+        { n: "g/4", d: "5", f: "h" }, { silencio: true, f: "h" },
+      ],
+    },
+  ],
+};
+
+const SILENCIO_LARGO = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "h" }, { silencio: true, f: "h" },
+        { barra: true },
+        { n: "e/4", d: "3", f: "h" }, { silencio: true, f: "h" },
+        { barra: true },
+        { n: "g/4", d: "5", f: "h" }, { silencio: true, f: "h" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const MANOS_ALTERNAS = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
+        { barra: true },
+        { silencio: true }, { silencio: true }, { silencio: true }, { silencio: true },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+    {
+      clef: "bass",
+      notas: [
+        { silencio: true }, { silencio: true }, { silencio: true }, { silencio: true },
+        { barra: true },
+        { n: "c/3", d: "5" }, { n: "d/3", d: "4" }, { n: "e/3", d: "3" }, { n: "f/3", d: "2" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
 const SILENCIOS = {
   compas: "4/4",
   arbol: { silencios: true, figuras: ["redonda", "blanca", "negra"] },
@@ -568,6 +633,18 @@ const NIVELES = [
             { es: "Lo mismo con la izquierda, que empieza por el meñique.", fr: "La même chose à gauche, qui commence par l'auriculaire." },
             { es: ["El 5 tiende a hundirse: mantenlo curvo.", "Fíjate en que ya estás leyendo en clave de fa."], fr: ["Le 5 a tendance à s'affaisser : garde-le arrondi.", "Remarque que tu lis déjà en clé de fa."] },
             CINCO_DEDOS_REDONDAS_MI),
+          ejercicio("p1c1-negras", { es: "Cinco dedos en negras, mano derecha", fr: "Cinq doigts en noires, main droite" },
+            { es: "Subir y bajar sin parar entre nota y nota.", fr: "Monter et descendre sans s'arrêter entre les notes." },
+            { es: ["Metrónomo a 60, una negra por clic.", "Después, lo mismo con la izquierda."], fr: ["Métronome à 60, une noire par clic.", "Ensuite, la même chose à gauche."] },
+            CINCO_DEDOS_DERECHA),
+          ejercicio("p1c1-repetidas", { es: "Notas repetidas", fr: "Notes répétées" },
+            { es: "Que el sonido salga del dedo y no del brazo.", fr: "Que le son vienne du doigt et non du bras." },
+            { es: ["El brazo se queda quieto; sólo se mueve el dedo.", "Las dos notas iguales tienen que sonar iguales."], fr: ["Le bras reste immobile ; seul le doigt bouge.", "Les deux notes identiques doivent sonner pareil."] },
+            NOTAS_REPETIDAS),
+          ejercicio("p1c1-terceras", { es: "Terceras", fr: "Tierces" },
+            { es: "Saltar un dedo sin que la mano se mueva de sitio.", fr: "Sauter un doigt sans que la main bouge de place." },
+            { es: ["Los dedos que no tocan se quedan sobre sus teclas.", "El salto se prepara antes, no en el último momento."], fr: ["Les doigts qui ne jouent pas restent sur leurs touches.", "Le saut se prépare à l'avance, pas au dernier moment."] },
+            TERCERAS_MD),
           teoria("p1c1-pentagrama", { es: "El pentagrama y las notas de do a sol", fr: "La portée et les notes de do à sol" },
             { es: "La música se escribe sobre cinco líneas y cuatro espacios: el pentagrama. La clave de sol, al principio, fija que la segunda línea es el sol, y a partir de ahí se cuenta todo lo demás pasando de línea a espacio. Tus cinco primeras notas son do, re, mi, fa y sol: el do va en una línea adicional por debajo del pentagrama y el sol en la segunda línea.", fr: "La musique s'écrit sur cinq lignes et quatre espaces : la portée. La clé de sol, au début, fixe que la deuxième ligne est le sol, et tout le reste se compte à partir de là en passant de ligne en espace. Tes cinq premières notes sont do, ré, mi, fa et sol : le do est sur une ligne supplémentaire sous la portée et le sol sur la deuxième ligne." },
             { es: ["Señala el sol en el papel antes de leer nada más.", "Sube y baja nombrando las notas en voz alta, sin tocar."], fr: ["Montre le sol sur le papier avant de lire autre chose.", "Monte et descends en nommant les notes à voix haute, sans jouer."] },
@@ -621,18 +698,6 @@ const NIVELES = [
           fr: "Jouer en comptant, égaliser le son des cinq doigts et commencer à lier.",
         },
         ejercicios: [
-          ejercicio("p1c2-negras", { es: "Cinco dedos en negras, mano derecha", fr: "Cinq doigts en noires, main droite" },
-            { es: "Subir y bajar sin parar entre nota y nota.", fr: "Monter et descendre sans s'arrêter entre les notes." },
-            { es: ["Metrónomo a 60, una negra por clic.", "Después, lo mismo con la izquierda."], fr: ["Métronome à 60, une noire par clic.", "Ensuite, la même chose à gauche."] },
-            CINCO_DEDOS_DERECHA),
-          ejercicio("p1c2-repetidas", { es: "Notas repetidas", fr: "Notes répétées" },
-            { es: "Que el sonido salga del dedo y no del brazo.", fr: "Que le son vienne du doigt et non du bras." },
-            { es: ["El brazo se queda quieto; sólo se mueve el dedo.", "Las dos notas iguales tienen que sonar iguales."], fr: ["Le bras reste immobile ; seul le doigt bouge.", "Les deux notes identiques doivent sonner pareil."] },
-            NOTAS_REPETIDAS),
-          ejercicio("p1c2-terceras", { es: "Terceras", fr: "Tierces" },
-            { es: "Saltar un dedo sin que la mano se mueva de sitio.", fr: "Sauter un doigt sans que la main bouge de place." },
-            { es: ["Los dedos que no tocan se quedan sobre sus teclas.", "El salto se prepara antes, no en el último momento."], fr: ["Les doigts qui ne jouent pas restent sur leurs touches.", "Le saut se prépare à l'avance, pas au dernier moment."] },
-            TERCERAS_MD),
           teoria("p1c2-compas", { es: "El compás y la barra de compás", fr: "La mesure et la barre de mesure" },
             { es: "La barra vertical corta la música en compases iguales, y el 4/4 del principio dice que en cada uno caben cuatro negras. El primer tiempo de cada compás pesa un poco más que los otros: es lo que hace que la música se sienta ordenada.", fr: "La barre verticale coupe la musique en mesures égales, et le 4/4 du début dit que quatre noires tiennent dans chacune. Le premier temps de chaque mesure pèse un peu plus que les autres : c'est ce qui rend la musique ordonnée." },
             { es: ["Cuenta 1-2-3-4 en cada compás mientras tocas.", "Marca el primer tiempo con el pie mientras tocas."], fr: ["Compte 1-2-3-4 dans chaque mesure en jouant.", "Marque le premier temps du pied en jouant."] },
@@ -646,8 +711,20 @@ const NIVELES = [
               concepto({ es: "Silencio de blanca", fr: "Silence de blanche" }, { es: "Dos tiempos. El mismo rectángulo, pero apoyado encima de la tercera línea.", fr: "Deux temps. Le même rectangle, mais posé sur la troisième ligne." }),
               concepto({ es: "Silencio de negra", fr: "Silence de noire" }, { es: "Un tiempo. Es el garabato que ocupa el centro del pentagrama.", fr: "Un temps. C'est le signe en zigzag au centre de la portée." }),
             ]),
+          ejercicio("p1c2-callar", { es: "Tocar y callar", fr: "Jouer et se taire" },
+            { es: "Levantar el dedo justo a tiempo: el silencio dura tanto como la nota.", fr: "Lever le doigt juste à temps : le silence dure autant que la note." },
+            { es: ["Cuenta 1-2-3-4 en voz alta y no dejes de contar en el silencio.", "El dedo se levanta en el tiempo, no antes ni después."], fr: ["Compte 1-2-3-4 à voix haute et ne t'arrête pas de compter pendant le silence.", "Le doigt se lève sur le temps, ni avant ni après."] },
+            TOCAR_Y_CALLAR),
+          ejercicio("p1c2-silencio-largo", { es: "El silencio de blanca", fr: "Le silence de blanche" },
+            { es: "Aguantar dos tiempos callado sin adelantar la entrada siguiente.", fr: "Tenir deux temps de silence sans anticiper l'entrée suivante." },
+            { es: ["Es más difícil callar dos tiempos que uno: sigue contando.", "La mano se queda quieta sobre las teclas mientras callas."], fr: ["Il est plus difficile de se taire deux temps qu'un : continue de compter.", "La main reste immobile sur les touches pendant le silence."] },
+            SILENCIO_LARGO),
+          ejercicio("p1c2-alternas", { es: "Manos alternas", fr: "Mains alternées" },
+            { es: "Mientras una mano toca, la otra calla: el primer reparto entre las dos.", fr: "Pendant qu'une main joue, l'autre se tait : le premier partage entre les deux." },
+            { es: ["La mano que calla se queda preparada sobre sus teclas.", "El paso de una mano a otra no puede notarse: sin hueco ni tropiezo."], fr: ["La main qui se tait reste prête sur ses touches.", "Le passage d'une main à l'autre ne doit pas s'entendre : sans trou ni accroc."] },
+            MANOS_ALTERNAS),
           referencia("p1c2-ref", { es: "Legato, matices y fraseo", fr: "Legato, nuances et phrasé" },
-            [alfred({ es: "págs. 13-17", fr: "p. 13-17" }), pouillard({ es: "cap. I págs. 9-13", fr: "chap. I p. 9-13" }), chornet({ es: "págs. 22 y 29", fr: "p. 22 et 29" })],
+            [alfred({ es: "págs. 13-17", fr: "p. 13-17" }), pouillard({ es: "cap. I págs. 9-13", fr: "chap. I p. 9-13" }), chornet({ es: "págs. 17, 22 y 29", fr: "p. 17, 22 et 29" })],
             { es: "Negras, blancas y redonda, el compás y la clave de sol, con Ode to Joy y Aura Lee.", fr: "La préparation au legato, lier pour de bon et les premières indications de nuance." },
             { es: ["Un dedo se levanta cuando el otro ya ha bajado.", "Toca el mismo ejercicio en f y en p."], fr: ["Un doigt se lève quand l'autre est déjà descendu.", "Joue le même exercice en f puis en p."] }),
           lectura("p1c2-lectura", "sol", "inicial2",

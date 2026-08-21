@@ -62,8 +62,9 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - La app tiene dos programas: **Lectura** (leer notas) y **Práctica**
   (ejercicios técnicos). Se elige en la primera pantalla.
 - Práctica: nivel → curso → lista de ejercicios → ficha. Cuatro niveles
-  (Principiante 1 y 2, Intermedio 1 y 2), **8 cursos cada uno** y entre 4 y 6
-  ejercicios por curso, con dificultad progresiva de un curso al siguiente.
+  (Principiante 1 y 2, Intermedio 1 y 2) y **8 cursos cada uno**, con
+  dificultad progresiva de un curso al siguiente. Lo normal son 5 o 6 bloques
+  por curso; el 1 tiene más porque agrupa toda la posición de cinco dedos.
 - El catálogo vive en `src/programa.js`, separado del resto para poder editarlo
   sin tocar la lógica. Cada ejercicio lleva sus textos en español y francés.
 - **Derechos de autor, importante**: la app se publica en internet, así que
