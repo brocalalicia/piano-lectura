@@ -92,6 +92,7 @@ const TRADUCCIONES = {
     teoriaTitulo: "Teoría",
     clases: { teoria: "Teoría", dibujada: "Técnica", referencia: "Método", lectura: "Lectura" },
     conceptosTitulo: "Conceptos",
+    tecnicaTitulo: "Ejercicios de piano",
     manos: { izquierda: "Mano izquierda", derecha: "Mano derecha" },
     nombresFiguras: {
       redonda: ["redonda", "redondas"], blanca: ["blanca", "blancas"], negra: ["negra", "negras"],
@@ -199,6 +200,7 @@ const TRADUCCIONES = {
     teoriaTitulo: "Théorie",
     clases: { teoria: "Théorie", dibujada: "Technique", referencia: "Méthode", lectura: "Lecture" },
     conceptosTitulo: "Notions",
+    tecnicaTitulo: "Exercices au piano",
     manos: { izquierda: "Main gauche", derecha: "Main droite" },
     nombresFiguras: {
       redonda: ["ronde", "rondes"], blanca: ["blanche", "blanches"], negra: ["noire", "noires"],
@@ -329,12 +331,7 @@ const practicaListaEjerciciosEl = document.getElementById("practica-lista-ejerci
 const practicaEjercicioEl = document.getElementById("practica-ejercicio");
 const ejercicioTituloEl = document.getElementById("ejercicio-titulo");
 const ejercicioClaseEl = document.getElementById("ejercicio-clase");
-const ejercicioObjetivoEl = document.getElementById("ejercicio-objetivo");
-const ejercicioPartituraEl = document.getElementById("ejercicio-partitura");
-const ejercicioReferenciaEl = document.getElementById("ejercicio-referencia");
-const ejercicioTeoriaEl = document.getElementById("ejercicio-teoria");
-const ejercicioLecturaEl = document.getElementById("ejercicio-lectura");
-const ejercicioIndicacionesEl = document.getElementById("ejercicio-indicaciones");
+const ejercicioContenidoEl = document.getElementById("ejercicio-contenido");
 const portadaTituloEl = document.getElementById("portada-titulo");
 const portadaObjetivoEl = document.getElementById("portada-objetivo");
 const consisteTituloEl = document.getElementById("portada-consiste-titulo");
@@ -1522,7 +1519,28 @@ function renderizarPracticaLista() {
   practicaListaObjetivoEl.textContent = txt(cursoPractica.objetivo);
   practicaListaEjerciciosEl.innerHTML = "";
 
-  cursoPractica.ejercicios.forEach((ejercicio, indice) => {
+  // Los ejercicios de piano van todos juntos en una sola pagina, que es la
+  // rutina tecnica de la clase; el resto de bloques, uno por fila.
+  const tecnica = cursoPractica.ejercicios.filter((e) => e.partitura.tipo === "dibujada");
+  const filas = [];
+  let tecnicaPuesta = false;
+  cursoPractica.ejercicios.forEach((ejercicio) => {
+    if (ejercicio.partitura.tipo === "dibujada") {
+      if (!tecnicaPuesta && tecnica.length > 0) {
+        filas.push({
+          grupo: tecnica,
+          titulo: { es: t().tecnicaTitulo, fr: t().tecnicaTitulo },
+          objetivo: tecnica.map((e) => txt(e.titulo)).join(" · "),
+          tipo: "dibujada",
+        });
+        tecnicaPuesta = true;
+      }
+      return;
+    }
+    filas.push({ grupo: [ejercicio], titulo: ejercicio.titulo, objetivo: txt(ejercicio.objetivo), tipo: ejercicio.partitura.tipo });
+  });
+
+  filas.forEach((fila, indice) => {
     const boton = document.createElement("button");
     boton.className = "ejercicio-fila";
 
@@ -1539,27 +1557,27 @@ function renderizarPracticaLista() {
 
     const titulo = document.createElement("span");
     titulo.className = "ejercicio-nombre";
-    titulo.textContent = txt(ejercicio.titulo);
+    titulo.textContent = txt(fila.titulo);
     cabecera.appendChild(titulo);
 
     // Que se vea de un vistazo si toca teoria, piano, lectura o metodo.
     const clase = document.createElement("span");
-    clase.className = `ejercicio-clase clase-${ejercicio.partitura.tipo}`;
-    clase.textContent = t().clases[ejercicio.partitura.tipo];
+    clase.className = `ejercicio-clase clase-${fila.tipo}`;
+    clase.textContent = t().clases[fila.tipo];
     cabecera.appendChild(clase);
 
     texto.appendChild(cabecera);
 
     const objetivo = document.createElement("span");
     objetivo.className = "ejercicio-objetivo";
-    objetivo.textContent = txt(ejercicio.objetivo);
+    objetivo.textContent = fila.objetivo;
     texto.appendChild(objetivo);
 
     boton.appendChild(texto);
 
     boton.addEventListener("click", () => {
       vibrar(15);
-      irAPracticaEjercicio(ejercicio);
+      irAPracticaEjercicio(fila.grupo);
     });
 
     practicaListaEjerciciosEl.appendChild(boton);
@@ -1568,76 +1586,92 @@ function renderizarPracticaLista() {
 }
 
 function renderizarPracticaEjercicio() {
-  if (!ejercicioPractica) return;
+  if (!ejercicioPractica || ejercicioPractica.length === 0) return;
 
-  const partitura = ejercicioPractica.partitura;
-  ejercicioTituloEl.textContent = txt(ejercicioPractica.titulo);
-  ejercicioClaseEl.className = `ejercicio-clase clase-${partitura.tipo}`;
-  ejercicioClaseEl.textContent = t().clases[partitura.tipo];
-  ejercicioObjetivoEl.textContent = txt(ejercicioPractica.objetivo);
+  const varios = ejercicioPractica.length > 1;
+  const tipo = ejercicioPractica[0].partitura.tipo;
 
-  ejercicioPartituraEl.innerHTML = "";
-  ejercicioReferenciaEl.innerHTML = "";
-  ejercicioTeoriaEl.innerHTML = "";
-  ejercicioLecturaEl.innerHTML = "";
-  ejercicioReferenciaEl.classList.toggle("oculto", partitura.tipo !== "referencia");
-  ejercicioTeoriaEl.classList.toggle("oculto", partitura.tipo !== "teoria");
-  ejercicioLecturaEl.classList.toggle("oculto", partitura.tipo !== "lectura");
+  ejercicioTituloEl.textContent = varios ? t().tecnicaTitulo : txt(ejercicioPractica[0].titulo);
+  ejercicioClaseEl.className = `ejercicio-clase clase-${tipo}`;
+  ejercicioClaseEl.textContent = t().clases[tipo];
 
-  // La teoria puede llevar un ejemplo dibujado, y la lectura manda al otro
-  // programa de la app en el nivel que toca.
-  // Un bloque puede llevar mas de una ilustracion, cada una en su caja.
-  const caja = () => {
+  ejercicioContenidoEl.innerHTML = "";
+  ejercicioPractica.forEach((ejercicio, indice) => {
+    ejercicioContenidoEl.appendChild(pintarEjercicio(ejercicio, varios, indice + 1));
+  });
+}
+
+// Una ficha completa: su titulo si van varias juntas, el objetivo, la
+// ilustracion que le toque y las indicaciones.
+function pintarEjercicio(ejercicio, conTitulo, numero) {
+  const partitura = ejercicio.partitura;
+  const bloque = document.createElement("article");
+  bloque.className = "ficha-ejercicio";
+
+  if (conTitulo) {
+    const titulo = document.createElement("h3");
+    titulo.className = "ficha-titulo";
+    titulo.textContent = `${numero}. ${txt(ejercicio.titulo)}`;
+    bloque.appendChild(titulo);
+  }
+
+  const objetivo = document.createElement("p");
+  objetivo.className = "ficha-objetivo";
+  objetivo.textContent = txt(ejercicio.objetivo);
+  bloque.appendChild(objetivo);
+
+  const caja = (clase) => {
     const div = document.createElement("div");
-    ejercicioPartituraEl.appendChild(div);
+    if (clase) div.className = clase;
+    bloque.appendChild(div);
     return div;
   };
 
   if (partitura.sistemas) {
-    dibujarPartituraEjercicio(caja(), partitura);
+    dibujarPartituraEjercicio(caja("ficha-partitura"), partitura);
   } else if (partitura.teclado) {
-    dibujarTeclado(caja(), partitura.teclado);
+    dibujarTeclado(caja("ficha-partitura"), partitura.teclado);
   } else if (partitura.manos) {
-    dibujarManos(caja());
+    dibujarManos(caja("ficha-partitura"));
   }
 
   if (partitura.arbol) {
-    const contenedorArbol = caja();
-    contenedorArbol.className = "arbol-figuras";
+    const contenedorArbol = caja("ficha-partitura arbol-figuras");
     const dibujar = partitura.arbol.silencios ? dibujarArbolSilencios : dibujarArbolFiguras;
     dibujar(contenedorArbol, partitura.arbol.figuras);
   }
 
   if (partitura.tipo === "teoria") {
-    const texto = document.createElement("p");
-    texto.textContent = txt(partitura.texto);
-    ejercicioTeoriaEl.appendChild(texto);
+    const texto = caja("ficha-teoria");
+    const parrafo = document.createElement("p");
+    parrafo.textContent = txt(partitura.texto);
+    texto.appendChild(parrafo);
 
     if (partitura.conceptos) {
       const titulo = document.createElement("h3");
       titulo.textContent = t().conceptosTitulo;
-      ejercicioTeoriaEl.appendChild(titulo);
+      texto.appendChild(titulo);
 
       const lista = document.createElement("dl");
       partitura.conceptos.forEach((entrada) => {
         const termino = document.createElement("dt");
         termino.textContent = txt(entrada.termino);
         lista.appendChild(termino);
-
         const definicion = document.createElement("dd");
         definicion.textContent = txt(entrada.definicion);
         lista.appendChild(definicion);
       });
-      ejercicioTeoriaEl.appendChild(lista);
+      texto.appendChild(lista);
     }
   } else if (partitura.tipo === "lectura") {
+    const destinoCaja = caja("ficha-lectura");
     const clave = CLAVES.find((c) => c.id === partitura.clave);
     const nivel = clave.niveles.find((n) => n.id === partitura.nivel);
 
     const destino = document.createElement("span");
     destino.className = "referencia-donde";
     destino.textContent = t().lecturaEn(t().claves[clave.id], t().niveles[nivel.id]);
-    ejercicioLecturaEl.appendChild(destino);
+    destinoCaja.appendChild(destino);
 
     const boton = document.createElement("button");
     boton.className = "boton-control";
@@ -1648,45 +1682,46 @@ function renderizarPracticaEjercicio() {
       seleccionarClave(clave);
       seleccionarNivel(nivel);
     });
-    ejercicioLecturaEl.appendChild(boton);
+    destinoCaja.appendChild(boton);
   } else if (partitura.tipo === "referencia") {
-    // Los metodos con derechos no se copian: se dice donde esta, y pueden ser
-    // varios libros para el mismo contenido.
+    const refCaja = caja("ficha-referencia");
     const etiqueta = document.createElement("span");
     etiqueta.className = "referencia-etiqueta";
     etiqueta.textContent = t().referenciaEn;
-    ejercicioReferenciaEl.appendChild(etiqueta);
+    refCaja.appendChild(etiqueta);
 
     partitura.fuentes.forEach((fuente) => {
-      const bloque = document.createElement("span");
-      bloque.className = "referencia-fuente";
+      const linea = document.createElement("span");
+      linea.className = "referencia-fuente";
 
       const metodo = document.createElement("strong");
       metodo.className = "referencia-metodo";
       metodo.textContent = fuente.metodo;
-      bloque.appendChild(metodo);
+      linea.appendChild(metodo);
 
       const donde = document.createElement("span");
       donde.className = "referencia-donde";
       donde.textContent = txt(fuente.donde);
-      bloque.appendChild(donde);
+      linea.appendChild(donde);
 
-      ejercicioReferenciaEl.appendChild(bloque);
+      refCaja.appendChild(linea);
     });
   }
 
-  ejercicioIndicacionesEl.innerHTML = "";
-  const titulo = document.createElement("h3");
-  titulo.textContent = t().comoTrabajarlo;
-  ejercicioIndicacionesEl.appendChild(titulo);
+  const indicaciones = caja("ficha-indicaciones");
+  const tituloIndicaciones = document.createElement("h3");
+  tituloIndicaciones.textContent = t().comoTrabajarlo;
+  indicaciones.appendChild(tituloIndicaciones);
 
   const lista = document.createElement("ul");
-  txt(ejercicioPractica.indicaciones).forEach((indicacion) => {
+  txt(ejercicio.indicaciones).forEach((indicacion) => {
     const punto = document.createElement("li");
     punto.textContent = indicacion;
     lista.appendChild(punto);
   });
-  ejercicioIndicacionesEl.appendChild(lista);
+  indicaciones.appendChild(lista);
+
+  return bloque;
 }
 
 function irAMenuPrograma() {
@@ -1717,8 +1752,8 @@ function irAPracticaLista(curso, numero) {
   actualizarUI();
 }
 
-function irAPracticaEjercicio(ejercicio) {
-  ejercicioPractica = ejercicio;
+function irAPracticaEjercicio(grupo) {
+  ejercicioPractica = grupo;
   estado = "practica-ejercicio";
   // Se muestra la ficha antes de dibujarla: medir un elemento oculto da cero,
   // y el arbol de silencios necesita medir para centrarlos.

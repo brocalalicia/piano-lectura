@@ -61,7 +61,9 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 ## Programa de práctica
 - La app tiene dos programas: **Lectura** (leer notas) y **Práctica**
   (ejercicios técnicos). Se elige en la primera pantalla.
-- Práctica: nivel → curso → lista de ejercicios → ficha. Cuatro niveles
+- Práctica: nivel → curso → lista de bloques → ficha. **Los ejercicios de
+  piano de un curso van todos en una sola página**, que es la rutina técnica
+  de la clase; el resto de bloques ocupan una fila cada uno. Cuatro niveles
   (Principiante 1 y 2, Intermedio 1 y 2) y **8 cursos cada uno**, con
   dificultad progresiva de un curso al siguiente. Lo normal son 5 o 6 bloques
   por curso; el 1 tiene más porque agrupa toda la posición de cinco dedos.

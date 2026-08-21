@@ -484,6 +484,112 @@ body {
   line-height: 1.45;
 }
 
+#ejercicio-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+/* Cuando varias fichas comparten pagina, cada una es una tarjeta. */
+.ficha-ejercicio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.ficha-ejercicio + .ficha-ejercicio {
+  padding-top: 20px;
+  border-top: 2px solid var(--color-boton-borde);
+}
+
+.ficha-titulo {
+  margin: 0;
+  align-self: flex-start;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-texto);
+}
+
+.ficha-objetivo {
+  margin: 0;
+  max-width: 480px;
+  text-align: center;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.45;
+}
+
+.ficha-partitura {
+  width: 100%;
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  padding: 12px;
+  box-shadow: 0 6px 0 var(--color-boton-sombra);
+}
+
+.ficha-teoria,
+.ficha-indicaciones,
+.ficha-referencia,
+.ficha-lectura {
+  width: 100%;
+  background: var(--color-tarjeta);
+  border-radius: var(--radio);
+  padding: 18px 22px;
+  box-shadow: 0 4px 0 var(--color-boton-sombra);
+}
+
+.ficha-referencia,
+.ficha-lectura {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.ficha-teoria p,
+.ficha-indicaciones ul {
+  margin: 0;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.5;
+}
+
+.ficha-indicaciones ul {
+  padding-left: 18px;
+}
+
+.ficha-indicaciones li + li {
+  margin-top: 6px;
+}
+
+.ficha-teoria h3,
+.ficha-indicaciones h3 {
+  margin: 16px 0 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.ficha-indicaciones h3 {
+  margin-top: 0;
+}
+
+.ficha-teoria dl {
+  margin: 0;
+}
+
+.ficha-teoria dt {
+  font-weight: 800;
+  color: var(--color-texto);
+}
+
+.ficha-teoria dd {
+  margin: 2px 0 10px;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.5;
+}
+
 #ejercicio-partitura {
   width: 100%;
   background: var(--color-tarjeta);
