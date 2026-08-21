@@ -492,6 +492,13 @@ body {
   box-shadow: 0 6px 0 var(--color-boton-sombra);
 }
 
+/* Cuando el bloque lleva pentagrama y arbol, se separan con una linea. */
+.arbol-figuras {
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 2px solid var(--color-boton-borde);
+}
+
 #ejercicio-partitura:empty {
   display: none;
 }

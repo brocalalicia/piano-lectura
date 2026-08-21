@@ -92,6 +92,7 @@ const TRADUCCIONES = {
     teoriaTitulo: "Teoría",
     clases: { teoria: "Teoría", dibujada: "Técnica", referencia: "Método", lectura: "Lectura" },
     conceptosTitulo: "Conceptos",
+    arbolFiguras: ["1 redonda", "2 blancas", "4 negras", "8 corcheas"],
     irALectura: "Practicar en Lectura",
     lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
     comoTrabajarlo: "Cómo trabajarlo",
@@ -185,6 +186,7 @@ const TRADUCCIONES = {
     teoriaTitulo: "Théorie",
     clases: { teoria: "Théorie", dibujada: "Technique", referencia: "Méthode", lectura: "Lecture" },
     conceptosTitulo: "Notions",
+    arbolFiguras: ["1 ronde", "2 blanches", "4 noires", "8 croches"],
     irALectura: "S'entraîner en Lecture",
     lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
     comoTrabajarlo: "Comment le travailler",
@@ -1072,6 +1074,102 @@ function dibujarTeclado(contenedor, teclado) {
   contenedor.appendChild(svg);
 }
 
+// Arbol de duraciones: una redonda vale dos blancas, cada blanca dos negras y
+// cada negra dos corcheas. Se dibuja a mano porque no es notacion sobre un
+// pentagrama, sino un esquema.
+function dibujarArbolFiguras(contenedor) {
+  contenedor.innerHTML = "";
+
+  const ANCHO = 640;
+  const IZQUIERDA = 132;
+  const TREE = ANCHO - IZQUIERDA - 16;
+  const FILAS = [
+    { cantidad: 1, figura: "redonda", y: 36 },
+    { cantidad: 2, figura: "blanca", y: 110 },
+    { cantidad: 4, figura: "negra", y: 184 },
+    { cantidad: 8, figura: "corchea", y: 258 },
+  ];
+
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", `0 0 ${ANCHO} 292`);
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  svg.style.width = "100%";
+  svg.style.height = "auto";
+
+  const tinta = "#3a322c";
+  const linea = (x1, y1, x2, y2) => {
+    const l = document.createElementNS(SVG_NS, "line");
+    l.setAttribute("x1", x1); l.setAttribute("y1", y1);
+    l.setAttribute("x2", x2); l.setAttribute("y2", y2);
+    l.setAttribute("stroke", "#c9b8a3");
+    l.setAttribute("stroke-width", 2);
+    svg.appendChild(l);
+  };
+
+  const posicion = (fila, i) => IZQUIERDA + (TREE / fila.cantidad) * (i + 0.5);
+
+  // Primero las uniones, para que queden por detras de las figuras.
+  FILAS.slice(0, -1).forEach((fila, f) => {
+    const hija = FILAS[f + 1];
+    for (let i = 0; i < fila.cantidad; i += 1) {
+      const px = posicion(fila, i);
+      const izq = posicion(hija, i * 2);
+      const der = posicion(hija, i * 2 + 1);
+      linea(px, fila.y + 12, px, fila.y + 28);
+      linea(izq, fila.y + 28, der, fila.y + 28);
+      linea(izq, fila.y + 28, izq, hija.y - 34);
+      linea(der, fila.y + 28, der, hija.y - 34);
+    }
+  });
+
+  FILAS.forEach((fila, f) => {
+    const etiqueta = document.createElementNS(SVG_NS, "text");
+    etiqueta.setAttribute("x", 0);
+    etiqueta.setAttribute("y", fila.y + 6);
+    etiqueta.setAttribute("font-family", "Nunito, sans-serif");
+    etiqueta.setAttribute("font-size", 17);
+    etiqueta.setAttribute("font-weight", 800);
+    etiqueta.setAttribute("fill", tinta);
+    etiqueta.textContent = t().arbolFiguras[f];
+    svg.appendChild(etiqueta);
+
+    for (let i = 0; i < fila.cantidad; i += 1) {
+      const cx = posicion(fila, i);
+      const cy = fila.y;
+      const hueca = fila.figura === "redonda" || fila.figura === "blanca";
+
+      const cabeza = document.createElementNS(SVG_NS, "ellipse");
+      cabeza.setAttribute("cx", cx);
+      cabeza.setAttribute("cy", cy);
+      cabeza.setAttribute("rx", fila.figura === "redonda" ? 9 : 7.5);
+      cabeza.setAttribute("ry", 5.5);
+      cabeza.setAttribute("transform", `rotate(-20 ${cx} ${cy})`);
+      cabeza.setAttribute("fill", hueca ? "none" : tinta);
+      cabeza.setAttribute("stroke", tinta);
+      cabeza.setAttribute("stroke-width", fila.figura === "redonda" ? 3 : 2);
+      svg.appendChild(cabeza);
+
+      if (fila.figura === "redonda") continue;
+
+      const palo = document.createElementNS(SVG_NS, "line");
+      palo.setAttribute("x1", cx + 7); palo.setAttribute("y1", cy - 1);
+      palo.setAttribute("x2", cx + 7); palo.setAttribute("y2", cy - 30);
+      palo.setAttribute("stroke", tinta);
+      palo.setAttribute("stroke-width", 2);
+      svg.appendChild(palo);
+
+      if (fila.figura === "corchea") {
+        const corchete = document.createElementNS(SVG_NS, "path");
+        corchete.setAttribute("d", `M${cx + 7} ${cy - 30} q 10 6 9 16 q -2 -8 -9 -10 z`);
+        corchete.setAttribute("fill", tinta);
+        svg.appendChild(corchete);
+      }
+    }
+  });
+
+  contenedor.appendChild(svg);
+}
+
 function renderizarMenuPrograma() {
   programaTituloEl.textContent = t().programaTitulo;
   programaSubtituloEl.textContent = t().programaSubtitulo;
@@ -1238,10 +1336,23 @@ function renderizarPracticaEjercicio() {
 
   // La teoria puede llevar un ejemplo dibujado, y la lectura manda al otro
   // programa de la app en el nivel que toca.
+  // Un bloque puede llevar mas de una ilustracion, cada una en su caja.
+  const caja = () => {
+    const div = document.createElement("div");
+    ejercicioPartituraEl.appendChild(div);
+    return div;
+  };
+
   if (partitura.sistemas) {
-    dibujarPartituraEjercicio(ejercicioPartituraEl, partitura);
+    dibujarPartituraEjercicio(caja(), partitura);
   } else if (partitura.teclado) {
-    dibujarTeclado(ejercicioPartituraEl, partitura.teclado);
+    dibujarTeclado(caja(), partitura.teclado);
+  }
+
+  if (partitura.arbol) {
+    const contenedorArbol = caja();
+    contenedorArbol.className = "arbol-figuras";
+    dibujarArbolFiguras(contenedorArbol);
   }
 
   if (partitura.tipo === "teoria") {

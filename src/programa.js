@@ -309,6 +309,9 @@ const FIGURAS = {
   ],
 };
 
+// El mismo ejemplo, mas el arbol de duraciones debajo.
+const FIGURAS_Y_ARBOL = { ...FIGURAS, arbol: true };
+
 const ALTERACIONES = {
   tipo: "teoria",
   compas: "4/4",
@@ -440,6 +443,7 @@ function teoria(id, titulo, texto, indicaciones, ejemplo, conceptos) {
       texto,
       ...(conceptos ? { conceptos } : {}),
       ...(ejemplo && ejemplo.teclado ? { teclado: ejemplo.teclado } : {}),
+      ...(ejemplo && ejemplo.arbol ? { arbol: true } : {}),
       ...(ejemplo && ejemplo.sistemas ? { compas: ejemplo.compas, sistemas: ejemplo.sistemas } : {}),
     },
   };
@@ -535,13 +539,14 @@ const NIVELES = [
               concepto({ es: "Teclas negras", fr: "Touches noires" }, { es: "Van en grupos de dos y de tres, y sirven para orientarse sin contar desde el extremo.", fr: "Elles vont par groupes de deux et de trois, et servent à se repérer sans compter depuis le bout." }),
             ]),
           teoria("p1c1-figuras", { es: "Redonda, blanca y negra", fr: "Ronde, blanche et noire" },
-            { es: "La redonda dura cuatro tiempos, la blanca dos y la negra uno. Los tres compases del ejemplo duran lo mismo.", fr: "La ronde dure quatre temps, la blanche deux et la noire un. Les trois mesures de l'exemple durent la même chose." },
+            { es: "La redonda dura cuatro tiempos, la blanca dos y la negra uno. Los tres compases del ejemplo duran lo mismo.", fr: "La ronde dure quatre temps, la blanche deux et la noire un, si bien que les trois mesures de l'exemple durent la même chose malgré leur nombre de notes différent. L'arbre du bas le résume : chaque figure en vaut deux de la suivante." },
             { es: ["Da palmas contando en voz alta antes de tocarlo.", "Hoy sólo redondas; las negras llegan en el curso 2."], fr: ["Frappe dans les mains en comptant à voix haute avant de jouer.", "Aujourd'hui seulement des rondes ; les noires arrivent au cours 2."] },
-            FIGURAS,
+            FIGURAS_Y_ARBOL,
             [
               concepto({ es: "Redonda", fr: "Ronde" }, { es: "Cuatro tiempos. Se escribe hueca y sin palo.", fr: "Quatre temps. Elle s'écrit vide et sans queue." }),
               concepto({ es: "Blanca", fr: "Blanche" }, { es: "Dos tiempos. Hueca y con palo.", fr: "Deux temps. Vide et avec une queue." }),
               concepto({ es: "Negra", fr: "Noire" }, { es: "Un tiempo. Rellena y con palo.", fr: "Un temps. Pleine et avec une queue." }),
+              concepto({ es: "Corchea", fr: "Croche" }, { es: "Medio tiempo. Como la negra, pero con un corchete en el palo. Aparece más adelante.", fr: "Un demi-temps. Comme la noire, mais avec un crochet sur la queue. Elle arrive plus tard." }),
               concepto({ es: "Tiempo", fr: "Temps" }, { es: "La unidad del pulso, lo que marcas con el pie o el metrónomo.", fr: "L'unité de la pulsation, ce que tu marques du pied ou au métronome." }),
             ]),
           referencia("p1c1-ref", { es: "Sentarse, digitación y primeras melodías", fr: "S'asseoir, doigté et premières mélodies" },
