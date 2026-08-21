@@ -315,6 +315,33 @@ const FIGURAS_Y_ARBOL = { ...FIGURAS, arbol: { figuras: ["redonda", "blanca", "n
 // Los mismos tres compases, pero callados.
 const MANOS = { manos: true };
 
+// La derecha lleva la melodia y la izquierda acompana, de fa a do.
+const MELODIA_Y_ACOMPANAMIENTO = {
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
+        { barra: true },
+        { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3" }, { n: "d/4", d: "2" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "c/4", d: "1" }, { n: "a/3", d: "3" }, { n: "a/3", d: "3" },
+        { barra: true },
+        { n: "f/3", d: "5" }, { n: "f/3", d: "5" }, { n: "a/3", d: "3" }, { n: "a/3", d: "3" },
+        { barra: true },
+        { n: "f/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
 // --- Ejercicios con silencios (curso 2) ---------------------------------
 
 const TOCAR_Y_CALLAR = {
@@ -961,9 +988,14 @@ const NIVELES = [
             { es: ["Los dedos van cruzados: el 1 con el 5, el 2 con el 4.", "Si una mano se adelanta, vuelve a manos separadas."], fr: ["Les doigts vont croisés : le 1 avec le 5, le 2 avec le 4.", "Si une main prend de l'avance, reviens aux mains séparées."] },
             MANOS_JUNTAS),
           teoria("p1c3-clavefa", { es: "La clave de fa y el do central", fr: "La clé de fa et le do central" },
-            { es: "La mano izquierda se escribe en clave de fa, donde la cuarta línea es el fa. El do central queda justo encima del pentagrama, en su línea adicional.", fr: "La main gauche s'écrit en clé de fa, où la quatrième ligne est le fa. Le do central se place juste au-dessus de la portée, sur sa ligne supplémentaire." },
+            { es: "El piano abarca demasiadas notas para un solo pentagrama: la mano izquierda necesitaría tantas líneas adicionales que no habría quien lo leyera. Por eso hay dos claves, una para cada mano. La clave es el signo del principio y fija qué nota va en qué línea: la de sol pone el sol en la segunda línea, y la de fa pone el fa en la cuarta. Con ese punto de partida, el mismo pentagrama de cinco líneas sirve para dos registros distintos, y el do central queda justo entre los dos.", fr: "Le piano couvre trop de notes pour une seule portée : la main gauche aurait besoin de tant de lignes supplémentaires que ce serait illisible. C'est pourquoi il y a deux clés, une par main. La clé est le signe du début et fixe quelle note va sur quelle ligne : celle de sol place le sol sur la deuxième ligne, celle de fa place le fa sur la quatrième. Avec ce point de départ, la même portée de cinq lignes sert à deux registres différents, et le do central se retrouve juste entre les deux." },
             { es: ["La llevas viendo desde el primer día en tus ejercicios.", "El do central es una sola tecla, escrita de dos maneras."], fr: ["Tu la vois depuis le premier jour dans tes exercices.", "Le do central est une seule touche, écrite de deux façons."] },
-            DO_CENTRAL_DOS_CLAVES),
+            DO_CENTRAL_DOS_CLAVES,
+            [
+              concepto({ es: "Clave", fr: "Clé" }, { es: "El signo del principio del pentagrama. Fija qué nota va en qué línea; a partir de ahí se cuentan todas las demás.", fr: "Le signe au début de la portée. Il fixe quelle note va sur quelle ligne ; tout le reste se compte à partir de là." }),
+              concepto({ es: "Por qué hay dos", fr: "Pourquoi il y en a deux" }, { es: "Para no llenar la partitura de líneas adicionales. Cada clave coloca el pentagrama en un registro distinto del piano.", fr: "Pour ne pas remplir la partition de lignes supplémentaires. Chaque clé place la portée dans un registre différent du piano." }),
+              concepto({ es: "Do central", fr: "Do central" }, { es: "La nota que comparten las dos claves: una sola tecla, escrita de dos maneras.", fr: "La note que les deux clés partagent : une seule touche, écrite de deux façons." }),
+            ]),
           ejercicio("p1c3-blancasnegras", { es: "Manos juntas: blancas y negras", fr: "Mains ensemble : blanches et noires" },
             { es: "Juntar las manos cuando las figuras no son todas iguales.", fr: "Réunir les mains quand les figures ne sont pas toutes égales." },
             { es: ["Cuenta en voz alta: la blanca dura dos y no se suelta antes.", "Si una mano se adelanta, vuelve a manos separadas y sube el tempo despacio."], fr: ["Compte à voix haute : la blanche dure deux et ne se lâche pas avant.", "Si une main prend de l'avance, reviens aux mains séparées et monte le tempo lentement."] },
@@ -995,7 +1027,8 @@ const NIVELES = [
             MOVIMIENTO_CONTRARIO),
           teoria("p1c4-independencia", { es: "Cada mano, un papel", fr: "Chaque main, un rôle" },
             { es: "Casi siempre una mano lleva la melodía y la otra acompaña. La que acompaña suena más floja: no toca menos, pesa menos.", fr: "Presque toujours une main porte la mélodie et l'autre accompagne. Celle qui accompagne sonne plus doux : elle ne joue pas moins, elle pèse moins." },
-            { es: ["Toca la melodía en f y el acompañamiento en p."], fr: ["Joue la mélodie en f et l'accompagnement en p."] }),
+            { es: ["Toca la melodía en f y el acompañamiento en p.", "La izquierda se mueve poco y repite: es su papel, no es que toque menos."], fr: ["Joue la mélodie en f et l'accompagnement en p.", "La gauche bouge peu et répète : c'est son rôle, pas qu'elle joue moins."] },
+            MELODIA_Y_ACOMPANAMIENTO),
           teoria("p1c4-corchea", { es: "La corchea", fr: "La croche" },
             { es: "Hasta ahora la figura más corta era la negra, de un tiempo. La corchea dura la mitad, así que entran dos en cada negra: se cuenta uno-y, dos-y. Se escribe como la negra pero con un corchete en el palo.", fr: "Jusqu'ici la figure la plus courte était la noire, d'un temps. La croche dure la moitié, donc il en entre deux dans chaque noire : on compte un-et, deux-et. Elle s'écrit comme la noire mais avec un crochet sur la queue." },
             { es: ["Cuenta uno-y dos-y tres-y cuatro-y sin cambiar la velocidad del pie.", "Con las manos ya juntas, es el momento de partir el tiempo."], fr: ["Compte un-et deux-et trois-et quatre-et sans changer la vitesse du pied.", "Les mains étant déjà ensemble, c'est le moment de partager le temps."] },

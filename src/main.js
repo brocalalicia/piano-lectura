@@ -964,9 +964,9 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
 
   // Si las notas llevan su nombre debajo, cada una necesita el ancho del
   // rotulo, o el texto se sale del dibujo y se pisa con el de al lado.
-  const nombres = partitura.sistemas.flatMap((sistema) => sistema.notas.map((nota) => nota.t || ""));
-  const rotuloMasLargo = Math.max(0, ...nombres.map((texto) => texto.length * 8 + 20));
-  const hayNombres = rotuloMasLargo > 0;
+  const nombres = partitura.sistemas.flatMap((sistema) => sistema.notas.map((nota) => nota.t)).filter(Boolean);
+  const hayNombres = nombres.length > 0;
+  const rotuloMasLargo = hayNombres ? Math.max(...nombres.map((texto) => texto.length * 8 + 20)) : 0;
   const porNota = Math.max(42, rotuloMasLargo);
   const ancho = 70 + cuentaNotas * porNota;
 
