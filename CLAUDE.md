@@ -98,6 +98,9 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   remite a un libro que ella ya tiene.
 - Los dos programas están conectados: la práctica manda a la lectura. Si se
   añaden niveles de lectura, revisar a dónde apuntan los bloques `lectura`.
+- Si se entra a la lectura desde un curso, el botón de volver regresa **a ese
+  curso** desde cualquier pantalla del ejercicio, y lo dice: «← Curso 3».
+  Entrando por el menú de Lectura, vuelve a los menús como siempre.
 
 ## Niveles
 - Se entra por un menú: primero la clave (sol o fa) y después el nivel.

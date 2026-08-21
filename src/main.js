@@ -352,6 +352,9 @@ let estado = "menu-programa";
 
 let nivelPractica = null;
 let cursoPractica = null;
+// Si se entra a la lectura desde un curso de practica, se guarda para poder
+// volver a el desde cualquier pantalla del ejercicio.
+let origenLectura = null;
 let ejercicioPractica = null;
 let cuentaAtrasIntervalId = null;
 
@@ -878,6 +881,7 @@ function renderizarMenuClave() {
 
     boton.addEventListener("click", () => {
       vibrar(15);
+      origenLectura = null;
       seleccionarClave(clave);
     });
 
@@ -1193,6 +1197,7 @@ function renderizarPracticaEjercicio() {
     boton.textContent = t().irALectura;
     boton.addEventListener("click", () => {
       vibrar(15);
+      origenLectura = cursoPractica;
       seleccionarClave(clave);
       seleccionarNivel(nivel);
     });
@@ -1239,6 +1244,7 @@ function renderizarPracticaEjercicio() {
 
 function irAMenuPrograma() {
   detenerCuentaAtras();
+  origenLectura = null;
   estado = "menu-programa";
   renderizarMenuPrograma();
   actualizarUI();
@@ -1320,6 +1326,13 @@ function volverAtras() {
     irAMenuPrograma();
   } else if (PANTALLA_ANTERIOR[estado]) {
     PANTALLA_ANTERIOR[estado]();
+  } else if (origenLectura) {
+    // Se entro a leer desde un curso: se vuelve a ese curso, desde cualquier
+    // pantalla del ejercicio y sin pasar por los menus de lectura.
+    detenerCuentaAtras();
+    const curso = origenLectura;
+    origenLectura = null;
+    irAPracticaLista(curso, curso.numero);
   } else {
     // Cualquier pantalla del ejercicio de lectura vuelve a la lista de niveles.
     volverAlMenuNivel();
@@ -1488,6 +1501,10 @@ function actualizarUI() {
   practicaEjercicioEl.classList.toggle("oculto", estado !== "practica-ejercicio");
   indicadorNivelEl.classList.toggle("oculto", !enLectura);
   botonAtras.classList.toggle("oculto", estado === "menu-programa");
+  botonAtras.textContent =
+    origenLectura && enLectura
+      ? `← ${t().practicaCursoTitulo(origenLectura.numero)}`
+      : `← ${t().atras}`;
 
   // El marcador no aporta nada antes de empezar (todo a cero) ni en el
   // resumen (la tarjeta ya da esos datos).
@@ -1534,7 +1551,6 @@ function aplicarIdioma(nuevoIdioma) {
   etiquetaRachaEl.textContent = t().racha;
   memorizacionTextoEl.textContent = t().memorizaTitulo;
   botonReiniciarSesion.textContent = t().reiniciarSesion;
-  botonAtras.textContent = `← ${t().atras}`;
   menuClaveTituloEl.textContent = t().menuClaveTitulo;
   menuNivelTituloEl.textContent = t().menuNivelTitulo;
   renderizarPortada();
