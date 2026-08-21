@@ -993,6 +993,7 @@ const NIVELES = [
             [
               concepto({ es: "Compás", fr: "Mesure" }, { es: "Cada trozo de música entre dos barras. Todos duran lo mismo.", fr: "Chaque portion de musique comprise entre deux barres. Toutes ont la même durée." }),
               concepto({ es: "Barra de compás", fr: "Barre de mesure" }, { es: "La línea vertical que separa un compás del siguiente.", fr: "La ligne verticale qui sépare une mesure de la suivante." }),
+              concepto({ es: "Indicación de compás", fr: "Chiffrage de mesure" }, { es: "Los dos números del principio, uno encima del otro. En español se les llama también «el compás»: 4/4, 3/4, 2/4.", fr: "Les deux chiffres du début, l'un au-dessus de l'autre. On dit aussi signature rythmique : 4/4, 3/4, 2/4." }),
               concepto({ es: "Número de arriba", fr: "Chiffre du haut" }, { es: "Cuántos tiempos hay en cada compás: 2, 3 o 4 en los compases que vas a ver ahora.", fr: "Combien de temps compte chaque mesure : 2, 3 ou 4 dans les mesures que tu verras pour l'instant." }),
               concepto({ es: "Número de abajo", fr: "Chiffre du bas" }, { es: "Qué figura vale un tiempo: 2 es la blanca, 4 la negra y 8 la corchea. Es la redonda dividida en esas partes.", fr: "Quelle figure vaut un temps : 2 pour la blanche, 4 pour la noire, 8 pour la croche. C'est la ronde divisée en autant de parts." }),
             ]),
