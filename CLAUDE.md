@@ -25,6 +25,9 @@ No soy programador.
   es una sesión y qué variables puede mejorar el alumno. Debajo, la elección
   de clave. No hay otra explicación del juego: si cambia la estructura de la
   sesión, hay que actualizar esa portada.
+- El francés lo leen adultos y va escrito con cuidado editorial: nada de calcos
+  del español, terminología musical francesa correcta (interligne, barre de
+  ligature, chiffrage de mesure) y espacio fino antes de : ; ? !
 - Español por defecto, con selector de idioma (ES/FR) arriba a la derecha.
   La preferencia se guarda en el navegador (localStorage).
 - Nombres de notas en solfeo: do, re, mi, fa, sol, la, si (ré en francés).
