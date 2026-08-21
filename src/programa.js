@@ -717,11 +717,30 @@ const TECLADO_DO_SOL = {
   },
 };
 
-// El mismo do central, escrito en las dos claves.
-const DO_CENTRAL_DOS_CLAVES = {
+// Las notas que ya lee en cada clave, con el do central recuadrado en las dos:
+// arriba es la primera y abajo la ultima, pero es la misma tecla.
+const NOTAS_DE_LAS_DOS_CLAVES = {
   sistemas: [
-    { clef: "treble", notas: [{ n: "c/4", t: "do central", f: "w" }] },
-    { clef: "bass", notas: [{ n: "c/4", t: "do central", f: "w" }] },
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", t: "do central", f: "w", marca: true },
+        { n: "d/4", t: "re", f: "w" },
+        { n: "e/4", t: "mi", f: "w" },
+        { n: "f/4", t: "fa", f: "w" },
+        { n: "g/4", t: "sol", f: "w" },
+      ],
+    },
+    {
+      clef: "bass",
+      notas: [
+        { n: "f/3", t: "fa", f: "w" },
+        { n: "g/3", t: "sol", f: "w" },
+        { n: "a/3", t: "la", f: "w" },
+        { n: "b/3", t: "si", f: "w" },
+        { n: "c/4", t: "do central", f: "w", marca: true },
+      ],
+    },
   ],
 };
 
@@ -989,8 +1008,8 @@ const NIVELES = [
             MANOS_JUNTAS),
           teoria("p1c3-clavefa", { es: "La clave de fa y el do central", fr: "La clé de fa et le do central" },
             { es: "El piano abarca demasiadas notas para un solo pentagrama: la mano izquierda necesitaría tantas líneas adicionales que no habría quien lo leyera. Por eso hay dos claves, una para cada mano. La clave es el signo del principio y fija qué nota va en qué línea: la de sol pone el sol en la segunda línea, y la de fa pone el fa en la cuarta. Con ese punto de partida, el mismo pentagrama de cinco líneas sirve para dos registros distintos, y el do central queda justo entre los dos.", fr: "Le piano couvre trop de notes pour une seule portée : la main gauche aurait besoin de tant de lignes supplémentaires que ce serait illisible. C'est pourquoi il y a deux clés, une par main. La clé est le signe du début et fixe quelle note va sur quelle ligne : celle de sol place le sol sur la deuxième ligne, celle de fa place le fa sur la quatrième. Avec ce point de départ, la même portée de cinq lignes sert à deux registres différents, et le do central se retrouve juste entre les deux." },
-            { es: ["La llevas viendo desde el primer día en tus ejercicios.", "El do central es una sola tecla, escrita de dos maneras."], fr: ["Tu la vois depuis le premier jour dans tes exercices.", "Le do central est une seule touche, écrite de deux façons."] },
-            DO_CENTRAL_DOS_CLAVES,
+            { es: ["Mira el recuadro: arriba el do central es la primera nota y abajo la última, pero es la misma tecla.", "En clave de sol cuelga por debajo del pentagrama; en clave de fa asoma por encima."], fr: ["Regarde le cadre : en haut le do central est la première note et en bas la dernière, mais c'est la même touche.", "En clé de sol il pend sous la portée ; en clé de fa il dépasse au-dessus."] },
+            NOTAS_DE_LAS_DOS_CLAVES,
             [
               concepto({ es: "Clave", fr: "Clé" }, { es: "El signo del principio del pentagrama. Fija qué nota va en qué línea; a partir de ahí se cuentan todas las demás.", fr: "Le signe au début de la portée. Il fixe quelle note va sur quelle ligne ; tout le reste se compte à partir de là." }),
               concepto({ es: "Por qué hay dos", fr: "Pourquoi il y en a deux" }, { es: "Para no llenar la partitura de líneas adicionales. Cada clave coloca el pentagrama en un registro distinto del piano.", fr: "Pour ne pas remplir la partition de lignes supplémentaires. Chaque clé place la portée dans un registre différent du piano." }),

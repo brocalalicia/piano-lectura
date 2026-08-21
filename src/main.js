@@ -995,6 +995,7 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   }
 
   const digitaciones = [];
+  const marcas = [];
   let pintadas = 0;
 
   partitura.sistemas.forEach((sistema, indice) => {
@@ -1032,6 +1033,7 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
       .filter((nota) => !nota.barra)
       .forEach((nota, i) => {
         if (nota.d) digitaciones.push({ texto: nota.d, sistema: indice, orden: pintadas + i });
+        if (nota.marca) marcas.push({ nota: nota.n, sistema: indice, orden: pintadas + i });
       });
     pintadas += sistema.notas.filter((nota) => !nota.barra).length;
   });
@@ -1042,6 +1044,25 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   const cabezas = [...svg.querySelectorAll(".vf-stavenote")].map((grupo) => {
     const texto = grupo.querySelector("text");
     return texto ? +texto.getAttribute("x") + 5 : null;
+  });
+
+  // Recuadro para senalar una nota concreta, como el do central en cada clave.
+  marcas.forEach((marca) => {
+    const x = cabezas[marca.orden];
+    if (x === null || x === undefined) return;
+    const pentagrama = pentagramas[marca.sistema];
+    const y = yDeNota(pentagrama, marca.nota, partitura.sistemas[marca.sistema].clef);
+
+    const recuadro = document.createElementNS(SVG_NS, "rect");
+    recuadro.setAttribute("x", x - 17);
+    recuadro.setAttribute("y", y - 13);
+    recuadro.setAttribute("width", 34);
+    recuadro.setAttribute("height", 26);
+    recuadro.setAttribute("rx", 7);
+    recuadro.setAttribute("fill", "none");
+    recuadro.setAttribute("stroke", "var(--color-primario)");
+    recuadro.setAttribute("stroke-width", 2.5);
+    svg.appendChild(recuadro);
   });
 
   digitaciones.forEach((dedo) => {
