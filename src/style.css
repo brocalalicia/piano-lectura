@@ -577,6 +577,17 @@ body {
   margin-top: 0;
 }
 
+.ficha-teoria ul {
+  margin: 12px 0 0;
+  padding-left: 20px;
+  color: var(--color-texto-cuerpo);
+  line-height: 1.5;
+}
+
+.ficha-teoria li + li {
+  margin-top: 8px;
+}
+
 .ficha-teoria dl {
   margin: 0;
 }

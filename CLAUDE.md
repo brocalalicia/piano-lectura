@@ -93,6 +93,9 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   la explica, no al final de toda la teoría. Un curso empieza por teoría y
   acaba en el piano, nunca al revés.
 - Cada bloque lleva su etiqueta visible: Teoría, Lectura, Técnica o Método.
+- La explicación de teoría puede ser un párrafo o una lista: si es una lista,
+  el primer elemento entra como párrafo y el resto van en puntos. Los textos
+  largos van así, que de seguido quedan ilegibles.
 - Los bloques de teoría pueden llevar, además de la explicación, una lista de
   **conceptos con su definición** y una ilustración. La ilustración es un
   pentagrama dibujado con VexFlow, **un teclado de piano**, **las dos manos con

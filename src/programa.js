@@ -799,7 +799,7 @@ function ejercicio(id, titulo, objetivo, indicaciones, partitura) {
 // En la lista de ejercicios solo cabe una linea, asi que de la explicacion de
 // teoria se muestra la primera frase.
 function primeraFrase(texto) {
-  const cortar = (t) => `${t.split(". ")[0]}.`;
+  const cortar = (t) => `${(Array.isArray(t) ? t[0] : t).split(". ")[0]}.`;
   return { es: cortar(texto.es), fr: cortar(texto.fr) };
 }
 
@@ -906,7 +906,20 @@ const NIVELES = [
             { es: ["El brazo se queda quieto; sólo se mueve el dedo.", "Las dos notas iguales tienen que sonar iguales."], fr: ["Le bras reste immobile ; seul le doigt bouge.", "Les deux notes identiques doivent sonner de la même façon."] },
             NOTAS_REPETIDAS_DOS),
           teoria("p1c1-pentagrama", { es: "El pentagrama y las notas de do a sol", fr: "La portée et les notes de do à sol" },
-            { es: "La música se escribe sobre cinco líneas y cuatro espacios: el pentagrama. La clave de sol, al principio, fija que la segunda línea es el sol, y a partir de ahí se cuenta todo lo demás pasando de línea a espacio. Tus cinco primeras notas son do, re, mi, fa y sol: el do va en una línea adicional por debajo del pentagrama y el sol en la segunda línea.", fr: "La musique s'écrit sur une portée : cinq lignes et quatre interlignes. La clé de sol, placée au début, situe le sol sur la deuxième ligne ; tout le reste se déduit de ce repère, en montant de ligne en interligne. Tes cinq premières notes sont do, ré, mi, fa et sol : le do se place sur une ligne supplémentaire sous la portée, et le sol sur la deuxième ligne." },
+            {
+              es: [
+                "La música se escribe sobre un pentagrama: cinco líneas y cuatro espacios.",
+                "La clave de sol, al principio, pone el sol en la segunda línea.",
+                "A partir de ahí se cuenta todo lo demás, pasando de línea a espacio sin saltarse nada.",
+                "Tus cinco primeras notas son do, re, mi, fa y sol: el do va en una línea adicional por debajo del pentagrama, y el sol en la segunda línea.",
+              ],
+              fr: [
+                "La musique s'écrit sur une portée : cinq lignes et quatre interlignes.",
+                "La clé de sol, placée au début, situe le sol sur la deuxième ligne.",
+                "Tout le reste se déduit de ce repère, en montant de ligne en interligne sans rien sauter.",
+                "Tes cinq premières notes sont do, ré, mi, fa et sol : le do se place sur une ligne supplémentaire sous la portée, et le sol sur la deuxième ligne.",
+              ],
+            },
             { es: ["Señala el sol en el papel antes de leer nada más.", "Sube y baja nombrando las notas en voz alta, sin tocar."], fr: ["Montre le sol sur le papier avant de lire autre chose.", "Monte et descends en nommant les notes à voix haute, sans jouer."] },
             PENTAGRAMA_DO_SOL,
             [
@@ -959,7 +972,22 @@ const NIVELES = [
         },
         ejercicios: [
           teoria("p1c2-compas", { es: "El compás y la barra de compás", fr: "La mesure et la barre de mesure" },
-            { es: "La barra de compás corta la música en compases de la misma duración. Al principio, dos números puestos uno encima de otro dicen cómo son. El de arriba cuenta: cuántos tiempos entran en cada compás. El de abajo nombra: qué figura vale un tiempo, y no es un número cualquiera, dice en cuántas partes se ha dividido la redonda. Un 4 significa negra, porque cuatro negras hacen una redonda; un 2 es la blanca y un 8 la corchea. Así que 4/4 se lee «cuatro negras por compás». El primer tiempo de cada compás se apoya un poco más que los demás, y esa acentuación es lo que deja oír dónde empieza cada compás: la barra se ve en el papel, el acento se oye.", fr: "La barre de mesure découpe la musique en mesures de même durée. Au début, deux chiffres superposés indiquent comment elles sont faites. Celui du haut compte : combien de temps entrent dans chaque mesure. Celui du bas nomme : quelle figure vaut un temps — et ce n'est pas un chiffre arbitraire, il dit en combien de parts la ronde a été divisée. Un 4 désigne la noire, puisque quatre noires font une ronde ; un 2 désigne la blanche et un 8 la croche. Le 4/4 se lit donc « quatre noires par mesure ». Le premier temps de chaque mesure s'appuie un peu plus que les autres, et c'est cet accent qui permet d'entendre où commence chaque mesure : la barre se voit sur le papier, l'accent s'entend." },
+            {
+              es: [
+                "La barra de compás corta la música en compases de la misma duración. Al principio, dos números puestos uno encima de otro dicen cómo son.",
+                "El de arriba cuenta: cuántos tiempos entran en cada compás.",
+                "El de abajo nombra: qué figura vale un tiempo. Y no es un número cualquiera: dice en cuántas partes se ha dividido la redonda. Un 4 es la negra, porque cuatro negras hacen una redonda; un 2 es la blanca y un 8 la corchea.",
+                "Así que 4/4 se lee «cuatro negras por compás».",
+                "El primer tiempo se apoya un poco más que los demás, y ese acento es lo que deja oír dónde empieza cada compás: la barra se ve en el papel, el acento se oye.",
+              ],
+              fr: [
+                "La barre de mesure découpe la musique en mesures de même durée. Au début, deux chiffres superposés indiquent comment elles sont faites.",
+                "Celui du haut compte : combien de temps entrent dans chaque mesure.",
+                "Celui du bas nomme : quelle figure vaut un temps. Ce n'est pas un chiffre arbitraire : il dit en combien de parts la ronde a été divisée. Un 4 désigne la noire, puisque quatre noires font une ronde ; un 2 désigne la blanche et un 8 la croche.",
+                "Le 4/4 se lit donc « quatre noires par mesure ».",
+                "Le premier temps s'appuie un peu plus que les autres, et cet accent permet d'entendre où commence chaque mesure : la barre se voit sur le papier, l'accent s'entend.",
+              ],
+            },
             { es: ["Cuenta 1-2-3-4 en cada compás y marca el primero con el pie.", "Truco: el número de abajo es el mismo que en el árbol de duraciones."], fr: ["Compte 1-2-3-4 dans chaque mesure et marque le premier du pied.", "Astuce : le chiffre du bas est le même que dans l'arbre des durées."] },
             COMPAS_CUATRO,
             [
@@ -1015,7 +1043,22 @@ const NIVELES = [
             { es: ["Los dedos van cruzados: el 1 con el 5, el 2 con el 4.", "Si una mano se adelanta, vuelve a manos separadas."], fr: ["Les doigts se répondent en miroir : le 1 avec le 5, le 2 avec le 4.", "Si une main prend de l'avance, reviens aux mains séparées."] },
             MANOS_JUNTAS),
           teoria("p1c3-clavefa", { es: "La clave de fa y el do central", fr: "La clé de fa et le do central" },
-            { es: "El piano abarca demasiadas notas para un solo pentagrama: la mano izquierda necesitaría tantas líneas adicionales que no habría quien lo leyera. Por eso hay dos claves, una para cada mano. La clave es el signo del principio y fija qué nota va en qué línea: la de sol pone el sol en la segunda línea, y la de fa pone el fa en la cuarta. Con ese punto de partida, el mismo pentagrama de cinco líneas sirve para dos registros distintos, y el do central queda justo entre los dos.", fr: "L'étendue du piano est trop vaste pour tenir sur une seule portée : la main gauche exigerait tant de lignes supplémentaires que la lecture en deviendrait impossible. D'où l'usage de deux clés, une par main. La clé, placée au début de la portée, fixe une note de référence : celle de sol situe le sol sur la deuxième ligne, celle de fa situe le fa sur la quatrième. À partir de ce repère, les mêmes cinq lignes servent à deux registres différents, et le do central se trouve exactement entre les deux." },
+            {
+              es: [
+                "El piano abarca demasiadas notas para un solo pentagrama: la mano izquierda necesitaría tantas líneas adicionales que no habría quien lo leyera. Por eso hay dos claves, una para cada mano.",
+                "La clave va al principio del pentagrama y fija una nota de referencia.",
+                "La de sol pone el sol en la segunda línea; la de fa pone el fa en la cuarta.",
+                "A partir de ese punto de partida, las mismas cinco líneas sirven para dos registros distintos del piano.",
+                "Y el do central queda justo entre los dos: colgando por debajo de la clave de sol y asomando por encima de la de fa.",
+              ],
+              fr: [
+                "L'étendue du piano est trop vaste pour tenir sur une seule portée : la main gauche exigerait tant de lignes supplémentaires que la lecture en deviendrait impossible. D'où l'usage de deux clés, une par main.",
+                "La clé se place au début de la portée et fixe une note de référence.",
+                "Celle de sol situe le sol sur la deuxième ligne ; celle de fa situe le fa sur la quatrième.",
+                "À partir de ce repère, les mêmes cinq lignes servent à deux registres différents du piano.",
+                "Et le do central se trouve exactement entre les deux : suspendu sous la clé de sol, dépassant au-dessus de la clé de fa.",
+              ],
+            },
             { es: ["Mira el recuadro: arriba el do central es la primera nota y abajo la última, pero es la misma tecla.", "En clave de sol cuelga por debajo del pentagrama; en clave de fa asoma por encima."], fr: ["Regarde le cadre : en haut le do central est la première note et en bas la dernière, mais c'est la même touche.", "En clé de sol il pend sous la portée ; en clé de fa il dépasse au-dessus."] },
             NOTAS_DE_LAS_DOS_CLAVES,
             [

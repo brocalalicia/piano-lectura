@@ -1791,9 +1791,25 @@ function pintarEjercicio(ejercicio, conTitulo, numero) {
 
   if (partitura.tipo === "teoria") {
     const texto = caja("ficha-teoria");
+
+    // El texto puede ser un parrafo suelto o una lista: el primer elemento
+    // entra, y el resto van en puntos, para que no quede un ladrillo.
+    const contenido = txt(partitura.texto);
+    const partes = Array.isArray(contenido) ? contenido : [contenido];
+
     const parrafo = document.createElement("p");
-    parrafo.textContent = txt(partitura.texto);
+    parrafo.textContent = partes[0];
     texto.appendChild(parrafo);
+
+    if (partes.length > 1) {
+      const puntos = document.createElement("ul");
+      partes.slice(1).forEach((linea) => {
+        const punto = document.createElement("li");
+        punto.textContent = linea;
+        puntos.appendChild(punto);
+      });
+      texto.appendChild(puntos);
+    }
 
     if (partitura.conceptos) {
       const titulo = document.createElement("h3");
