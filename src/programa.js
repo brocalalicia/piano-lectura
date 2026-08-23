@@ -206,6 +206,8 @@ const CINCO_DEDOS_REDONDAS_MD = {
   ],
 };
 
+// La izquierda sube de fa a do central, que son las cinco notas de clave de fa
+// del curso 1, y acaba con el pulgar en el do que comparte con la derecha.
 const CINCO_DEDOS_REDONDAS_MI = {
   tipo: "dibujada",
   compas: "4/4",
@@ -213,11 +215,11 @@ const CINCO_DEDOS_REDONDAS_MI = {
     {
       clef: "bass",
       notas: [
-        { n: "c/3", d: "5", f: "w" }, { barra: true },
-        { n: "d/3", d: "4", f: "w" }, { barra: true },
-        { n: "e/3", d: "3", f: "w" }, { barra: true },
-        { n: "f/3", d: "2", f: "w" }, { barra: true },
-        { n: "g/3", d: "1", f: "w" },
+        { n: "f/3", d: "5", f: "w" }, { barra: true },
+        { n: "g/3", d: "4", f: "w" }, { barra: true },
+        { n: "a/3", d: "3", f: "w" }, { barra: true },
+        { n: "b/3", d: "2", f: "w" }, { barra: true },
+        { n: "c/4", d: "1", f: "w" },
       ],
     },
   ],
@@ -969,7 +971,7 @@ const NIVELES = [
             ]),
           ejercicio("p1c1-md", { es: "Cinco dedos en redondas", fr: "Cinq doigts en rondes" },
             { es: "Una nota por compás: tiempo de sobra para colocar el dedo y escuchar.", fr: "Une note par mesure : tout le temps de placer le doigt et d'écouter le son." },
-            { es: ["Primero la mano derecha, después la izquierda. Todavía no a la vez.", "Cuenta cuatro en cada nota, en voz alta, y dedos curvos."], fr: ["D'abord la main droite, ensuite la gauche. Pas encore ensemble.", "Compte quatre sur chaque note, à voix haute, et garde les doigts arrondis."] },
+            { es: ["Primero la mano derecha, después la izquierda. Todavía no a la vez.", "Cuenta cuatro en cada nota, en voz alta, y dedos curvos.", "Las dos manos se juntan en el do central: la derecha lo empieza con el pulgar y la izquierda lo acaba con el pulgar."], fr: ["D'abord la main droite, ensuite la gauche. Pas encore ensemble.", "Compte quatre sur chaque note, à voix haute, et garde les doigts arrondis.", "Les deux mains se rejoignent sur le do central : la droite le commence du pouce, la gauche le termine du pouce."] },
             CINCO_DEDOS_REDONDAS),
           referencia("p1c1-ref", { es: "Práctica a manos separadas", fr: "Travail en mains séparées" },
             [
