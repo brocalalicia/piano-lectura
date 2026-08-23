@@ -263,22 +263,8 @@ body {
   text-align: center;
 }
 
-#programa-subtitulo {
-  margin: 0;
-  color: var(--color-texto-tenue);
-  text-align: center;
-}
-
 .boton-programa {
   min-height: 130px;
-}
-
-#practica-lista-objetivo {
-  margin: 0;
-  max-width: 480px;
-  text-align: center;
-  color: var(--color-texto-cuerpo);
-  line-height: 1.45;
 }
 
 #practica-lista-ejercicios {
@@ -387,14 +373,6 @@ body {
   font-size: 0.88rem;
   color: var(--color-texto-tenue);
   line-height: 1.35;
-}
-
-#practica-curso-objetivo {
-  margin: 0;
-  max-width: 480px;
-  text-align: center;
-  color: var(--color-texto-cuerpo);
-  line-height: 1.45;
 }
 
 /* Ficha de un ejercicio que remite a un metodo con derechos: no hay partitura,

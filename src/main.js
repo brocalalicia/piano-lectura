@@ -79,7 +79,6 @@ const TRADUCCIONES = {
   es: {
     tituloPagina: "Clase de piano",
     programaTitulo: "Clase de piano",
-    programaSubtitulo: "Elige en qué quieres trabajar hoy.",
     programas: {
       lectura: { nombre: "Lectura", descripcion: "Leer notas en el pentagrama" },
       practica: { nombre: "Práctica", descripcion: "Ejercicios técnicos con partitura" },
@@ -190,7 +189,6 @@ const TRADUCCIONES = {
   fr: {
     tituloPagina: "Cours de piano",
     programaTitulo: "Cours de piano",
-    programaSubtitulo: "Choisis ce que tu souhaites travailler aujourd'hui.",
     programas: {
       lectura: { nombre: "Lecture", descripcion: "Reconnaître les notes sur la portée" },
       practica: { nombre: "Pratique", descripcion: "Technique et théorie, partition à l'appui" },
@@ -321,18 +319,15 @@ const indicadorNivelEl = document.getElementById("indicador-nivel");
 const menuClaveEl = document.getElementById("menu-clave");
 const menuProgramaEl = document.getElementById("menu-programa");
 const programaTituloEl = document.getElementById("programa-titulo");
-const programaSubtituloEl = document.getElementById("programa-subtitulo");
 const menuProgramaOpcionesEl = document.getElementById("menu-programa-opciones");
 const practicaNivelEl = document.getElementById("practica-nivel");
 const practicaNivelTituloEl = document.getElementById("practica-nivel-titulo");
 const practicaNivelOpcionesEl = document.getElementById("practica-nivel-opciones");
 const practicaCursoEl = document.getElementById("practica-curso");
 const practicaCursoTituloEl = document.getElementById("practica-curso-titulo");
-const practicaCursoObjetivoEl = document.getElementById("practica-curso-objetivo");
 const practicaCursoOpcionesEl = document.getElementById("practica-curso-opciones");
 const practicaListaEl = document.getElementById("practica-lista");
 const practicaListaTituloEl = document.getElementById("practica-lista-titulo");
-const practicaListaObjetivoEl = document.getElementById("practica-lista-objetivo");
 const practicaListaEjerciciosEl = document.getElementById("practica-lista-ejercicios");
 const practicaEjercicioEl = document.getElementById("practica-ejercicio");
 const ejercicioTituloEl = document.getElementById("ejercicio-titulo");
@@ -1561,7 +1556,6 @@ function dibujarManos(contenedor) {
 
 function renderizarMenuPrograma() {
   programaTituloEl.textContent = t().programaTitulo;
-  programaSubtituloEl.textContent = t().programaSubtitulo;
   menuProgramaOpcionesEl.innerHTML = "";
 
   const opciones = [
@@ -1626,7 +1620,6 @@ function renderizarPracticaCursos() {
   if (!nivelPractica) return;
 
   practicaCursoTituloEl.textContent = txt(nivelPractica.nombre);
-  practicaCursoObjetivoEl.textContent = txt(nivelPractica.objetivo);
   practicaCursoOpcionesEl.innerHTML = "";
 
   nivelPractica.cursos.forEach((curso, indice) => {
@@ -1658,7 +1651,6 @@ function renderizarPracticaLista() {
   if (!cursoPractica) return;
 
   practicaListaTituloEl.textContent = `${t().practicaCursoTitulo(cursoPractica.numero)} · ${txt(cursoPractica.titulo)}`;
-  practicaListaObjetivoEl.textContent = txt(cursoPractica.objetivo);
   practicaListaEjerciciosEl.innerHTML = "";
 
   // Los ejercicios de piano van todos juntos en una sola pagina, que es la
