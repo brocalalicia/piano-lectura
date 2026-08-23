@@ -75,7 +75,7 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - **Derechos de autor, importante**: la app se publica en internet, así que
   sólo puede mostrar partituras en dominio público (Czerny, Hanon, Beyer,
   Burgmüller, Duvernoy, Le Couppey...). Los métodos con derechos —Pouillard,
-  Faber, Alfred, Hal Leonard, Chornet, los de la carpeta «Programme Piano»—
+  Faber, Aaron, Hal Leonard, Chornet, los de la carpeta «Programme Piano»—
   se citan indicando dónde mirarlos, nunca reproduciendo la página.
 - Al citar un método, la página es **la impresa en el papel**, no la del PDF:
   en el Pouillard hay seis de diferencia y ya provocó una referencia mal puesta.
@@ -115,10 +115,19 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - **El programa Principiante está pensado para adultos**: el texto le habla al
   alumno de tú, no al profesor sobre un niño.
 - Un bloque `referencia` cita **varios métodos a la vez**, porque en clase se
-  combinan. Los tres de Principiante: Alfred's Basic Adult All-in-One Course
-  (lección, teoría y técnica, para adultos), Hervé y Pouillard (técnica
-  clásica: el paso del pulgar y la escala, que el Alfred no da en su nivel 1)
-  y Chornet (ejercicios por tipo, el Czerny op. 599 y el repertorio).
+  combinan. Los **tres métodos fijos**, presentes en todos los cursos y siempre
+  en este orden: **Hervé y Pouillard** (la progresión técnica clásica), **Chornet**
+  (fórmulas por bloques: manos separadas, unísono, alternadas, dedos libres,
+  acordes, legato/staccato, escalas, Czerny op. 599) y **Michael Aaron, grado 1**
+  (lectura y piezas cortas). El **Alfred no es referencia continua**: sólo piezas
+  sueltas, y únicamente cuando la profesora lo pida.
+- El bloque de método de cada curso sigue esta progresión de manos, que da su
+  título: curso 1 **manos separadas**, curso 2 **manos juntas al unísono**, y del
+  curso 3 en adelante **manos independientes** (alternadas en el 3, dedos libres
+  en el 4) y después por contenido (acordes, legato/staccato, escalas).
+- **A partir del curso 5 cada clase lleva un bloque de repertorio**, sacado de
+  *Essential Piano Repertoire, Preparatory Level* (Keith Snell), en el orden
+  progresivo del propio libro.
 - **No se enlaza a partituras de fuera**: o está dibujada dentro de la app, o
   remite a un libro que ella ya tiene.
 - Los dos programas están conectados: la práctica manda a la lectura. Si se

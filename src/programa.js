@@ -855,16 +855,16 @@ function lectura(id, clave, nivel, titulo, objetivo, indicaciones) {
 }
 
 // Referencia a un metodo de la profesora. La pagina es la impresa en el papel.
-// Principiante va con el metodo de adultos de Alfred, que junta leccion,
-// teoria y tecnica en un solo libro.
-// Un bloque de metodo puede citar mas de un libro: se usan los dos y se
-// complementan. El Alfred lleva la leccion, la teoria y las canciones; el
-// Pouillard aporta la tecnica clasica que el Alfred no toca en su nivel 1,
-// como el paso del pulgar y la escala.
-const alfred = (donde) => ({ metodo: "Alfred's Basic Adult All-in-One Course, nivel 1", donde });
+// Los tres metodos de referencia se usan en todos los cursos y se complementan:
+// el Pouillard lleva la progresion tecnica clasica, el Chornet aporta las
+// formulas por bloques (manos separadas, unisono, alternadas, dedos libres) y
+// el Aaron pone la lectura y las piezas cortas. El repertorio entra a partir
+// del curso 5. El Alfred no es una referencia continua: solo piezas sueltas
+// cuando la profesora lo indique.
 const pouillard = (donde) => ({ metodo: "Hervé y Pouillard, Méthode de piano débutants", donde });
 const chornet = (donde) => ({ metodo: "Chornet, Ejercicios, estudios y obras para piano", donde });
-const aaron = (donde) => ({ metodo: "Michael Aaron, curso para piano", donde });
+const aaron = (donde) => ({ metodo: "Michael Aaron, curso para piano, grado 1", donde });
+const repertorio = (donde) => ({ metodo: "Essential Piano Repertoire, Preparatory Level (Keith Snell)", donde });
 
 function referencia(id, titulo, fuentes, detalle, indicaciones) {
   return {
@@ -1027,10 +1027,14 @@ const NIVELES = [
             { es: "Saltar un dedo sin que la mano se mueva de sitio.", fr: "Sauter un doigt sans que la main bouge de place." },
             { es: ["Los dedos que no tocan se quedan sobre sus teclas.", "El salto se prepara antes, no en el último momento."], fr: ["Les doigts qui ne jouent pas restent sur leurs touches.", "Le saut se prépare à l'avance, pas au dernier moment."] },
             TERCERAS),
-          referencia("p1c2-ref", { es: "Legato, matices y fraseo", fr: "Legato, nuances et phrasé" },
-            [alfred({ es: "págs. 13-17", fr: "p. 13-17" }), pouillard({ es: "cap. I págs. 9-13", fr: "chap. I p. 9-13" }), chornet({ es: "págs. 17, 22 y 29", fr: "p. 17, 22 et 29" })],
-            { es: "Negras, blancas y redonda, el compás y la clave de sol, con Ode to Joy y Aura Lee.", fr: "La préparation au legato, lier pour de bon et les premières indications de nuance." },
-            { es: ["Un dedo se levanta cuando el otro ya ha bajado.", "Toca el mismo ejercicio en f y en p."], fr: ["Un doigt se lève quand l'autre est déjà descendu.", "Joue le même exercice en f puis en p."] }),
+          referencia("p1c2-ref", { es: "Práctica a manos juntas, al unísono", fr: "Travail en mains ensemble, à l'unisson" },
+            [
+              pouillard({ es: "cap. II págs. 16-19", fr: "chap. II p. 16-19" }),
+              chornet({ es: "págs. 14-16, manos juntas al unísono", fr: "p. 14-16, mains ensemble à l'unisson" }),
+              aaron({ es: "págs. 13-18", fr: "p. 13-18" }),
+            ],
+            { es: "Las dos manos tocan lo mismo a la vez, separadas por una octava. Aparecen también los primeros silencios y las ligaduras.", fr: "Les deux mains jouent la même chose en même temps, à l'octave. Apparaissent aussi les premiers silences et les liaisons." },
+            { es: ["Monta cada mano sola y júntalas sólo cuando las dos vayan seguidas.", "Un dedo se levanta cuando el otro ya ha bajado.", "Toca el mismo ejercicio en f y en p."], fr: ["Monte chaque main seule et ne les réunis que lorsque chacune tient toute seule.", "Un doigt se lève quand l'autre est déjà descendu.", "Joue le même exercice en f puis en p."] }),
           lectura("p1c2-lectura", "sol", "inicial2",
             { es: "Ampliar de sol a do agudo", fr: "Élargir du sol au do aigu" },
             { es: "Las notas que quedan por encima de la posición de cinco dedos.", fr: "Les notes au-dessus de la position de cinq doigts." },
@@ -1080,10 +1084,14 @@ const NIVELES = [
             { es: "Sacar la mano del do: la misma fórmula, cinco notas más arriba.", fr: "Quitter la position de do : la même formule, cinq notes plus haut." },
             { es: ["Mira primero dónde cae el sol en el teclado y en el papel.", "Es la posición del nivel de lectura que trabajas ahora."], fr: ["Repère d'abord le sol, sur le clavier comme sur le papier.", "C'est la position du niveau de lecture que tu travailles en ce moment."] },
             POSICION_SOL),
-          referencia("p1c3-ref", { es: "Manos juntas, polifonía en do y en sol", fr: "Mains ensemble, polyphonie en do et en sol" },
-            [alfred({ es: "págs. 16-20", fr: "p. 16-20" }), pouillard({ es: "cap. II págs. 18-20", fr: "chap. II p. 18-20" }), chornet({ es: "pág. 14", fr: "p. 14" })],
-            { es: "Posición de do de la izquierda, la clave de fa y el sistema de dos pentagramas.", fr: "Premières pièces à deux mains, avec les deux voix qui sonnent." },
-            { es: ["Monta cada mano por separado antes de juntarlas."], fr: ["Monte chaque main séparément avant de les réunir."] }),
+          referencia("p1c3-ref", { es: "Ganando independencia: manos alternadas", fr: "Gagner en indépendance : mains alternées" },
+            [
+              pouillard({ es: "cap. II págs. 20-22", fr: "chap. II p. 20-22" }),
+              chornet({ es: "págs. 17-21, manos alternadas", fr: "p. 17-21, mains alternées" }),
+              aaron({ es: "págs. 19 y 29-30", fr: "p. 19 et 29-30" }),
+            ],
+            { es: "Las manos dejan de ir al unísono: se van pasando la melodía sobre el sistema de dos pentagramas.", fr: "Les mains cessent d'aller à l'unisson : elles se passent la mélodie sur le système de deux portées." },
+            { es: ["Monta cada mano por separado antes de juntarlas.", "El relevo se prepara un tiempo antes: la mano que entra ya está colocada."], fr: ["Monte chaque main séparément avant de les réunir.", "Le relais se prépare un temps à l'avance : la main qui entre est déjà placée."] }),
           lectura("p1c3-lectura", "fa", "inicial1",
             { es: "Leer en clave de fa", fr: "Lire en clé de fa" },
             { es: "De fa a do central: lo que acabas de tocar con la izquierda.", fr: "Du fa au do central : ce que tu viens de jouer de la main gauche." },
@@ -1118,10 +1126,14 @@ const NIVELES = [
             { es: "Al revés que el anterior: las manos empiezan separadas y se encuentran en el do central.", fr: "À l'inverse du précédent : les mains partent écartées et se rejoignent sur le do central." },
             { es: ["Los dos pulgares llegan al do central a la vez, en el mismo tiempo.", "Cuesta más que hacia fuera: ahí es donde se nota la independencia."], fr: ["Les deux pouces arrivent au do central en même temps, sur le même temps.", "Plus difficile que vers l'extérieur : c'est là que se mesure l'indépendance."] },
             CONTRARIO_HACIA_DENTRO),
-          referencia("p1c4-ref", { es: "Independencia de manos", fr: "Indépendance des mains" },
-            [alfred({ es: "págs. 21-23", fr: "p. 21-23" }), pouillard({ es: "cap. III pág. 26", fr: "chap. III p. 26" }), chornet({ es: "pág. 17", fr: "p. 17" })],
-            { es: "Tocar de do a sol sobre los dos pentagramas, con Lightly Row y Aunt Rhody.", fr: "Que chaque main fasse quelque chose de différent sans entraîner l'autre." },
-            { es: ["Empieza por una mano tenida y la otra en notas sueltas."], fr: ["Commence par une main tenue et l'autre en notes détachées."] }),
+          referencia("p1c4-ref", { es: "Ganando independencia: dedos libres", fr: "Gagner en indépendance : doigts libres" },
+            [
+              pouillard({ es: "cap. III págs. 26-27", fr: "chap. III p. 26-27" }),
+              chornet({ es: "págs. 22-25, dedos libres", fr: "p. 22-25, doigts libres" }),
+              aaron({ es: "págs. 31-32", fr: "p. 31-32" }),
+            ],
+            { es: "Cada mano hace algo distinto sin arrastrar a la otra, y dentro de cada mano unos dedos tocan mientras los demás se quedan quietos.", fr: "Chaque main fait quelque chose de différent sans entraîner l'autre, et dans chaque main certains doigts jouent pendant que les autres restent en place." },
+            { es: ["Empieza por una mano tenida y la otra en notas sueltas.", "Muy despacio: la independencia se pierde en cuanto aceleras."], fr: ["Commence par une main tenue et l'autre en notes détachées.", "Très lentement : l'indépendance se perd dès que tu accélères."] }),
           lectura("p1c4-lectura", "fa", "inicial2",
             { es: "Ampliar en clave de fa", fr: "Élargir en clé de fa" },
             { es: "De do a sol, por encima del pentagrama de la izquierda.", fr: "Du do au sol, au-dessus de la portée de la main gauche." },
@@ -1147,10 +1159,18 @@ const NIVELES = [
             { es: "El número de abajo dice qué figura vale un tiempo y el de arriba cuántos hay por compás. En 3/4 se cuenta 1-2-3, como un vals.", fr: "Le chiffre du bas indique quelle figure vaut un temps, celui du haut combien de temps compte chaque mesure. À 3/4, on compte 1-2-3, comme une valse." },
             { es: ["Da palmas en 3/4 y en 2/4 antes de tocarlo."], fr: ["Frappe dans les mains à 3/4 et à 2/4 avant de jouer."] },
             COMPASES_TRES_DOS),
-          referencia("p1c5-ref", { es: "Los acordes y las alteraciones", fr: "Les accords et les altérations" },
-            [alfred({ es: "págs. 24-31", fr: "p. 24-31" }), pouillard({ es: "cap. III págs. 28-30", fr: "chap. III p. 28-30" }), chornet({ es: "págs. 26 y 30", fr: "p. 26 et 30" })],
-            { es: "Intervalos melódicos y armónicos, de segunda a quinta, y los primeros matices.", fr: "Premier contact avec deux et trois notes ensemble, et avec les altérations." },
+          referencia("p1c5-ref", { es: "Primeros acordes y alteraciones", fr: "Premiers accords et altérations" },
+            [
+              pouillard({ es: "cap. III págs. 28-31", fr: "chap. III p. 28-31" }),
+              chornet({ es: "págs. 26-28, primeros acordes", fr: "p. 26-28, premiers accords" }),
+              aaron({ es: "págs. 20-22 y 33-34", fr: "p. 20-22 et 33-34" }),
+            ],
+            { es: "Dos y tres notas a la vez, los intervalos de segunda a quinta y el sostenido, el bemol y el becuadro.", fr: "Deux et trois notes à la fois, les intervalles de seconde à quinte, et le dièse, le bémol et le bécarre." },
             { es: ["Los acordes de tres sonidos completos llegan en el curso 8."], fr: ["Les accords de trois sons complets arrivent au cours 8."] }),
+          referencia("p1c5-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "Bagpipe (anónimo, s. XVII), pág. 4, y Old German Dance (Praetorius), pág. 5", fr: "Bagpipe (anonyme, XVIIe s.), p. 4, et Old German Dance (Praetorius), p. 5" })],
+            { es: "La primera pieza de repertorio de verdad: dos danzas antiguas, cortas y en posición fija.", fr: "La première vraie pièce de répertoire : deux danses anciennes, courtes et en position fixe." },
+            { es: ["Elige una de las dos y trabájala hasta el final del nivel.", "Antes de tocar, mira la armadura y el compás."], fr: ["Choisis l'une des deux et travaille-la jusqu'à la fin du niveau.", "Avant de jouer, regarde l'armure et la mesure."] }),
           lectura("p1c5-lectura", "sol", "inicial2",
             { es: "Lectura mezclando las dos claves", fr: "Lecture en mêlant les deux clés" },
             { es: "Una sesión de cada clave, seguidas.", fr: "Une session de chaque clé, à la suite." },
@@ -1178,10 +1198,18 @@ const NIVELES = [
             [
               concepto({ es: "Semicorchea", fr: "Double croche" }, { es: "Un cuarto de tiempo. Cuatro semicorcheas ocupan lo mismo que una negra.", fr: "Un quart de temps. Quatre doubles croches valent une noire." }),
             ]),
-          referencia("p1c6-ref1", { es: "Estudios progresivos y piezas", fr: "Études progressives et pièces" },
-            [alfred({ es: "págs. 32-37 y 42-43", fr: "p. 32-37 et 42-43" }), pouillard({ es: "cap. VII págs. 64-68", fr: "chap. VII p. 64-68" }), chornet({ es: "págs. 33-36, Czerny op. 599 nº 1-8", fr: "p. 33-36, Czerny op. 599 nº 1-8" })],
-            { es: "El acorde de do mayor, las ligaduras y el legato, con Brother John y Mary Ann.", fr: "Le répertoire de la méthode, avec tout ce qui a été appris jusqu'ici." },
-            { es: ["Elige una pieza que te guste: es tu primera pieza de verdad."], fr: ["Choisis une pièce qui te plaît : c'est ta première vraie pièce."] }),
+          referencia("p1c6-ref1", { es: "Legato, staccato y matices", fr: "Legato, staccato et nuances" },
+            [
+              pouillard({ es: "cap. VII págs. 64-68", fr: "chap. VII p. 64-68" }),
+              chornet({ es: "págs. 29-32, legato y staccato, y págs. 33-36, Czerny op. 599 nº 1-8", fr: "p. 29-32, legato et staccato, et p. 33-36, Czerny op. 599 nº 1-8" }),
+              aaron({ es: "págs. 25-27", fr: "p. 25-27" }),
+            ],
+            { es: "Los dos ataques básicos, ligado y picado, y las primeras indicaciones de matiz sobre estudios cortos.", fr: "Les deux attaques de base, lié et piqué, et les premières indications de nuance sur de courtes études." },
+            { es: ["El staccato sale de la muñeca, no del brazo.", "Toca el mismo estudio en legato y en staccato para oír la diferencia."], fr: ["Le staccato part du poignet, pas du bras.", "Joue la même étude en legato puis en staccato pour entendre la différence."] }),
+          referencia("p1c6-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "Two Marches (Türk), pág. 6, y March in F (Türk), pág. 7", fr: "Two Marches (Türk), p. 6, et March in F (Türk), p. 7" })],
+            { es: "Dos marchas clásicas: pulso firme, frases de cuatro compases y manos que ya no van al unísono.", fr: "Deux marches classiques : pulsation ferme, phrases de quatre mesures et mains qui ne vont plus à l'unisson." },
+            { es: ["Marca el pulso con el pie antes de tocar.", "Respeta las ligaduras: son las frases de la pieza."], fr: ["Marque la pulsation du pied avant de jouer.", "Respecte les liaisons : ce sont les phrases de la pièce."] }),
           lectura("p1c6-lectura", "fa", "inicial2",
             { es: "Repaso de lectura", fr: "Révision de lecture" },
             { es: "Una sesión completa de cada clave para ver dónde está.", fr: "Une session complète de chaque clé pour voir où il en est." },
@@ -1208,9 +1236,17 @@ const NIVELES = [
             { es: ["Dilo en voz alta antes de tocar: dónde pasa el pulgar y por qué.", "La digitación es la misma en todas las escalas de teclas blancas."], fr: ["Dis-le à voix haute avant de jouer : où passe le pouce et pourquoi.", "Le doigté est le même dans toutes les gammes de touches blanches."] },
             ESCALA_DO_DERECHA),
           referencia("p1c7-ref", { es: "Paso del pulgar y escala de do mayor", fr: "Passage du pouce et gamme de do majeur" },
-            [alfred({ es: "págs. 56-57", fr: "p. 56-57" }), pouillard({ es: "cap. IV págs. 34-35", fr: "chap. IV p. 34-35" }), chornet({ es: "págs. 43-46, preparatorios y escalas", fr: "p. 43-46, préparatoires et gammes" })],
-            { es: "El Alfred trabaja la igualdad de los dedos; la escala y el paso del pulgar los da el Pouillard, que el Alfred no toca en su nivel 1.", fr: "Le mécanisme expliqué, ses exercices préparatoires et la gamme complète." },
+            [
+              pouillard({ es: "cap. IV págs. 34-35", fr: "chap. IV p. 34-35" }),
+              chornet({ es: "págs. 43-46, preparatorios y escalas", fr: "p. 43-46, préparatoires et gammes" }),
+              aaron({ es: "págs. 51, 53 y 61-62", fr: "p. 51, 53 et 61-62" }),
+            ],
+            { es: "El mecanismo explicado, sus ejercicios preparatorios y la escala completa, con la tabla de digitaciones del Aaron para consultarla.", fr: "Le mécanisme expliqué, ses exercices préparatoires et la gamme complète, avec le tableau de doigtés de l'Aaron pour référence." },
             { es: ["Los preparatorios antes que la escala entera."], fr: ["Les préparatoires avant la gamme entière."] }),
+          referencia("p1c7-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "March in G (Türk), pág. 7, y Minuet (Reinagle), pág. 8", fr: "March in G (Türk), p. 7, et Minuet (Reinagle), p. 8" })],
+            { es: "Un minueto clásico en 3/4: el mismo compás del curso 5, ahora dentro de una pieza.", fr: "Un menuet classique à 3/4 : la mesure vue au cours 5, cette fois dans une pièce." },
+            { es: ["Cuenta 1-2-3 en voz alta durante las primeras lecturas.", "Apoya el primer tiempo de cada compás."], fr: ["Compte 1-2-3 à voix haute lors des premières lectures.", "Appuie le premier temps de chaque mesure."] }),
           lectura("p1c7-lectura", "sol", "intermedio",
             { es: "Leer de do agudo a sol agudo", fr: "Lire du do aigu au sol aigu" },
             { es: "La octava de arriba, que es donde acaba de llegar con la escala.", fr: "L'octave du dessus, où il vient d'arriver avec la gamme." },
@@ -1237,9 +1273,17 @@ const NIVELES = [
             { es: ["Construye tú el acorde de re y el de mi.", "El arpegio es el mismo acorde, nota a nota."], fr: ["Construis l'accord de ré et celui de mi toi-même.", "L'arpège est le même accord, note par note."] },
             ACORDE_CONSTRUCCION),
           referencia("p1c8-ref", { es: "Acordes de tres sonidos", fr: "Accords de trois sons" },
-            [alfred({ es: "págs. 44-49 y 60", fr: "p. 44-49 et 60" }), pouillard({ es: "cap. IV pág. 38 y cap. V págs. 51-52", fr: "chap. IV p. 38 et chap. V p. 51-52" }), chornet({ es: "págs. 51 y 59, Bach y Mozart", fr: "p. 51 et 59, Bach et Mozart" })],
-            { es: "Los acordes de do, fa y sol, y la diferencia entre acorde y acorde quebrado.", fr: "Les accords sur la partition et comment ils s'enchaînent." },
+            [
+              pouillard({ es: "cap. IV pág. 38 y cap. V págs. 51-52", fr: "chap. IV p. 38 et chap. V p. 51-52" }),
+              chornet({ es: "págs. 51 y 59, Bach y Mozart", fr: "p. 51 et 59, Bach et Mozart" }),
+              aaron({ es: "págs. 36, 43 y 46, estudios de acordes en do, fa y sol", fr: "p. 36, 43 et 46, études d'accords en do, fa et sol" }),
+            ],
+            { es: "Los acordes de do, fa y sol sobre la partitura, cómo se enlazan y la diferencia entre acorde y acorde quebrado.", fr: "Les accords de do, fa et sol sur la partition, comment ils s'enchaînent, et la différence entre accord plaqué et accord brisé." },
             { es: ["Con esto cerrado, estás listo para Principiante 2."], fr: ["Une fois cela acquis, tu es prêt pour le Débutant 2."] }),
+          referencia("p1c8-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "Promenade (Reinagle), pág. 9, y Sonatina, I. Allegro moderato (Wilton), pág. 10", fr: "Promenade (Reinagle), p. 9, et Sonatine, I. Allegro moderato (Wilton), p. 10" })],
+            { es: "La pieza que cierra el nivel: un primer movimiento de sonatina, con las dos manos independientes y acordes en la izquierda.", fr: "La pièce qui clôt le niveau : un premier mouvement de sonatine, avec les deux mains indépendantes et des accords à la main gauche." },
+            { es: ["Trabájala por frases, no de principio a fin.", "Es la pieza que tocarás para dar el nivel por terminado."], fr: ["Travaille-la par phrases, pas du début à la fin.", "C'est la pièce que tu joueras pour valider la fin du niveau."] }),
           lectura("p1c8-lectura", "fa", "intermedio",
             { es: "Evaluación: las dos claves ampliadas", fr: "Évaluation : les deux clés élargies" },
             { es: "Una sesión de cada clave, en el nivel más alto que aguantes.", fr: "Une session de chaque clé, au niveau le plus haut que tu tiennes." },
