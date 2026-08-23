@@ -1757,11 +1757,6 @@ function pintarEjercicio(ejercicio, conTitulo, numero) {
     bloque.appendChild(titulo);
   }
 
-  const objetivo = document.createElement("p");
-  objetivo.className = "ficha-objetivo";
-  objetivo.textContent = txt(ejercicio.objetivo);
-  bloque.appendChild(objetivo);
-
   const caja = (clase) => {
     const div = document.createElement("div");
     if (clase) div.className = clase;
