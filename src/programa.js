@@ -955,7 +955,7 @@ const NIVELES = [
               concepto({ es: "Meñique, el 5", fr: "Auriculaire, le 5" }, { es: "El dedo más corto y el más débil: es el que hay que vigilar para que no se hunda.", fr: "Le doigt le plus court et le plus faible : c'est lui qu'il faut surveiller pour qu'il ne s'affaisse pas." }),
             ]),
           referencia("p1c1-ref", { es: "Sentarse, digitación y primeras melodías", fr: "S'asseoir, doigté et premières mélodies" },
-            [alfred({ es: "págs. 4-12", fr: "p. 4-12" }), pouillard({ es: "Presentación págs. 4-6, cap. I pág. 8 y ejercicios de las págs. 11-14", fr: "Présentation p. 4-6, chap. I p. 8 et exercices p. 11-14" }), chornet({ es: "págs. 7 y 11", fr: "p. 7 et 11" })],
+            [alfred({ es: "págs. 4-12", fr: "p. 4-12" }), pouillard({ es: "Presentación págs. 4-6, cap. I pág. 8 y ejercicios de las págs. 11-14", fr: "Présentation p. 4-6, chap. I p. 8 et exercices p. 11-14" }), chornet({ es: "págs. 11-13", fr: "p. 11-13" })],
             { es: "Ejercicios preliminares, cómo sentarse, los números de los dedos, el teclado y la posición de do de la derecha.", fr: "Position du corps et de la main, les numéros des doigts et les mélodies à 2, 3 et 4 doigts." },
             { es: ["Revisa altura del taburete antes de nada.", "Del Alfred, hasta la posición de do de la derecha en esta clase."], fr: ["Vérifie la hauteur du tabouret avant tout.", "De l'Alfred, jusqu'à la position de do de la main droite dans ce cours."] }),
           lectura("p1c1-lectura", "sol", "inicial1",
