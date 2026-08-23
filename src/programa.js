@@ -955,7 +955,7 @@ const NIVELES = [
               concepto({ es: "Pulgar, el 1", fr: "Pouce, le 1" }, { es: "En la mano derecha queda a la izquierda; en la izquierda, a la derecha. Los dos hacia el centro.", fr: "À la main droite il se trouve à gauche, à la main gauche il se trouve à droite : l'un et l'autre tournés vers le centre." }),
               concepto({ es: "Meñique, el 5", fr: "Auriculaire, le 5" }, { es: "El dedo más corto y el más débil: es el que hay que vigilar para que no se hunda.", fr: "Le doigt le plus court et le plus faible : c'est lui qu'il faut surveiller pour qu'il ne s'affaisse pas." }),
             ]),
-          referencia("p1c1-ref", { es: "Sentarse, digitación y primeras melodías", fr: "S'asseoir, doigté et premières mélodies" },
+          referencia("p1c1-ref", { es: "Práctica a manos separadas", fr: "Travail en mains séparées" },
             [
               pouillard({ es: "Presentación págs. 4-6, cap. I pág. 8 y ejercicios de las págs. 11-14", fr: "Présentation p. 4-6, chap. I p. 8 et exercices p. 11-14" }),
               chornet({ es: "págs. 11-13", fr: "p. 11-13" }),
