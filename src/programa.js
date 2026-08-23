@@ -864,6 +864,7 @@ function lectura(id, clave, nivel, titulo, objetivo, indicaciones) {
 const alfred = (donde) => ({ metodo: "Alfred's Basic Adult All-in-One Course, nivel 1", donde });
 const pouillard = (donde) => ({ metodo: "Hervé y Pouillard, Méthode de piano débutants", donde });
 const chornet = (donde) => ({ metodo: "Chornet, Ejercicios, estudios y obras para piano", donde });
+const aaron = (donde) => ({ metodo: "Michael Aaron, curso para piano", donde });
 
 function referencia(id, titulo, fuentes, detalle, indicaciones) {
   return {
@@ -955,9 +956,13 @@ const NIVELES = [
               concepto({ es: "Meñique, el 5", fr: "Auriculaire, le 5" }, { es: "El dedo más corto y el más débil: es el que hay que vigilar para que no se hunda.", fr: "Le doigt le plus court et le plus faible : c'est lui qu'il faut surveiller pour qu'il ne s'affaisse pas." }),
             ]),
           referencia("p1c1-ref", { es: "Sentarse, digitación y primeras melodías", fr: "S'asseoir, doigté et premières mélodies" },
-            [alfred({ es: "págs. 4-12", fr: "p. 4-12" }), pouillard({ es: "Presentación págs. 4-6, cap. I pág. 8 y ejercicios de las págs. 11-14", fr: "Présentation p. 4-6, chap. I p. 8 et exercices p. 11-14" }), chornet({ es: "págs. 11-13", fr: "p. 11-13" })],
-            { es: "Ejercicios preliminares, cómo sentarse, los números de los dedos, el teclado y la posición de do de la derecha.", fr: "Position du corps et de la main, les numéros des doigts et les mélodies à 2, 3 et 4 doigts." },
-            { es: ["Revisa altura del taburete antes de nada.", "Del Alfred, hasta la posición de do de la derecha en esta clase."], fr: ["Vérifie la hauteur du tabouret avant tout.", "De l'Alfred, jusqu'à la position de do de la main droite dans ce cours."] }),
+            [
+              pouillard({ es: "Presentación págs. 4-6, cap. I pág. 8 y ejercicios de las págs. 11-14", fr: "Présentation p. 4-6, chap. I p. 8 et exercices p. 11-14" }),
+              chornet({ es: "págs. 11-13", fr: "p. 11-13" }),
+              aaron({ es: "págs. 9-10", fr: "p. 9-10" }),
+            ],
+            { es: "Cómo sentarse al piano, la numeración de los dedos y las primeras melodías a 2, 3 y 4 dedos.", fr: "Comment s'asseoir au piano, la numérotation des doigts et les premières mélodies à 2, 3 et 4 doigts." },
+            { es: ["Revisa altura del taburete antes de nada.", "De las melodías, sólo las de 2 dedos en esta primera clase."], fr: ["Vérifie la hauteur du tabouret avant tout.", "Des mélodies, seulement celles à 2 doigts dans ce premier cours."] }),
           lectura("p1c1-lectura", "sol", "inicial1",
             { es: "Leer las notas de do a sol", fr: "Lire les notes de do à sol" },
             { es: "Las mismas cinco notas que acabas de tocar, ahora leyéndolas.", fr: "Les cinq mêmes notes que tu viens de jouer, cette fois à lire." },
