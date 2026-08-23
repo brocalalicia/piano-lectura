@@ -86,7 +86,7 @@ const TRADUCCIONES = {
     practicaNivelTitulo: "Elige un nivel",
     practicaEnPreparacion: "En preparación",
     practicaCursoTitulo: (n) => `Curso ${n}`,
-    practicaCuentaCursos: (n) => `${n} de 8 cursos preparados`,
+    practicaCuentaCursos: (n, total) => `${n} de ${total} cursos preparados`,
     referenciaEn: "En tu método",
     teoriaTitulo: "Teoría",
     clases: { teoria: "Teoría", dibujada: "Técnica", referencia: "Método", lectura: "Lectura" },
@@ -196,7 +196,7 @@ const TRADUCCIONES = {
     practicaNivelTitulo: "Choisis un niveau",
     practicaEnPreparacion: "En préparation",
     practicaCursoTitulo: (n) => `Cours ${n}`,
-    practicaCuentaCursos: (n) => `${n} cours sur 8 disponibles`,
+    practicaCuentaCursos: (n, total) => `${n} cours sur ${total} disponibles`,
     referenciaEn: "Dans ta méthode",
     teoriaTitulo: "Théorie",
     clases: { teoria: "Théorie", dibujada: "Technique", referencia: "Méthode", lectura: "Lecture" },
@@ -1604,7 +1604,7 @@ function renderizarPracticaNiveles() {
 
     const detalle = document.createElement("span");
     detalle.className = "menu-rango";
-    detalle.textContent = preparados ? t().practicaCuentaCursos(preparados) : t().practicaEnPreparacion;
+    detalle.textContent = preparados ? t().practicaCuentaCursos(preparados, nivel.cursos.length) : t().practicaEnPreparacion;
     boton.appendChild(detalle);
 
     boton.addEventListener("click", () => {

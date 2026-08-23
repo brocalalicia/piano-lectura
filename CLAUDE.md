@@ -67,9 +67,10 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - Práctica: nivel → curso → lista de bloques → ficha. **Los ejercicios de
   piano de un curso van todos en una sola página**, que es la rutina técnica
   de la clase; el resto de bloques ocupan una fila cada uno. Cuatro niveles
-  (Principiante 1 y 2, Intermedio 1 y 2) y **8 cursos cada uno**, con
-  dificultad progresiva de un curso al siguiente. Lo normal son 5 o 6 bloques
-  por curso; el 1 tiene más porque agrupa toda la posición de cinco dedos.
+  (Principiante 1 y 2, Intermedio 1 y 2), con dificultad progresiva de un curso
+  al siguiente. Principiante 1 tiene **9 cursos**; los demás, 8. Lo normal son
+  5 o 6 bloques por curso, 7 como mucho: en cuanto un curso pasa de ahí, se
+  parte en dos.
 - El catálogo vive en `src/programa.js`, separado del resto para poder editarlo
   sin tocar la lógica. Cada ejercicio lleva sus textos en español y francés.
 - **Derechos de autor, importante**: la app se publica en internet, así que
@@ -105,13 +106,15 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   dos pentagramas, no hay fichas de una sola mano. Se juntan con `aDosManos()`,
   y los dos sistemas deben tener el **mismo número de figuras** o no quedan
   alineados. En los primeros cursos las indicaciones dicen que se toque una
-  mano y después la otra; juntas llegan en el curso 3.
+  mano y después la otra; juntas y al unísono llegan en el curso 3, e
+  independientes a partir del 4.
 - En las partituras, `d` es la digitación y va encima; `t` es el nombre de la
   nota y va debajo; `silencio: true` la convierte en silencio.
-- **Ritmo, orden de aparición**: redonda, blanca y negra en el curso 1; los
-  silencios de esas tres en el 2; la corchea en el 4, cuando las manos ya van
-  juntas y tiene sentido partir el tiempo; y la semicorchea en el 6, antes del
-  repertorio, sólo para reconocerla. Nada de corcheas antes del curso 4.
+- **Ritmo, orden de aparición**: la redonda se toca ya en el curso 1, y la
+  teoría de redonda, blanca y negra va en el 2; los silencios de esas tres en
+  el 4; la corchea en el 5, cuando las manos ya van juntas y tiene sentido
+  partir el tiempo; y la semicorchea en el 7, antes del repertorio, sólo para
+  reconocerla. Nada de corcheas antes del curso 5.
 - **El programa Principiante está pensado para adultos**: el texto le habla al
   alumno de tú, no al profesor sobre un niño.
 - Un bloque `referencia` cita **varios métodos a la vez**, porque en clase se
@@ -122,10 +125,14 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   (lectura y piezas cortas). El **Alfred no es referencia continua**: sólo piezas
   sueltas, y únicamente cuando la profesora lo pida.
 - El bloque de método de cada curso sigue esta progresión de manos, que da su
-  título: curso 1 **manos separadas**, curso 2 **manos juntas al unísono**, y del
-  curso 3 en adelante **manos independientes** (alternadas en el 3, dedos libres
-  en el 4) y después por contenido (acordes, legato/staccato, escalas).
-- **A partir del curso 5 cada clase lleva un bloque de repertorio**, sacado de
+  título: cursos 1 y 2 **manos separadas**, curso 3 **manos juntas al unísono**,
+  y del curso 4 en adelante **manos independientes** (alternadas en el 4, dedos
+  libres en el 5) y después por contenido (acordes, legato/staccato, escalas).
+- **La lectura va en dos carriles, uno por clave**, y las dos empiezan en el
+  curso 1: sol inicial 1 → afianzar en el 2 → inicial 2 en el 3 → mezcla en el
+  6 → intermedio en el 8; fa inicial 1 → afianzar en el 4 → inicial 2 en el 5 →
+  repaso en el 7 → intermedio en el 9.
+- **A partir del curso 6 cada clase lleva un bloque de repertorio**, sacado de
   *Essential Piano Repertoire, Preparatory Level* (Keith Snell), en el orden
   progresivo del propio libro.
 - **No se enlaza a partituras de fuera**: o está dibujada dentro de la app, o
