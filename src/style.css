@@ -9,6 +9,8 @@
   --color-boton-sombra: #ddd0bd;
   --color-primario: #ff8c42;
   --color-primario-sombra: #d96a1f;
+  /* La mano derecha va en el color primario; la izquierda, en este. */
+  --color-mano-izquierda: #3d8ea3;
   --color-estrella: #ffb703;
   --color-estrella-vacia: #e6d9c6;
   --color-texto-cuerpo: #5a5148;

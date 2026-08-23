@@ -1097,13 +1097,40 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   // y altos, tambien cuanto puede medir de alto.
   const anchoVista = ancho + 12;
   const altoVista = abajo - arriba;
-  svg.style.maxWidth = `${Math.round(Math.min(anchoVista * 2.4, (340 * anchoVista) / altoVista))}px`;
+  svg.style.maxWidth = `${Math.round(Math.min(anchoVista * 2.4, (ALTO_MAXIMO_DIBUJO * anchoVista) / altoVista))}px`;
 }
 
 const SVG_NS = "http://www.w3.org/2000/svg";
+// Alto maximo de cualquier ilustracion, en px: por encima de esto se come la
+// pantalla y hay que hacer scroll para leer el texto que la acompana.
+const ALTO_MAXIMO_DIBUJO = 340;
 
 // Teclado de piano dibujado a mano: el renderizador de partituras no sirve
 // para esto y es justo lo que hace falta para situar las notas en las teclas.
+// Medidas reales de la tinta de Bravura, la fuente musical de VexFlow, tomadas
+// con canvas a 100 px: getBBox() sobre un glifo devuelve la caja de la fuente,
+// que es mucho mas alta que el dibujo, y no sirve para colocarlo.
+const GLIFO_CLAVE = {
+  treble: { signo: "\uE050", arriba: 109.8, abajo: 66.1, izquierda: 0, ancho: 67.1 },
+  bass: { signo: "\uE062", arriba: 26.2, abajo: 63.5, izquierda: 0.5, ancho: 68.9 },
+};
+const TAMANO_CLAVE = 28;
+const ALTO_CLAVE = ((GLIFO_CLAVE.treble.arriba + GLIFO_CLAVE.treble.abajo) * TAMANO_CLAVE) / 100;
+
+// Una clave suelta, sin pentagrama: centrada en centroX y apoyada en abajoY.
+function pintarClave(svg, clef, centroX, abajoY, color) {
+  const g = GLIFO_CLAVE[clef];
+  const k = TAMANO_CLAVE / 100;
+  const texto = document.createElementNS(SVG_NS, "text");
+  texto.setAttribute("x", centroX - (g.ancho / 2 - g.izquierda) * k);
+  texto.setAttribute("y", abajoY - g.abajo * k);
+  texto.setAttribute("font-family", "Bravura, Academico, serif");
+  texto.setAttribute("font-size", TAMANO_CLAVE);
+  texto.setAttribute("fill", color);
+  texto.textContent = g.signo;
+  svg.appendChild(texto);
+}
+
 function dibujarTeclado(contenedor, teclado) {
   contenedor.innerHTML = "";
 
@@ -1111,38 +1138,67 @@ function dibujarTeclado(contenedor, teclado) {
   const ALTO_BLANCA = 116;
   const ANCHO_NEGRA = 15;
   const ALTO_NEGRA = 72;
+  const RADIO = 3;
   // Dentro de una octava, las negras van detras de la 1.ª, 2.ª, 4.ª, 5.ª y 6.ª.
   const CON_NEGRA = [0, 1, 3, 4, 5];
   const NOMBRES = ["do", "re", "mi", "fa", "sol", "la", "si"];
+  const COLOR_MANO = { derecha: "var(--color-primario)", izquierda: "var(--color-mano-izquierda)" };
 
   const blancas = teclado.octavas * 7;
   const ancho = blancas * ANCHO_BLANCA;
   const alto = ALTO_BLANCA + 26;
+  const claves = teclado.claves || [];
+  // Sitio por encima del teclado para las claves, si las lleva.
+  const arriba = claves.length ? Math.ceil(ALTO_CLAVE) + 16 : 0;
 
   const svg = document.createElementNS(SVG_NS, "svg");
-  svg.setAttribute("viewBox", `-1 -1 ${ancho + 2} ${alto + 2}`);
+  svg.setAttribute("viewBox", `-1 ${-arriba - 1} ${ancho + 2} ${alto + arriba + 2}`);
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
   svg.style.width = "100%";
   svg.style.height = "auto";
+  // Con las claves encima el dibujo es mas alto: se limita como las partituras,
+  // por altura, para que no se coma la pantalla.
+  svg.style.maxWidth = `${Math.round(((ancho + 2) * ALTO_MAXIMO_DIBUJO) / (alto + arriba + 2))}px`;
 
   const marcadas = new Map((teclado.marcadas || []).map((m) => [m.indice, m]));
+  const tecla = (x) => {
+    const r = document.createElementNS(SVG_NS, "rect");
+    r.setAttribute("x", x);
+    r.setAttribute("y", 0);
+    r.setAttribute("width", ANCHO_BLANCA);
+    r.setAttribute("height", ALTO_BLANCA);
+    r.setAttribute("rx", RADIO);
+    return r;
+  };
 
   for (let i = 0; i < blancas; i += 1) {
-    const tecla = document.createElementNS(SVG_NS, "rect");
-    tecla.setAttribute("x", i * ANCHO_BLANCA);
-    tecla.setAttribute("y", 0);
-    tecla.setAttribute("width", ANCHO_BLANCA);
-    tecla.setAttribute("height", ALTO_BLANCA);
-    tecla.setAttribute("rx", 3);
-    tecla.setAttribute("fill", marcadas.has(i) ? "var(--color-primario)" : "#ffffff");
-    tecla.setAttribute("stroke", "#3a322c");
-    tecla.setAttribute("stroke-width", 1.5);
-    svg.appendChild(tecla);
-
     const marca = marcadas.get(i);
+    const manos = marca ? [].concat(marca.mano || "derecha") : [];
+    const x = i * ANCHO_BLANCA;
+
+    const fondo = tecla(x);
+    fondo.setAttribute("fill", manos.length ? COLOR_MANO[manos[0]] : "#ffffff");
+    svg.appendChild(fondo);
+
+    // El do central pertenece a las dos claves: la tecla se parte por la mitad
+    // y cada lado lleva el color de su mano.
+    if (manos.length > 1) {
+      const d = x + ANCHO_BLANCA;
+      const mitad = document.createElementNS(SVG_NS, "path");
+      mitad.setAttribute("d", `M ${x + ANCHO_BLANCA / 2} 0 H ${d - RADIO} A ${RADIO} ${RADIO} 0 0 1 ${d} ${RADIO} V ${ALTO_BLANCA - RADIO} A ${RADIO} ${RADIO} 0 0 1 ${d - RADIO} ${ALTO_BLANCA} H ${x + ANCHO_BLANCA / 2} Z`);
+      mitad.setAttribute("fill", COLOR_MANO[manos[1]]);
+      svg.appendChild(mitad);
+    }
+
+    const borde = tecla(x);
+    borde.setAttribute("fill", "none");
+    borde.setAttribute("stroke", "#3a322c");
+    borde.setAttribute("stroke-width", 1.5);
+    svg.appendChild(borde);
+
     if (marca) {
       const texto = document.createElementNS(SVG_NS, "text");
-      texto.setAttribute("x", i * ANCHO_BLANCA + ANCHO_BLANCA / 2);
+      texto.setAttribute("x", x + ANCHO_BLANCA / 2);
       texto.setAttribute("y", alto - 6);
       texto.setAttribute("text-anchor", "middle");
       texto.setAttribute("font-family", "Nunito, sans-serif");
@@ -1165,6 +1221,11 @@ function dibujarTeclado(contenedor, teclado) {
     negra.setAttribute("fill", "#3a322c");
     svg.appendChild(negra);
   }
+
+  // Cada clave, encima de la tecla en la que empieza su grupo de notas.
+  claves.forEach((c) => {
+    pintarClave(svg, c.clef, c.indice * ANCHO_BLANCA + ANCHO_BLANCA / 2, -10, COLOR_MANO[c.mano]);
+  });
 
   contenedor.appendChild(svg);
 }

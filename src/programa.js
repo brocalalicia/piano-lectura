@@ -694,12 +694,28 @@ const ACORDES_DOS = aDosManos(ACORDES_TRES_SONIDOS, ACORDES_TRES_SONIDOS_MI);
 
 // --- Ilustraciones de teoria -------------------------------------------
 
-// Dos octavas de teclado con las cinco notas marcadas: los grupos de dos y
-// tres teclas negras son la referencia para encontrarlas.
-const TECLADO_DO_SOL = {
+// Dos octavas de teclado con las notas de las dos claves marcadas, cada mano
+// de su color, y la clave al principio de cada grupo. El indice 7 es el do
+// central: cierra el grupo de la izquierda y abre el de la derecha, asi que la
+// tecla sale partida en dos colores.
+const TECLADO_DOS_CLAVES = {
   teclado: {
     octavas: 2,
-    marcadas: [{ indice: 7 }, { indice: 8 }, { indice: 9 }, { indice: 10 }, { indice: 11 }],
+    marcadas: [
+      { indice: 3, mano: "izquierda" },
+      { indice: 4, mano: "izquierda" },
+      { indice: 5, mano: "izquierda" },
+      { indice: 6, mano: "izquierda" },
+      { indice: 7, mano: ["izquierda", "derecha"] },
+      { indice: 8, mano: "derecha" },
+      { indice: 9, mano: "derecha" },
+      { indice: 10, mano: "derecha" },
+      { indice: 11, mano: "derecha" },
+    ],
+    claves: [
+      { indice: 3, clef: "bass", mano: "izquierda" },
+      { indice: 7, clef: "treble", mano: "derecha" },
+    ],
   },
 };
 
@@ -918,12 +934,30 @@ const NIVELES = [
             { es: "De fa a do central: las cinco notas de la mano izquierda.", fr: "Du fa au do central : les cinq notes de la main gauche." },
             { es: ["Es normal ir más lento que en clave de sol: es la clave que menos se ve.", "Una sesión de cada clave, seguidas, desde el primer día."], fr: ["Il est normal d'être plus lent qu'en clé de sol : c'est la clé la moins fréquentée.", "Une session de chaque clé, à la suite, dès le premier jour."] }),
           teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au clavier" },
-            { es: "Cada nota escrita es una tecla concreta. El do central está a la izquierda del grupo de dos teclas negras, hacia la mitad del piano; re, mi, fa y sol son las cuatro teclas blancas siguientes hacia la derecha. El orden es siempre el mismo: lee la nota, dila en voz alta y sólo entonces búscala en el teclado.", fr: "Chaque note écrite correspond à une touche précise. Le do central se trouve immédiatement à gauche du groupe de deux touches noires, vers le milieu du clavier ; ré, mi, fa et sol sont les quatre touches blanches qui suivent vers la droite. Procède toujours dans le même ordre : lis la note, nomme-la à voix haute, puis cherche-la sur le clavier." },
-            { es: ["Busca todos los do del piano sin contar.", "Después, todos los fa: a la izquierda del grupo de tres."], fr: ["Trouve tous les do du piano sans compter.", "Ensuite tous les fa : à gauche du groupe de trois."] },
-            TECLADO_DO_SOL,
+            {
+              es: [
+                "Cada nota escrita es una tecla concreta. Para encontrarla te orientas por los grupos de teclas negras, nunca contando desde el extremo del piano.",
+                "El do central está a la izquierda del grupo de dos teclas negras, hacia la mitad del teclado.",
+                "Hacia la derecha vienen re, mi, fa y sol: es lo que lee la mano derecha en clave de sol.",
+                "Hacia la izquierda están si, la, sol y fa: es lo que lee la mano izquierda en clave de fa.",
+                "El do central pertenece a las dos, y por eso sale con los dos colores: cierra el grupo de la izquierda y abre el de la derecha.",
+                "El orden es siempre el mismo: lee la nota, dila en voz alta y sólo entonces búscala en el teclado.",
+              ],
+              fr: [
+                "Chaque note écrite correspond à une touche précise. Pour la trouver, on se repère aux groupes de touches noires, jamais en comptant depuis l'extrémité du clavier.",
+                "Le do central se trouve immédiatement à gauche du groupe de deux touches noires, vers le milieu du clavier.",
+                "Vers la droite viennent ré, mi, fa et sol : c'est ce que lit la main droite en clé de sol.",
+                "Vers la gauche se trouvent si, la, sol et fa : c'est ce que lit la main gauche en clé de fa.",
+                "Le do central appartient aux deux, d'où ses deux couleurs : il ferme le groupe de gauche et ouvre celui de droite.",
+                "Procède toujours dans le même ordre : lis la note, nomme-la à voix haute, puis cherche-la sur le clavier.",
+              ],
+            },
+            { es: ["Busca todos los do del piano sin contar.", "Después, todos los fa: a la izquierda del grupo de tres.", "Di en voz alta de qué mano es cada nota antes de tocarla."], fr: ["Trouve tous les do du piano sans compter.", "Ensuite tous les fa : à gauche du groupe de trois.", "Dis à voix haute de quelle main est chaque note avant de la jouer."] },
+            TECLADO_DOS_CLAVES,
             [
-              concepto({ es: "Do central", fr: "Do central" }, { es: "El do que queda hacia el centro del piano, a la izquierda de un grupo de dos teclas negras.", fr: "Le do situé vers le centre du piano, à gauche d'un groupe de deux touches noires." }),
+              concepto({ es: "Do central", fr: "Do central" }, { es: "El do que queda hacia el centro del piano, a la izquierda de un grupo de dos teclas negras. Es la frontera entre las dos claves.", fr: "Le do situé vers le centre du piano, à gauche d'un groupe de deux touches noires. C'est la frontière entre les deux clés." }),
               concepto({ es: "Teclas negras", fr: "Touches noires" }, { es: "Van en grupos de dos y de tres, y sirven para orientarse sin contar desde el extremo.", fr: "Groupées par deux et par trois, elles servent de repères : inutile de compter depuis l'extrémité du clavier." }),
+              concepto({ es: "Registro", fr: "Registre" }, { es: "La zona del teclado que cubre cada clave: la de fa a la izquierda del do central, la de sol a la derecha.", fr: "La zone du clavier que couvre chaque clé : celle de fa à gauche du do central, celle de sol à droite." }),
             ]),
           teoria("p1c1-digitacion", { es: "La digitación: qué dedo es cada número", fr: "Le doigté : quel doigt pour chaque numéro" },
             { es: "Los dedos se numeran del 1 al 5 empezando por el pulgar, y es igual en las dos manos: el pulgar siempre es el 1 y el meñique siempre el 5. Por eso los números van en espejo, y los dos pulgares se encuentran en el centro del teclado. En la partitura, el número pequeño junto a la nota dice con qué dedo tocarla.", fr: "Les doigts se numérotent de 1 à 5 en partant du pouce, et la règle vaut pour les deux mains : le pouce est toujours le 1, l'auriculaire toujours le 5. Les numéros se lisent donc en miroir, et les deux pouces se rejoignent au centre du clavier. Sur la partition, le petit chiffre placé près de la note indique le doigt à employer." },
