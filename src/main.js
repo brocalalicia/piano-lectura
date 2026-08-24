@@ -78,10 +78,10 @@ const IDIOMA_GUARDADO_KEY = "piano-lectura-idioma";
 const TRADUCCIONES = {
   es: {
     tituloPagina: "Clase de piano",
-    programaTitulo: "Clase de piano",
+    programaTitulo: "Aprende y mejora tu técnica con Alicia",
     programas: {
       lectura: { nombre: "Lectura", descripcion: "Leer notas en el pentagrama" },
-      practica: { nombre: "Práctica", descripcion: "Ejercicios técnicos con partitura" },
+      practica: { nombre: "Lecciones de piano", descripcion: "Ejercicios técnicos con partitura" },
     },
     practicaNivelTitulo: "Elige un nivel",
     practicaEnPreparacion: "En preparación",
@@ -189,10 +189,10 @@ const TRADUCCIONES = {
   },
   fr: {
     tituloPagina: "Cours de piano",
-    programaTitulo: "Cours de piano",
+    programaTitulo: "Apprends et améliore ta technique avec Alicia",
     programas: {
       lectura: { nombre: "Lecture", descripcion: "Reconnaître les notes sur la portée" },
-      practica: { nombre: "Pratique", descripcion: "Technique et théorie, partition à l'appui" },
+      practica: { nombre: "Leçons de piano", descripcion: "Technique et théorie, partition à l'appui" },
     },
     practicaNivelTitulo: "Choisis un niveau",
     practicaEnPreparacion: "En préparation",
