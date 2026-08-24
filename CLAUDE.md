@@ -140,10 +140,14 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   cada una dice si trae **notas nuevas** o si es para **afianzar** lo anterior,
   con `dosClaves(nivel, papel)`. La otra regla es que el bloque de lectura
   cubra las notas que toca la técnica de ese mismo curso, no menos.
-  El reparto de Principiante 1: inicial 1 nuevas (c1) → inicial 1 afianzar +
-  inicial 2 nuevas (c2) → inicial 2 afianzar + intermedio nuevas (c3) → y de
-  ahí dos vueltas de repaso, inicial 1 / inicial 2 / intermedio en los cursos
-  4-6 y 7-9, con el 9 haciendo las seis sesiones como evaluación.
+  **Lo recién presentado se afianza en las clases siguientes**, no lo más
+  antiguo: el nivel nuevo se lleva los dos cursos que vienen detrás, primero
+  buscando precisión y después velocidad. Después se va repasando hacia atrás,
+  de lo más reciente a lo más antiguo. El reparto de Principiante 1: inicial 1
+  nuevas (c1) → inicial 1 afianzar + inicial 2 nuevas (c2) → inicial 2 afianzar
+  + intermedio nuevas (c3) → intermedio, precisión (c4) y velocidad (c5) →
+  inicial 2 (c6) → inicial 1 (c7) → inicial 2 e intermedio juntos (c8) → las
+  seis sesiones como evaluación (c9).
 - **A partir del curso 6 cada clase lleva un bloque de repertorio**, sacado de
   *Essential Piano Repertoire, Preparatory Level* (Keith Snell), en el orden
   progresivo del propio libro.
