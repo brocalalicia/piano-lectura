@@ -66,9 +66,13 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   (ejercicios técnicos). Se elige en la primera pantalla.
 - Práctica: nivel → curso → lista de bloques → ficha. **Los ejercicios de
   piano de un curso van todos en una sola página**, que es la rutina técnica
-  de la clase; el resto de bloques ocupan una fila cada uno. Cuatro niveles
-  (Principiante 1 y 2, Intermedio 1 y 2), con dificultad progresiva de un curso
-  al siguiente. Principiante 1 tiene **9 cursos**; los demás, 8. Lo normal son
+  de la clase; el resto de bloques ocupan una fila cada uno. **Tres niveles**,
+  de nueve cursos cada uno y con dificultad progresiva de un curso al
+  siguiente: **Primeros pasos** (`primeros-pasos`), **Tomando vuelo**
+  (`tomando-vuelo`) y **En escena** (`en-escena`). Sólo el primero está
+  preparado; los otros dos salen en el menú con el botón sombreado y
+  «En preparación», que es lo que hace `boton.disabled` cuando un nivel no
+  tiene ningún curso con ejercicios. Lo normal son
   5 o 6 bloques por curso, 7 como mucho: en cuanto un curso pasa de ahí, se
   parte en dos.
 - El catálogo vive en `src/programa.js`, separado del resto para poder editarlo
@@ -145,7 +149,7 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   de cinco dedos la variedad sale del ritmo, de la dirección (empezar por el
   pulgar o por el meñique), del compás y de la posición de la mano, no de
   inventar notas que todavía no se leen.
-- **El programa Principiante está pensado para adultos**: el texto le habla al
+- **El programa de práctica está pensado para adultos**: el texto le habla al
   alumno de tú, no al profesor sobre un niño.
 - Un bloque `referencia` cita **varios métodos a la vez**, porque en clase se
   combinan. Los **tres métodos fijos**, presentes en todos los cursos y siempre
@@ -166,7 +170,7 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   **Lo recién presentado se afianza en las clases siguientes**, no lo más
   antiguo: el nivel nuevo se lleva los dos cursos que vienen detrás, primero
   buscando precisión y después velocidad. Después se va repasando hacia atrás,
-  de lo más reciente a lo más antiguo. El reparto de Principiante 1: inicial 1
+  de lo más reciente a lo más antiguo. El reparto de Primeros pasos: inicial 1
   nuevas (c1) → inicial 1 afianzar + inicial 2 nuevas (c2) → inicial 2 afianzar
   + intermedio nuevas (c3) → intermedio, precisión (c4) y velocidad (c5) →
   inicial 2 (c6) → las líneas del centro, nuevas (c7) → esas más inicial 1 (c8)
@@ -176,7 +180,7 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   clave de fa es al revés, Avanzado 1 sube al do central y Avanzado 2 es el
   extremo grave. Por eso el par que cruza el centro se escribe con
   `lineasDelCentro()` y no con `dosClaves()`. Los dos extremos de verdad (sol
-  Avanzado 1 y fa Avanzado 2) no entran en Principiante 1.
+  Avanzado 1 y fa Avanzado 2) no entran en Primeros pasos.
 - **A partir del curso 6 cada clase lleva un bloque de repertorio**, sacado de
   *Essential Piano Repertoire, Preparatory Level* (Keith Snell), en el orden
   progresivo del propio libro.

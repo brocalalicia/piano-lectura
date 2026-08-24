@@ -1115,8 +1115,8 @@ const CURSO_PENDIENTE = { ejercicios: [] };
 
 const NIVELES = [
   {
-    id: "principiante1",
-    nombre: { es: "Principiante 1", fr: "Débutant 1" },
+    id: "primeros-pasos",
+    nombre: { es: "Primeros pasos", fr: "Premiers pas" },
     objetivo: {
       es: "Colocar la mano y tocar con seguridad en posición de cinco dedos, con pulso estable. Manos por separado y primeras manos juntas.",
       fr: "Placer la main et jouer avec assurance en position de cinq doigts, avec une pulsation stable. Mains séparées, puis premières mains ensemble.",
@@ -1578,39 +1578,29 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
           lectura("p1c9-lectura", [...dosClaves("inicial1", "afianzar"), ...dosClaves("inicial2", "afianzar"), ...dosClaves("intermedio", "afianzar"), ...lineasDelCentro("afianzar")],
             { es: "Evaluación: los cuatro niveles en las dos claves", fr: "Évaluation : les quatre niveaux dans les deux clés" },
             { es: "Las ocho sesiones del nivel, una detrás de otra: es la foto de dónde estás.", fr: "Les huit sessions du niveau, l'une après l'autre : c'est la photo de là où tu en es." },
-            { es: ["Repártelas en dos sesiones de estudio, no las hagas todas de un tirón.", "Compara con los tiempos del curso 1: ahí se ve el camino hecho.", "Si las ocho salen sueltas, estás listo para Principiante 2."], fr: ["Répartis-les sur deux séances de travail, ne les enchaîne pas toutes d'un coup.", "Compare avec les temps du cours 1 : c'est là qu'on voit le chemin parcouru.", "Si les huit sont fluides, tu es prêt pour le Débutant 2."] }),
+            { es: ["Repártelas en dos sesiones de estudio, no las hagas todas de un tirón.", "Compara con los tiempos del curso 1: ahí se ve el camino hecho.", "Si las ocho salen sueltas, estás listo para Tomando vuelo."], fr: ["Répartis-les sur deux séances de travail, ne les enchaîne pas toutes d'un coup.", "Compare avec les temps du cours 1 : c'est là qu'on voit le chemin parcouru.", "Si les huit sont fluides, tu es prêt pour Prendre son envol."] }),
         ],
       },
     ],
   },
   {
-    id: "principiante2",
-    nombre: { es: "Principiante 2", fr: "Débutant 2" },
+    id: "tomando-vuelo",
+    nombre: { es: "Tomando vuelo", fr: "Prendre son envol" },
     objetivo: {
-      es: "Escalas de sol, re y fa mayor, el cromatismo, los arpegios y las inversiones del acorde perfecto.",
-      fr: "Gammes de sol, ré et fa majeur, le chromatisme, les arpèges et les renversements de l'accord parfait.",
+      es: "Las escalas de sol, re y fa mayor, el cromatismo, los arpegios, las inversiones del acorde perfecto y los primeros estudios de agilidad.",
+      fr: "Les gammes de sol, ré et fa majeur, le chromatisme, les arpèges, les renversements de l'accord parfait et les premières études d'agilité.",
     },
-    cursos: [CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE,
+    cursos: [CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE,
              CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE],
   },
   {
-    id: "intermedio1",
-    nombre: { es: "Intermedio 1", fr: "Intermédiaire 1" },
+    id: "en-escena",
+    nombre: { es: "En escena", fr: "En scène" },
     objetivo: {
-      es: "Escalas y arpegios hasta tres alteraciones, estudios de agilidad.",
-      fr: "Gammes et arpèges jusqu'à trois altérations, études d'agilité.",
+      es: "Escalas y arpegios en todas las tonalidades, velocidad y terceras, y las piezas que se tocan delante de alguien.",
+      fr: "Gammes et arpèges dans toutes les tonalités, vitesse et tierces, et les pièces que l'on joue devant quelqu'un.",
     },
-    cursos: [CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE,
-             CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE],
-  },
-  {
-    id: "intermedio2",
-    nombre: { es: "Intermedio 2", fr: "Intermédiaire 2" },
-    objetivo: {
-      es: "Velocidad, terceras y todas las tonalidades.",
-      fr: "Vitesse, tierces et toutes les tonalités.",
-    },
-    cursos: [CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE,
+    cursos: [CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE,
              CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE, CURSO_PENDIENTE],
   },
 ];

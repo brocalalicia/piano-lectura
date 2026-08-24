@@ -708,11 +708,20 @@ body {
   transition: transform 100ms ease, box-shadow 100ms ease;
 }
 
-.boton-menu:active {
+.boton-menu:active:not(:disabled) {
   transform: translateY(4px);
   box-shadow:
     0 0 0 var(--color-boton-sombra),
     inset 0 0 0 2px var(--color-boton-borde);
+}
+
+/* Los niveles que todavia no estan preparados: se ven, para que se sepa lo que
+   viene, pero se nota que no se puede entrar. */
+.boton-menu:disabled {
+  background: var(--color-boton-borde);
+  box-shadow: inset 0 0 0 2px var(--color-boton-sombra);
+  color: var(--color-texto-tenue);
+  cursor: not-allowed;
 }
 
 .boton-clave {
