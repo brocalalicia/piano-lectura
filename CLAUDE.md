@@ -137,6 +137,10 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - **Compases, orden de aparición**: 4/4 desde el principio, y el 3/4 y el 2/4
   en el curso 3, en la misma clase en que se explica qué son los dos números.
   Un compás nuevo entra con ejercicios que lo usen, no sólo con la teoría.
+- **El título de un bloque de lectura dice el nivel y las notas**, con las
+  mismas palabras que usa el menú de Lectura en `t().rangos`. Nada de títulos
+  evocadores: si el curso trae nivel nuevo, se nombra ese nivel con su rango;
+  si es repaso, se dice de qué nivel.
 - **Dos ejercicios no pueden llevar las mismas notas.** Dentro de una posición
   de cinco dedos la variedad sale del ritmo, de la dirección (empezar por el
   pulgar o por el meñique), del compás y de la posición de la mano, no de
