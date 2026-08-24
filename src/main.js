@@ -1099,7 +1099,10 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   // y altos, tambien cuanto puede medir de alto.
   const anchoVista = ancho + 12;
   const altoVista = abajo - arriba;
-  svg.style.maxWidth = `${Math.round(Math.min(anchoVista * 2.4, (ALTO_MAXIMO_DIBUJO * anchoVista) / altoVista))}px`;
+  // El tope de alto va por pentagrama: si no, un ejercicio de una sola mano,
+  // que es la mitad de alto, se estira al doble que uno de dos.
+  const altoTope = Math.min(ALTO_MAXIMO_DIBUJO, 170 * partitura.sistemas.length);
+  svg.style.maxWidth = `${Math.round(Math.min(anchoVista * 2.4, (altoTope * anchoVista) / altoVista))}px`;
 }
 
 const SVG_NS = "http://www.w3.org/2000/svg";

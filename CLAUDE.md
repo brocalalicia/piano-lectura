@@ -109,12 +109,14 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   que carga VexFlow, colocadas por las medidas de tinta de `GLIFO_CLAVE`:
   `getBBox()` sobre un glifo devuelve la caja de la fuente, no la del dibujo.
 - Ninguna ilustración pasa de `ALTO_MAXIMO_DIBUJO` px de alto.
-- **Toda la técnica se practica con las dos manos**: cada ejercicio lleva los
-  dos pentagramas, no hay fichas de una sola mano. Se juntan con `aDosManos()`,
-  y los dos sistemas deben tener el **mismo número de figuras** o no quedan
-  alineados. En los primeros cursos las indicaciones dicen que se toque una
-  mano y después la otra; juntas y al unísono llegan en el curso 3, e
-  independientes a partir del 4.
+- **Toda la técnica se practica con las dos manos, pero el formato depende del
+  curso.** Donde las manos tocan a la vez —del curso 3 en adelante— el
+  ejercicio lleva los dos pentagramas unidos por la llave, y se montan con
+  `aDosManos()`: los dos sistemas deben tener el **mismo número de figuras** o
+  no quedan alineados. Donde se toca a manos separadas, **cada mano va en su
+  propio ejercicio** con `unaMano()`, uno detrás de otro: las dos manos no
+  hacen lo mismo, y verlas bajo una llave hace pensar que suenan a la vez.
+  Juntas y al unísono llegan en el curso 3, e independientes a partir del 4.
 - En las partituras, `d` es la digitación y va encima; `t` es el nombre de la
   nota y va debajo; `silencio: true` la convierte en silencio.
 - **Ritmo, orden de aparición**: la redonda se toca ya en el curso 1, y la

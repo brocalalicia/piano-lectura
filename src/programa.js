@@ -459,6 +459,12 @@ function aDosManos(derecha, izquierda) {
   return { ...derecha, sistemas: [derecha.sistemas[0], izquierda.sistemas[0]] };
 }
 
+// En los cursos de manos separadas cada mano va en su propio ejercicio. Las dos
+// manos no tocan lo mismo, y ponerlas en un solo sistema, con su llave, hace
+// pensar que suenan a la vez. Ademas, para una primera clase son demasiadas
+// notas de golpe.
+const unaMano = (formula) => ({ tipo: "dibujada", compas: "4/4", ...formula });
+
 const TOCAR_Y_CALLAR_MI = {
   sistemas: [
     {
@@ -875,9 +881,6 @@ const JUNTAS_DOS_CUARTOS_MI = {
 };
 
 // --- Las de una mano, ya unificadas --------------------------------------
-const CINCO_DEDOS_REDONDAS = aDosManos(CINCO_DEDOS_REDONDAS_MD, CINCO_DEDOS_REDONDAS_MI);
-const BAJAR_REDONDAS = aDosManos(BAJAR_REDONDAS_MD, BAJAR_REDONDAS_MI);
-const PULGARES_DO = aDosManos(PULGARES_DO_MD, PULGARES_DO_MI);
 const CINCO_DEDOS_NEGRAS = aDosManos(CINCO_DEDOS_DERECHA, CINCO_DEDOS_IZQUIERDA);
 const NOTAS_REPETIDAS_DOS = aDosManos(NOTAS_REPETIDAS, NOTAS_REPETIDAS_MI);
 const MEZCLA_FIGURAS = aDosManos(MEZCLA_FIGURAS_MD, MEZCLA_FIGURAS_MI);
@@ -1181,18 +1184,30 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               concepto({ es: "Pulgar, el 1", fr: "Pouce, le 1" }, { es: "En la mano derecha queda a la izquierda; en la izquierda, a la derecha. Los dos hacia el centro.", fr: "À la main droite il se trouve à gauche, à la main gauche il se trouve à droite : l'un et l'autre tournés vers le centre." }),
               concepto({ es: "Meñique, el 5", fr: "Auriculaire, le 5" }, { es: "El dedo más corto y el más débil: es el que hay que vigilar para que no se hunda.", fr: "Le doigt le plus court et le plus faible : c'est lui qu'il faut surveiller pour qu'il ne s'affaisse pas." }),
             ]),
-          ejercicio("p1c1-md", { es: "Cinco dedos en redondas", fr: "Cinq doigts en rondes" },
+          ejercicio("p1c1-md", { es: "Cinco dedos en redondas, mano derecha", fr: "Cinq doigts en rondes, main droite" },
             { es: "Una nota por compás: tiempo de sobra para colocar el dedo y escuchar.", fr: "Une note par mesure : tout le temps de placer le doigt et d'écouter le son." },
-            { es: ["Primero la mano derecha, después la izquierda. Todavía no a la vez.", "Cuenta cuatro en cada nota, en voz alta, y dedos curvos.", "Las dos manos se juntan en el do central: la derecha lo empieza con el pulgar y la izquierda lo acaba con el pulgar."], fr: ["D'abord la main droite, ensuite la gauche. Pas encore ensemble.", "Compte quatre sur chaque note, à voix haute, et garde les doigts arrondis.", "Les deux mains se rejoignent sur le do central : la droite le commence du pouce, la gauche le termine du pouce."] },
-            CINCO_DEDOS_REDONDAS),
-          ejercicio("p1c1-bajar", { es: "Bajar de sol a do", fr: "Descendre du sol au do" },
+            { es: ["Cuenta cuatro en cada nota, en voz alta, y dedos curvos.", "Del do central hacia arriba, con el pulgar en el do."], fr: ["Compte quatre sur chaque note, à voix haute, et garde les doigts arrondis.", "Du do central vers le haut, le pouce sur le do."] },
+            unaMano(CINCO_DEDOS_REDONDAS_MD)),
+          ejercicio("p1c1-mi", { es: "Cinco dedos en redondas, mano izquierda", fr: "Cinq doigts en rondes, main gauche" },
+            { es: "La misma fórmula con la izquierda, subiendo del fa al do central.", fr: "La même formule à la main gauche, du fa au do central." },
+            { es: ["Cuenta cuatro en cada nota, igual que con la derecha.", "Aquí el pulgar es el que llega arriba, al do central: la misma tecla en la que empieza la derecha."], fr: ["Compte quatre sur chaque note, comme à la main droite.", "Ici c'est le pouce qui arrive en haut, sur le do central : la touche même où commence la main droite."] },
+            unaMano(CINCO_DEDOS_REDONDAS_MI)),
+          ejercicio("p1c1-bajar-md", { es: "Bajar de sol a do, mano derecha", fr: "Descendre du sol au do, main droite" },
             { es: "El mismo camino al revés: la lectura va de arriba abajo y los dedos, del 5 al 1.", fr: "Le même chemin à l'envers : la lecture va de haut en bas et les doigts, du 5 au 1." },
-            { es: ["Bajar cuesta más que subir: ve más despacio de lo que crees.", "En la izquierda es al contrario, del 1 al 5, y empieza en el do central."], fr: ["Descendre est plus difficile que monter : va plus lentement que tu ne le crois.", "À la main gauche c'est l'inverse, du 1 au 5, et cela commence sur le do central."] },
-            BAJAR_REDONDAS),
-          ejercicio("p1c1-pulgares", { es: "Los dos pulgares en el do central", fr: "Les deux pouces sur le do central" },
-            { es: "Las dos manos salen de la misma tecla y se alejan de ella con el mismo dedo.", fr: "Les deux mains partent de la même touche et s'en éloignent avec le même doigt." },
-            { es: ["Es la misma tecla en los dos pentagramas: en clave de sol cuelga por debajo y en clave de fa asoma por encima.", "Toca la derecha y después la izquierda, y fíjate en que el mismo número cae en teclas distintas."], fr: ["C'est la même touche sur les deux portées : en clé de sol elle pend sous la portée, en clé de fa elle dépasse au-dessus.", "Joue la droite puis la gauche, et remarque que le même chiffre tombe sur des touches différentes."] },
-            PULGARES_DO),
+            { es: ["Bajar cuesta más que subir: ve más despacio de lo que crees.", "Acabas en el do central, con el pulgar."], fr: ["Descendre est plus difficile que monter : va plus lentement que tu ne le crois.", "Tu finis sur le do central, au pouce."] },
+            unaMano(BAJAR_REDONDAS_MD)),
+          ejercicio("p1c1-bajar-mi", { es: "Bajar de do a fa, mano izquierda", fr: "Descendre du do au fa, main gauche" },
+            { es: "La izquierda baja del do central al fa, del pulgar al meñique.", fr: "La main gauche descend du do central au fa, du pouce à l'auriculaire." },
+            { es: ["Empieza donde acaba la derecha: en el do central.", "El meñique llega al fa: vigila que no se hunda y que suene igual que los demás."], fr: ["Commence là où finit la main droite : sur le do central.", "L'auriculaire arrive sur le fa : veille à ce qu'il ne s'affaisse pas et sonne comme les autres."] },
+            unaMano(BAJAR_REDONDAS_MI)),
+          ejercicio("p1c1-pulgar-md", { es: "El do central con el pulgar, mano derecha", fr: "Le do central au pouce, main droite" },
+            { es: "Salir del do central, alejarse tres notas y volver a él.", fr: "Partir du do central, s'en éloigner de trois notes et y revenir." },
+            { es: ["Es la primera nota y la última: el pulgar no se mueve de su tecla.", "La izquierda hace lo mismo en el ejercicio siguiente, desde esa misma tecla."], fr: ["C'est la première note et la dernière : le pouce ne quitte pas sa touche.", "La main gauche fait de même dans l'exercice suivant, depuis cette même touche."] },
+            unaMano(PULGARES_DO_MD)),
+          ejercicio("p1c1-pulgar-mi", { es: "El do central con el pulgar, mano izquierda", fr: "Le do central au pouce, main gauche" },
+            { es: "La izquierda sale del mismo do central, también con el pulgar, pero hacia abajo.", fr: "La main gauche part du même do central, au pouce également, mais vers le bas." },
+            { es: ["Es la tecla del ejercicio anterior escrita en clave de fa: allí colgaba por debajo del pentagrama y aquí asoma por encima.", "El mismo número de dedo cae en una tecla distinta que en la derecha: por eso los dos pulgares se miran."], fr: ["C'est la touche de l'exercice précédent écrite en clé de fa : là elle pendait sous la portée, ici elle dépasse au-dessus.", "Le même numéro de doigt tombe sur une autre touche qu'à la main droite : c'est pourquoi les deux pouces se font face."] },
+            unaMano(PULGARES_DO_MI)),
           referencia("p1c1-ref", { es: "Práctica a manos separadas", fr: "Travail en mains séparées" },
             [
               pouillard({ es: "Presentación págs. 4-6 y cap. I pág. 8", fr: "Présentation p. 4-6 et chap. I p. 8" }),
