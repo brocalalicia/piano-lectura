@@ -94,6 +94,13 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   la explica, no al final de toda la teoría. Un curso empieza por teoría y
   acaba en el piano, nunca al revés.
 - Cada bloque lleva su etiqueta visible: Teoría, Lectura, Técnica o Método.
+- **Los bloques de Método no llevan indicaciones propias.** Su «Cómo trabajarlo»
+  es siempre `COMO_TRABAJAR`, el método de la profesora, igual en todos los
+  cursos: se monta a manos separadas y se juntan después, y cada nota se
+  resuelve siempre en el mismo orden — **qué nota es → dónde cae en el teclado →
+  con qué dedo se toca → cuánto dura**. `referencia()` lo pone solo; no acepta
+  indicaciones. Lo que sea propio de un curso va en el detalle, que describe las
+  páginas, no cómo se trabajan.
 - La explicación de teoría puede ser un párrafo o una lista: si es una lista,
   el primer elemento entra como párrafo y el resto van en puntos. Los textos
   largos van así, que de seguido quedan ilegibles.

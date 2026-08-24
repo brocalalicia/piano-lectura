@@ -1089,12 +1089,28 @@ const chornet = (donde) => ({ metodo: "Chornet, Ejercicios, estudios y obras par
 const aaron = (donde) => ({ metodo: "Michael Aaron, curso para piano, grado 1", donde });
 const repertorio = (donde) => ({ metodo: "Essential Piano Repertoire, Preparatory Level (Keith Snell)", donde });
 
-function referencia(id, titulo, fuentes, detalle, indicaciones) {
+// El metodo de trabajo de la profesora. Es el mismo en todos los cursos, asi
+// que ningun bloque de metodo lleva indicaciones propias: se monta a manos
+// separadas y se juntan despues, y cada nota se resuelve siempre en el mismo
+// orden, nota -> teclado -> dedo -> duracion. Lo que sea propio de un curso va
+// en el detalle, que es lo que describe las paginas, no como se trabajan.
+const COMO_TRABAJAR = {
+  es: [
+    "Trabaja primero a manos separadas y júntalas sólo cuando cada una vaya sola.",
+    "En cada nota, siempre el mismo orden: qué nota es, dónde cae en el teclado, con qué dedo se toca y, por último, cuánto dura.",
+  ],
+  fr: [
+    "Travaille d'abord en mains séparées et ne les réunis que lorsque chacune tient toute seule.",
+    "Sur chaque note, toujours le même ordre : quelle note c'est, où elle tombe sur le clavier, avec quel doigt la jouer et, pour finir, combien de temps elle dure.",
+  ],
+};
+
+function referencia(id, titulo, fuentes, detalle) {
   return {
     id,
     titulo,
     objetivo: detalle,
-    indicaciones,
+    indicaciones: COMO_TRABAJAR,
     partitura: { tipo: "referencia", fuentes, detalle },
   };
 }
@@ -1214,8 +1230,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               chornet({ es: "pág. 11", fr: "p. 11" }),
               aaron({ es: "págs. 6-7", fr: "p. 6-7" }),
             ],
-            { es: "Cómo sentarse al piano, la numeración de los dedos y las primeras melodías a 2 dedos.", fr: "Comment s'asseoir au piano, la numérotation des doigts et les premières mélodies à 2 doigts." },
-            { es: ["Revisa la altura del taburete antes de nada.", "De las melodías, sólo las de 2 dedos en esta primera clase."], fr: ["Vérifie la hauteur du tabouret avant tout.", "Des mélodies, seulement celles à 2 doigts dans ce premier cours."] }),
+            { es: "Cómo sentarse al piano, la numeración de los dedos y las primeras melodías a 2 dedos.", fr: "Comment s'asseoir au piano, la numérotation des doigts et les premières mélodies à 2 doigts." }),
         ],
       },
       {
@@ -1261,8 +1276,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               chornet({ es: "págs. 12-13", fr: "p. 12-13" }),
               aaron({ es: "págs. 8-10", fr: "p. 8-10" }),
             ],
-            { es: "Melodías a 3, 4 y 5 dedos, cada mano por separado y ya con negras.", fr: "Mélodies à 3, 4 et 5 doigts, chaque main séparément et déjà en noires." },
-            { es: ["Empieza siempre por la derecha y repite lo mismo con la izquierda.", "El mismo tempo en las dos manos: si la izquierda no llega, baja el metrónomo."], fr: ["Commence toujours par la droite et reprends la même chose de la main gauche.", "Le même tempo aux deux mains : si la gauche ne suit pas, baisse le métronome."] }),
+            { es: "Melodías a 3, 4 y 5 dedos, cada mano por separado y ya con negras.", fr: "Mélodies à 3, 4 et 5 doigts, chaque main séparément et déjà en noires." }),
         ],
       },
       {
@@ -1328,8 +1342,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               chornet({ es: "págs. 14-16, manos juntas al unísono", fr: "p. 14-16, mains ensemble à l'unisson" }),
               aaron({ es: "págs. 17-18", fr: "p. 17-18" }),
             ],
-            { es: "Las dos manos tocan lo mismo a la vez, separadas por una octava, y aparecen las primeras ligaduras.", fr: "Les deux mains jouent la même chose en même temps, à l'octave, et les premières liaisons apparaissent." },
-            { es: ["Monta cada mano sola y júntalas sólo cuando las dos vayan seguidas.", "Un dedo se levanta cuando el otro ya ha bajado.", "Toca el mismo ejercicio en f y en p."], fr: ["Monte chaque main seule et ne les réunis que lorsque chacune tient toute seule.", "Un doigt se lève quand l'autre est déjà descendu.", "Joue le même exercice en f puis en p."] }),
+            { es: "Las dos manos tocan lo mismo a la vez, separadas por una octava, y aparecen las primeras ligaduras.", fr: "Les deux mains jouent la même chose en même temps, à l'octave, et les premières liaisons apparaissent." }),
         ],
       },
       {
@@ -1374,8 +1387,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               chornet({ es: "págs. 17-21, manos alternadas", fr: "p. 17-21, mains alternées" }),
               aaron({ es: "págs. 19 y 29-30", fr: "p. 19 et 29-30" }),
             ],
-            { es: "Las manos dejan de ir al unísono: se van pasando la melodía sobre el sistema de dos pentagramas.", fr: "Les mains cessent d'aller à l'unisson : elles se passent la mélodie sur le système de deux portées." },
-            { es: ["Monta cada mano por separado antes de juntarlas.", "El relevo se prepara un tiempo antes: la mano que entra ya está colocada."], fr: ["Monte chaque main séparément avant de les réunir.", "Le relais se prépare un temps à l'avance : la main qui entre est déjà placée."] }),
+            { es: "Las manos dejan de ir al unísono: se van pasando la melodía sobre el sistema de dos pentagramas.", fr: "Les mains cessent d'aller à l'unisson : elles se passent la mélodie sur le système de deux portées." }),
         ],
       },
       {
@@ -1412,8 +1424,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               chornet({ es: "págs. 22-25, dedos libres", fr: "p. 22-25, doigts libres" }),
               aaron({ es: "págs. 31-32", fr: "p. 31-32" }),
             ],
-            { es: "Cada mano hace algo distinto sin arrastrar a la otra, y dentro de cada mano unos dedos tocan mientras los demás se quedan quietos.", fr: "Chaque main fait quelque chose de différent sans entraîner l'autre, et dans chaque main certains doigts jouent pendant que les autres restent en place." },
-            { es: ["Empieza por una mano tenida y la otra en notas sueltas.", "Muy despacio: la independencia se pierde en cuanto aceleras."], fr: ["Commence par une main tenue et l'autre en notes détachées.", "Très lentement : l'indépendance se perd dès que tu accélères."] }),
+            { es: "Cada mano hace algo distinto sin arrastrar a la otra, y dentro de cada mano unos dedos tocan mientras los demás se quedan quietos.", fr: "Chaque main fait quelque chose de différent sans entraîner l'autre, et dans chaque main certains doigts jouent pendant que les autres restent en place." }),
           lectura("p1c5-lectura", dosClaves("intermedio", "afianzar"),
             { es: "El registro extremo, a velocidad", fr: "Le registre extrême, en vitesse" },
             { es: "El mismo registro que la clase anterior, ahora bajando el tiempo.", fr: "Le même registre que la semaine passée, cette fois en baissant le temps." },
@@ -1441,12 +1452,10 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               chornet({ es: "págs. 26-28, primeros acordes", fr: "p. 26-28, premiers accords" }),
               aaron({ es: "págs. 20-22 y 33-34", fr: "p. 20-22 et 33-34" }),
             ],
-            { es: "Dos y tres notas a la vez, los intervalos de segunda a quinta y el sostenido, el bemol y el becuadro.", fr: "Deux et trois notes à la fois, les intervalles de seconde à quinte, et le dièse, le bémol et le bécarre." },
-            { es: ["Los acordes de tres sonidos completos llegan en el curso 9."], fr: ["Les accords de trois sons complets arrivent au cours 9."] }),
+            { es: "Dos y tres notas a la vez, los intervalos de segunda a quinta y el sostenido, el bemol y el becuadro. Los acordes de tres sonidos completos llegan en el curso 9.", fr: "Deux et trois notes à la fois, les intervalles de seconde à quinte, et le dièse, le bémol et le bécarre. Les accords de trois sons complets arrivent au cours 9." }),
           referencia("p1c6-rep", { es: "Repertorio", fr: "Répertoire" },
             [repertorio({ es: "Bagpipe (anónimo, s. XVII), pág. 4, y Old German Dance (Praetorius), pág. 5", fr: "Bagpipe (anonyme, XVIIe s.), p. 4, et Old German Dance (Praetorius), p. 5" })],
-            { es: "La primera pieza de repertorio de verdad: dos danzas antiguas, cortas y en posición fija.", fr: "La première vraie pièce de répertoire : deux danses anciennes, courtes et en position fixe." },
-            { es: ["Elige una de las dos y trabájala hasta el final del nivel.", "Antes de tocar, mira la armadura y el compás."], fr: ["Choisis l'une des deux et travaille-la jusqu'à la fin du niveau.", "Avant de jouer, regarde l'armure et la mesure."] }),
+            { es: "La primera pieza de repertorio de verdad: dos danzas antiguas, cortas y en posición fija. Se elige una y se trabaja hasta el final del nivel.", fr: "La première vraie pièce de répertoire : deux danses anciennes, courtes et en position fixe. On en choisit une et on la travaille jusqu'à la fin du niveau." }),
           lectura("p1c6-lectura", dosClaves("inicial2", "afianzar"),
             { es: "Volver a las notas ampliadas", fr: "Revenir aux notes élargies" },
             { es: "De sol a do agudo y de do a sol grave, que llevan tres clases sin tocarse.", fr: "De sol à do aigu et de do à sol grave, qu'on n'a pas revus depuis trois cours." },
@@ -1480,12 +1489,10 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               chornet({ es: "págs. 29-32, legato y staccato, y págs. 33-36, Czerny op. 599 nº 1-8", fr: "p. 29-32, legato et staccato, et p. 33-36, Czerny op. 599 nº 1-8" }),
               aaron({ es: "págs. 25-27", fr: "p. 25-27" }),
             ],
-            { es: "Los dos ataques básicos, ligado y picado, y las primeras indicaciones de matiz sobre estudios cortos.", fr: "Les deux attaques de base, lié et piqué, et les premières indications de nuance sur de courtes études." },
-            { es: ["El staccato sale de la muñeca, no del brazo.", "Toca el mismo estudio en legato y en staccato para oír la diferencia."], fr: ["Le staccato part du poignet, pas du bras.", "Joue la même étude en legato puis en staccato pour entendre la différence."] }),
+            { es: "Los dos ataques básicos, ligado y picado, y las primeras indicaciones de matiz sobre estudios cortos.", fr: "Les deux attaques de base, lié et piqué, et les premières indications de nuance sur de courtes études." }),
           referencia("p1c7-rep", { es: "Repertorio", fr: "Répertoire" },
             [repertorio({ es: "Two Marches (Türk), pág. 6, y March in F (Türk), pág. 7", fr: "Two Marches (Türk), p. 6, et March in F (Türk), p. 7" })],
-            { es: "Dos marchas clásicas: pulso firme, frases de cuatro compases y manos que ya no van al unísono.", fr: "Deux marches classiques : pulsation ferme, phrases de quatre mesures et mains qui ne vont plus à l'unisson." },
-            { es: ["Marca el pulso con el pie antes de tocar.", "Respeta las ligaduras: son las frases de la pieza."], fr: ["Marque la pulsation du pied avant de jouer.", "Respecte les liaisons : ce sont les phrases de la pièce."] }),
+            { es: "Dos marchas clásicas: pulso firme, frases de cuatro compases y manos que ya no van al unísono.", fr: "Deux marches classiques : pulsation ferme, phrases de quatre mesures et mains qui ne vont plus à l'unisson." }),
           lectura("p1c7-lectura", lineasDelCentro("nuevas"),
             { es: "Las líneas adicionales del centro", fr: "Les lignes supplémentaires du centre" },
             { es: "La derecha por debajo del do central y la izquierda por encima: las notas que cada mano toma prestadas de la otra clave.", fr: "La droite sous le do central et la gauche au-dessus : les notes que chaque main emprunte à l'autre clé." },
@@ -1517,12 +1524,10 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               chornet({ es: "págs. 43-46, preparatorios y escalas", fr: "p. 43-46, préparatoires et gammes" }),
               aaron({ es: "págs. 51, 53 y 61-62", fr: "p. 51, 53 et 61-62" }),
             ],
-            { es: "El mecanismo explicado, sus ejercicios preparatorios y la escala completa, con la tabla de digitaciones del Aaron para consultarla.", fr: "Le mécanisme expliqué, ses exercices préparatoires et la gamme complète, avec le tableau de doigtés de l'Aaron pour référence." },
-            { es: ["Los preparatorios antes que la escala entera."], fr: ["Les préparatoires avant la gamme entière."] }),
+            { es: "El mecanismo explicado, los ejercicios preparatorios —antes que la escala entera— y la escala completa, con la tabla de digitaciones del Aaron para consultarla.", fr: "Le mécanisme expliqué, les exercices préparatoires — avant la gamme entière — et la gamme complète, avec le tableau de doigtés de l'Aaron pour référence." }),
           referencia("p1c8-rep", { es: "Repertorio", fr: "Répertoire" },
             [repertorio({ es: "March in G (Türk), pág. 7, y Minuet (Reinagle), pág. 8", fr: "March in G (Türk), p. 7, et Minuet (Reinagle), p. 8" })],
-            { es: "Un minueto clásico en 3/4: el mismo compás del curso 3, ahora dentro de una pieza.", fr: "Un menuet classique à 3/4 : la mesure vue au cours 3, cette fois dans une pièce." },
-            { es: ["Cuenta 1-2-3 en voz alta durante las primeras lecturas.", "Apoya el primer tiempo de cada compás."], fr: ["Compte 1-2-3 à voix haute lors des premières lectures.", "Appuie le premier temps de chaque mesure."] }),
+            { es: "Un minueto clásico en 3/4: el mismo compás del curso 3, ahora dentro de una pieza.", fr: "Un menuet classique à 3/4 : la mesure vue au cours 3, cette fois dans une pièce." }),
           lectura("p1c8-lectura", [...lineasDelCentro("afianzar"), ...dosClaves("inicial1", "afianzar")],
             { es: "Cruzar el centro sin dudar", fr: "Franchir le centre sans hésiter" },
             { es: "Todo lo que rodea el do central, escrito en las dos claves: es lo que más se confunde.", fr: "Tout ce qui entoure le do central, écrit dans les deux clés : c'est ce qui se confond le plus." },
@@ -1554,12 +1559,10 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               chornet({ es: "págs. 51 y 59, Bach y Mozart", fr: "p. 51 et 59, Bach et Mozart" }),
               aaron({ es: "págs. 36, 43 y 46, estudios de acordes en do, fa y sol", fr: "p. 36, 43 et 46, études d'accords en do, fa et sol" }),
             ],
-            { es: "Los acordes de do, fa y sol sobre la partitura, cómo se enlazan y la diferencia entre acorde y acorde quebrado.", fr: "Les accords de do, fa et sol sur la partition, comment ils s'enchaînent, et la différence entre accord plaqué et accord brisé." },
-            { es: ["Con esto cerrado, estás listo para Principiante 2."], fr: ["Une fois cela acquis, tu es prêt pour le Débutant 2."] }),
+            { es: "Los acordes de do, fa y sol sobre la partitura, cómo se enlazan y la diferencia entre acorde y acorde quebrado. Con esto cerrado, el nivel está terminado.", fr: "Les accords de do, fa et sol sur la partition, comment ils s'enchaînent, et la différence entre accord plaqué et accord brisé. Une fois cela acquis, le niveau est terminé." }),
           referencia("p1c9-rep", { es: "Repertorio", fr: "Répertoire" },
             [repertorio({ es: "Promenade (Reinagle), pág. 9, y Sonatina, I. Allegro moderato (Wilton), pág. 10", fr: "Promenade (Reinagle), p. 9, et Sonatine, I. Allegro moderato (Wilton), p. 10" })],
-            { es: "La pieza que cierra el nivel: un primer movimiento de sonatina, con las dos manos independientes y acordes en la izquierda.", fr: "La pièce qui clôt le niveau : un premier mouvement de sonatine, avec les deux mains indépendantes et des accords à la main gauche." },
-            { es: ["Trabájala por frases, no de principio a fin.", "Es la pieza que tocarás para dar el nivel por terminado."], fr: ["Travaille-la par phrases, pas du début à la fin.", "C'est la pièce que tu joueras pour valider la fin du niveau."] }),
+            { es: "La pieza que cierra el nivel: un primer movimiento de sonatina, con las dos manos independientes y acordes en la izquierda.", fr: "La pièce qui clôt le niveau : un premier mouvement de sonatine, avec les deux mains indépendantes et des accords à la main gauche." }),
           lectura("p1c9-lectura", [...dosClaves("inicial1", "afianzar"), ...dosClaves("inicial2", "afianzar"), ...dosClaves("intermedio", "afianzar"), ...lineasDelCentro("afianzar")],
             { es: "Evaluación: las dos claves al completo", fr: "Évaluation : les deux clés au complet" },
             { es: "Las ocho sesiones del nivel, una detrás de otra: es la foto de dónde estás.", fr: "Les huit sessions du niveau, l'une après l'autre : c'est la photo de là où tu en es." },
