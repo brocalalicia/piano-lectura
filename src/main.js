@@ -81,7 +81,7 @@ const TRADUCCIONES = {
     programaTitulo: "Aprende y mejora tu técnica con Alicia",
     programas: {
       lectura: { nombre: "Lectura", descripcion: "Leer notas en el pentagrama" },
-      practica: { nombre: "Lecciones de piano", descripcion: "Ejercicios técnicos con partitura" },
+      practica: { nombre: "Lecciones de piano", descripcion: "Teoría, lectura, técnica y repertorio" },
     },
     practicaNivelTitulo: "Elige un nivel",
     practicaEnPreparacion: "En preparación",
@@ -192,7 +192,7 @@ const TRADUCCIONES = {
     programaTitulo: "Apprends et améliore ta technique avec Alicia",
     programas: {
       lectura: { nombre: "Lecture", descripcion: "Reconnaître les notes sur la portée" },
-      practica: { nombre: "Leçons de piano", descripcion: "Technique et théorie, partition à l'appui" },
+      practica: { nombre: "Leçons de piano", descripcion: "Théorie, lecture, technique et répertoire" },
     },
     practicaNivelTitulo: "Choisis un niveau",
     practicaEnPreparacion: "En préparation",
