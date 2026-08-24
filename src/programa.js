@@ -854,9 +854,17 @@ function ordenarClase(niveles) {
 }
 
 // Manda al otro programa de la app, al nivel de lectura que toca ese curso.
-function lectura(id, clave, nivel, titulo, objetivo, indicaciones) {
-  return { id, titulo, objetivo, indicaciones, partitura: { tipo: "lectura", clave, nivel } };
+// Un bloque de lectura manda a una o varias sesiones del programa de Lectura.
+// Las dos claves van siempre al mismo nivel y en el mismo curso: primero se
+// afianza lo de la clase anterior y despues entran las notas nuevas.
+function lectura(id, sesiones, titulo, objetivo, indicaciones) {
+  return { id, titulo, objetivo, indicaciones, partitura: { tipo: "lectura", sesiones } };
 }
+
+const dosClaves = (nivel, papel) => [
+  { clave: "sol", nivel, papel },
+  { clave: "fa", nivel, papel },
+];
 
 // Referencia a un metodo de la profesora. La pagina es la impresa en el papel.
 // Los tres metodos de referencia se usan en todos los cursos y se complementan:
@@ -927,15 +935,11 @@ const NIVELES = [
               concepto({ es: "Do central", fr: "Do central" }, { es: "La nota que comparten las dos claves: una sola tecla, escrita de dos maneras.", fr: "La note que les deux clés partagent : une seule touche, écrite de deux façons." }),
               concepto({ es: "Grado conjunto", fr: "Degré conjoint" }, { es: "Pasar de una línea al espacio siguiente, sin saltarse ninguna nota: do, re, mi, fa, sol.", fr: "Passer d'une ligne à l'interligne voisin, sans sauter de note : do, ré, mi, fa, sol." }),
             ]),
-          lectura("p1c1-lectura", "sol", "inicial1",
-            { es: "Leer las notas de do a sol", fr: "Lire les notes de do à sol" },
-            { es: "Las cinco notas de la mano derecha, en clave de sol.", fr: "Les cinq notes de la main droite, en clé de sol." },
-            { es: ["Una sesión completa al final de la clase.", "Apunta el tiempo: es tu punto de partida."], fr: ["Une session complète à la fin du cours.", "Note le temps : c'est ton point de départ."] }),
-          lectura("p1c1-lectura-fa", "fa", "inicial1",
-            { es: "Leer en clave de fa", fr: "Lire en clé de fa" },
-            { es: "De fa a do central: las cinco notas de la mano izquierda.", fr: "Du fa au do central : les cinq notes de la main gauche." },
-            { es: ["Es normal ir más lento que en clave de sol: es la clave que menos se ve.", "Una sesión de cada clave, seguidas, desde el primer día."], fr: ["Il est normal d'être plus lent qu'en clé de sol : c'est la clé la moins fréquentée.", "Une session de chaque clé, à la suite, dès le premier jour."] }),
-          teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au clavier" },
+          lectura("p1c1-lectura", dosClaves("inicial1", "nuevas"),
+            { es: "Leer las primeras notas", fr: "Lire les premières notes" },
+            { es: "De do a sol en clave de sol y de fa a do central en clave de fa: lo que acabas de tocar con cada mano.", fr: "De do à sol en clé de sol et de fa à do central en clé de fa : ce que tu viens de jouer de chaque main." },
+            { es: ["Una sesión de cada clave, seguidas, al final de la clase.", "Apunta los dos tiempos: son tu punto de partida."], fr: ["Une session de chaque clé, à la suite, à la fin du cours.", "Note les deux temps : c'est ton point de départ."] }),
+teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au clavier" },
             {
               es: [
                 "Cada nota escrita es una tecla concreta. Para encontrarla te orientas por los grupos de teclas negras, nunca contando desde el extremo del piano.",
@@ -1000,10 +1004,10 @@ const NIVELES = [
               concepto({ es: "Negra", fr: "Noire" }, { es: "Un tiempo. Rellena y con palo.", fr: "Un temps. Tête pleine, avec une queue." }),
               concepto({ es: "Tiempo", fr: "Temps" }, { es: "La unidad del pulso, lo que marcas con el pie o el metrónomo.", fr: "L'unité de la pulsation : ce que tu bats du pied, ou ce que marque le métronome." }),
             ]),
-          lectura("p1c2-lectura", "fa", "inicial2",
-            { es: "Ampliar en clave de fa", fr: "Élargir en clé de fa" },
-            { es: "De do a sol, desde el segundo espacio: es justo donde baja la mano izquierda en los ejercicios de este curso.", fr: "Du do au sol, à partir du deuxième interligne : c'est exactement là que descend la main gauche dans les exercices de ce cours." },
-            { es: ["Ojo con el do: en el curso 1 estaba arriba del todo, en su línea adicional, y aquí está en el segundo espacio.", "Una sesión de cada clave, seguidas."], fr: ["Attention au do : au cours 1 il était tout en haut, sur sa ligne supplémentaire, et ici il est au deuxième interligne.", "Une session de chaque clé, à la suite."] }),
+          lectura("p1c2-lectura", [...dosClaves("inicial1", "afianzar"), ...dosClaves("inicial2", "nuevas")],
+            { es: "Ampliar en las dos claves", fr: "Élargir dans les deux clés" },
+            { es: "De sol a do agudo por arriba y de do a sol grave por abajo: las notas que rodean la posición de cinco dedos.", fr: "De sol à do aigu vers le haut et de do à sol grave vers le bas : les notes qui entourent la position de cinq doigts." },
+            { es: ["Empieza afianzando Inicial 1 en las dos claves y sigue con Inicial 2.", "En clave de fa, ojo con el do: en el curso 1 estaba arriba, en su línea adicional, y aquí está en el segundo espacio."], fr: ["Commence par consolider le Débutant 1 dans les deux clés, puis passe au Débutant 2.", "En clé de fa, attention au do : au cours 1 il était en haut, sur sa ligne supplémentaire, et ici il est au deuxième interligne."] }),
           ejercicio("p1c2-negras", { es: "Cinco dedos en negras", fr: "Cinq doigts en noires" },
             { es: "Subir y bajar sin parar entre nota y nota.", fr: "Monter et descendre sans s'arrêter entre les notes." },
             { es: ["Metrónomo a 60, una negra por clic.", "Una mano y después la otra, a la misma velocidad las dos."], fr: ["Métronome à 60, une noire par clic.", "Une main puis l'autre, à la même vitesse toutes les deux."] },
@@ -1055,10 +1059,10 @@ const NIVELES = [
               concepto({ es: "Número de arriba", fr: "Chiffre du haut" }, { es: "Cuántos tiempos hay en cada compás: 2, 3 o 4 en los compases que vas a ver ahora.", fr: "Combien de temps compte chaque mesure : 2, 3 ou 4 dans les mesures que tu verras pour l'instant." }),
               concepto({ es: "Número de abajo", fr: "Chiffre du bas" }, { es: "Qué figura vale un tiempo: 2 es la blanca, 4 la negra y 8 la corchea. Es la redonda dividida en esas partes.", fr: "Quelle figure vaut un temps : 2 pour la blanche, 4 pour la noire, 8 pour la croche. C'est la ronde divisée en autant de parts." }),
             ]),
-          lectura("p1c3-lectura", "sol", "inicial2",
-            { es: "Ampliar de sol a do agudo", fr: "Élargir du sol au do aigu" },
-            { es: "Las notas que quedan por encima de la posición de cinco dedos.", fr: "Les notes au-dessus de la position de cinq doigts." },
-            { es: ["Si fallas mucho, vuelve a Inicial 1 y sube la semana siguiente."], fr: ["Si tu te trompes beaucoup, reviens à Débutant 1 et monte la semaine suivante."] }),
+          lectura("p1c3-lectura", [...dosClaves("inicial2", "afianzar"), ...dosClaves("intermedio", "nuevas")],
+            { es: "Subir y bajar: el registro completo", fr: "Monter et descendre : tout le registre" },
+            { es: "De do agudo a sol agudo por arriba y de fa grave a do por abajo: hasta donde llegan las manos en la posición de sol.", fr: "De do aigu à sol aigu vers le haut et de fa grave à do vers le bas : jusqu'où vont les mains dans la position de sol." },
+            { es: ["Afianza Inicial 2 en las dos claves antes de entrar en Intermedio.", "Son las notas de la posición de sol: las lees justo el día que las tocas."], fr: ["Consolide le Débutant 2 dans les deux clés avant d'aborder l'Intermédiaire.", "Ce sont les notes de la position de sol : tu les lis le jour même où tu les joues."] }),
           ejercicio("p1c3-paralelo", { es: "Manos juntas en paralelo", fr: "Mains ensemble en parallèle" },
             { es: "Coordinar las dos manos tocando lo mismo a la vez.", fr: "Coordonner les deux mains en jouant la même chose en même temps." },
             { es: ["Los dedos van cruzados: el 1 con el 5, el 2 con el 4.", "Si una mano se adelanta, vuelve a manos separadas."], fr: ["Les doigts se répondent en miroir : le 1 avec le 5, le 2 avec le 4.", "Si une main prend de l'avance, reviens aux mains séparées."] },
@@ -1097,10 +1101,10 @@ const NIVELES = [
               concepto({ es: "Silencio de blanca", fr: "Silence de blanche" }, { es: "Dos tiempos. El mismo rectángulo, pero apoyado encima de la tercera línea.", fr: "Deux temps. Le même rectangle, mais posé sur la troisième ligne." }),
               concepto({ es: "Silencio de negra", fr: "Silence de noire" }, { es: "Un tiempo. Es el garabato que ocupa el centro del pentagrama.", fr: "Un temps. C'est le signe en zigzag au centre de la portée." }),
             ]),
-          lectura("p1c4-lectura", "sol", "inicial1",
-            { es: "Afianzar la clave de sol", fr: "Consolider la clé de sol" },
-            { es: "Las cinco notas de la mano derecha, ahora buscando velocidad.", fr: "Les cinq notes de la main droite, cette fois en cherchant la vitesse." },
-            { es: ["Compara el tiempo con el del curso 1: ahí se ve si has practicado.", "Cuando lo tengas suelto, pasa a Inicial 2."], fr: ["Compare le temps avec celui du cours 1 : c'est là qu'on voit si tu as travaillé.", "Quand ce sera fluide, passe au Débutant 2."] }),
+          lectura("p1c4-lectura", dosClaves("inicial1", "afianzar"),
+            { es: "Repaso: las primeras notas", fr: "Révision : les premières notes" },
+            { es: "Vuelta a las cinco notas de cada mano, ahora buscando velocidad.", fr: "Retour aux cinq notes de chaque main, cette fois en cherchant la vitesse." },
+            { es: ["Compara los tiempos con los del curso 1: ahí se ve si has practicado.", "Las dos claves en la misma sesión de estudio, nunca una sola."], fr: ["Compare les temps avec ceux du cours 1 : c'est là qu'on voit si tu as travaillé.", "Les deux clés dans la même session de travail, jamais une seule."] }),
           ejercicio("p1c4-callar", { es: "Tocar y callar", fr: "Jouer et se taire" },
             { es: "Levantar el dedo justo a tiempo: el silencio dura tanto como la nota.", fr: "Lever le doigt juste à temps : le silence dure autant que la note." },
             { es: ["Cuenta 1-2-3-4 en voz alta y no dejes de contar en el silencio.", "El dedo se levanta en el tiempo, no antes ni después."], fr: ["Compte 1-2-3-4 à voix haute et ne t'arrête pas de compter pendant le silence.", "Le doigt se lève sur le temps, ni avant, ni après."] },
@@ -1163,10 +1167,10 @@ const NIVELES = [
             ],
             { es: "Cada mano hace algo distinto sin arrastrar a la otra, y dentro de cada mano unos dedos tocan mientras los demás se quedan quietos.", fr: "Chaque main fait quelque chose de différent sans entraîner l'autre, et dans chaque main certains doigts jouent pendant que les autres restent en place." },
             { es: ["Empieza por una mano tenida y la otra en notas sueltas.", "Muy despacio: la independencia se pierde en cuanto aceleras."], fr: ["Commence par une main tenue et l'autre en notes détachées.", "Très lentement : l'indépendance se perd dès que tu accélères."] }),
-          lectura("p1c5-lectura", "fa", "inicial1",
-            { es: "Afianzar la clave de fa", fr: "Consolider la clé de fa" },
-            { es: "De fa a do central otra vez: es la posición en la que se cruzan las dos manos en el movimiento contrario.", fr: "Du fa au do central à nouveau : c'est la position où les deux mains se croisent dans le mouvement contraire." },
-            { es: ["Compara el tiempo con el del curso 1.", "Alterna las dos claves en cada sesión de estudio."], fr: ["Compare le temps avec celui du cours 1.", "Alterne les deux clés à chaque session de travail."] }),
+          lectura("p1c5-lectura", dosClaves("inicial2", "afianzar"),
+            { es: "Repaso: las notas ampliadas", fr: "Révision : les notes élargies" },
+            { es: "De sol a do agudo y de do a sol grave, las que entraron en el curso 2.", fr: "De sol à do aigu et de do à sol grave, celles qui sont entrées au cours 2." },
+            { es: ["Si una clave va muy por detrás de la otra, dedícale dos sesiones seguidas."], fr: ["Si une clé est nettement en retard sur l'autre, consacre-lui deux sessions d'affilée."] }),
         ],
       },
       {
@@ -1200,10 +1204,10 @@ const NIVELES = [
             [repertorio({ es: "Bagpipe (anónimo, s. XVII), pág. 4, y Old German Dance (Praetorius), pág. 5", fr: "Bagpipe (anonyme, XVIIe s.), p. 4, et Old German Dance (Praetorius), p. 5" })],
             { es: "La primera pieza de repertorio de verdad: dos danzas antiguas, cortas y en posición fija.", fr: "La première vraie pièce de répertoire : deux danses anciennes, courtes et en position fixe." },
             { es: ["Elige una de las dos y trabájala hasta el final del nivel.", "Antes de tocar, mira la armadura y el compás."], fr: ["Choisis l'une des deux et travaille-la jusqu'à la fin du niveau.", "Avant de jouer, regarde l'armure et la mesure."] }),
-          lectura("p1c6-lectura", "sol", "inicial2",
-            { es: "Lectura mezclando las dos claves", fr: "Lecture en mêlant les deux clés" },
-            { es: "Una sesión de cada clave, seguidas.", fr: "Une session de chaque clé, à la suite." },
-            { es: ["Compara las estrellas de las dos: dónde flojeas."], fr: ["Compare les étoiles des deux : où tu faiblis."] }),
+          lectura("p1c6-lectura", dosClaves("intermedio", "afianzar"),
+            { es: "Repaso: el registro extremo", fr: "Révision : le registre extrême" },
+            { es: "Lo más agudo y lo más grave, que es lo que menos se practica.", fr: "Le plus aigu et le plus grave, c'est-à-dire ce qui se travaille le moins." },
+            { es: ["Cuenta las líneas adicionales en voz alta antes de responder."], fr: ["Compte les lignes supplémentaires à voix haute avant de répondre."] }),
         ],
       },
       {
@@ -1239,10 +1243,10 @@ const NIVELES = [
             [repertorio({ es: "Two Marches (Türk), pág. 6, y March in F (Türk), pág. 7", fr: "Two Marches (Türk), p. 6, et March in F (Türk), p. 7" })],
             { es: "Dos marchas clásicas: pulso firme, frases de cuatro compases y manos que ya no van al unísono.", fr: "Deux marches classiques : pulsation ferme, phrases de quatre mesures et mains qui ne vont plus à l'unisson." },
             { es: ["Marca el pulso con el pie antes de tocar.", "Respeta las ligaduras: son las frases de la pieza."], fr: ["Marque la pulsation du pied avant de jouer.", "Respecte les liaisons : ce sont les phrases de la pièce."] }),
-          lectura("p1c7-lectura", "fa", "inicial2",
-            { es: "Repaso de lectura", fr: "Révision de lecture" },
-            { es: "Una sesión completa de cada clave para ver dónde está.", fr: "Une session complète de chaque clé pour voir où il en est." },
-            { es: ["Apunta precisión y tiempo: sirven para medir los cursos 8 y 9."], fr: ["Note la précision et le temps : ils servent à mesurer les cours 8 et 9."] }),
+          lectura("p1c7-lectura", dosClaves("inicial1", "afianzar"),
+            { es: "A velocidad: las primeras notas", fr: "En vitesse : les premières notes" },
+            { es: "Las cinco notas de cada mano otra vez, pero ya sin pensar.", fr: "Les cinq notes de chaque main à nouveau, mais sans plus y réfléchir." },
+            { es: ["Estas notas tienen que salir de memoria: son las de todas las piezas que tocas."], fr: ["Ces notes doivent venir de mémoire : ce sont celles de toutes les pièces que tu joues."] }),
         ],
       },
       {
@@ -1276,10 +1280,10 @@ const NIVELES = [
             [repertorio({ es: "March in G (Türk), pág. 7, y Minuet (Reinagle), pág. 8", fr: "March in G (Türk), p. 7, et Minuet (Reinagle), p. 8" })],
             { es: "Un minueto clásico en 3/4: el mismo compás del curso 6, ahora dentro de una pieza.", fr: "Un menuet classique à 3/4 : la mesure vue au cours 6, cette fois dans une pièce." },
             { es: ["Cuenta 1-2-3 en voz alta durante las primeras lecturas.", "Apoya el primer tiempo de cada compás."], fr: ["Compte 1-2-3 à voix haute lors des premières lectures.", "Appuie le premier temps de chaque mesure."] }),
-          lectura("p1c8-lectura", "sol", "intermedio",
-            { es: "Leer de do agudo a sol agudo", fr: "Lire du do aigu au sol aigu" },
-            { es: "La octava de arriba, que es donde acaba de llegar con la escala.", fr: "L'octave du dessus, où il vient d'arriver avec la gamme." },
-            { es: ["Si vas justo, quédate en Inicial 2 una semana más."], fr: ["Si c'est juste, reste à Débutant 2 une semaine de plus."] }),
+          lectura("p1c8-lectura", dosClaves("inicial2", "afianzar"),
+            { es: "A velocidad: las notas ampliadas", fr: "En vitesse : les notes élargies" },
+            { es: "El registro que acaba de recorrer la escala, ahora leído.", fr: "Le registre que la gamme vient de parcourir, cette fois en lecture." },
+            { es: ["Apunta precisión y tiempo: sirven para medir el curso 9."], fr: ["Note la précision et le temps : ils serviront à mesurer le cours 9."] }),
         ],
       },
       {
@@ -1313,10 +1317,10 @@ const NIVELES = [
             [repertorio({ es: "Promenade (Reinagle), pág. 9, y Sonatina, I. Allegro moderato (Wilton), pág. 10", fr: "Promenade (Reinagle), p. 9, et Sonatine, I. Allegro moderato (Wilton), p. 10" })],
             { es: "La pieza que cierra el nivel: un primer movimiento de sonatina, con las dos manos independientes y acordes en la izquierda.", fr: "La pièce qui clôt le niveau : un premier mouvement de sonatine, avec les deux mains indépendantes et des accords à la main gauche." },
             { es: ["Trabájala por frases, no de principio a fin.", "Es la pieza que tocarás para dar el nivel por terminado."], fr: ["Travaille-la par phrases, pas du début à la fin.", "C'est la pièce que tu joueras pour valider la fin du niveau."] }),
-          lectura("p1c9-lectura", "fa", "intermedio",
-            { es: "Evaluación: las dos claves ampliadas", fr: "Évaluation : les deux clés élargies" },
-            { es: "Una sesión de cada clave, en el nivel más alto que aguantes.", fr: "Une session de chaque clé, au niveau le plus haut que tu tiennes." },
-            { es: ["Compara con los tiempos del curso 1: ahí se ve el camino hecho."], fr: ["Compare avec les temps du cours 1 : c'est là qu'on voit le chemin parcouru."] }),
+          lectura("p1c9-lectura", [...dosClaves("inicial1", "afianzar"), ...dosClaves("inicial2", "afianzar"), ...dosClaves("intermedio", "afianzar")],
+            { es: "Evaluación: las dos claves al completo", fr: "Évaluation : les deux clés au complet" },
+            { es: "Las seis sesiones del nivel, una detrás de otra: es la foto de dónde estás.", fr: "Les six sessions du niveau, l'une après l'autre : c'est la photo de là où tu en es." },
+            { es: ["Compara con los tiempos del curso 1: ahí se ve el camino hecho.", "Si las seis salen sueltas, estás listo para Principiante 2."], fr: ["Compare avec les temps du cours 1 : c'est là qu'on voit le chemin parcouru.", "Si les six sont fluides, tu es prêt pour le Débutant 2."] }),
         ],
       },
     ],

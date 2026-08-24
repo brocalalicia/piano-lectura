@@ -449,6 +449,42 @@ body {
   color: var(--color-primario);
 }
 
+.lectura-sesion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 18px;
+  border: 2px solid var(--color-boton-borde);
+  border-radius: var(--radio);
+  background: var(--color-boton);
+  box-shadow: 0 3px 0 var(--color-boton-sombra);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.lectura-sesion:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--color-boton-sombra);
+}
+
+.lectura-papel {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--color-texto-tenue);
+}
+
+.lectura-papel-nuevas {
+  background: var(--color-primario);
+}
+
 #ejercicio-titulo {
   margin: 0;
   font-size: 1.5rem;

@@ -111,6 +111,7 @@ const TRADUCCIONES = {
     },
     irALectura: "Practicar en Lectura",
     lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
+    lecturaPapel: { nuevas: "Notas nuevas", afianzar: "Afianzar" },
     comoTrabajarlo: "Cómo trabajarlo",
     portadaTitulo: "Ejercicios de lectura",
     portadaObjetivo:
@@ -221,6 +222,7 @@ const TRADUCCIONES = {
     },
     irALectura: "Passer à la lecture",
     lecturaEn: (clave, nivel) => `${clave} · ${nivel}`,
+    lecturaPapel: { nuevas: "Notes nouvelles", afianzar: "Consolider" },
     comoTrabajarlo: "Comment le travailler",
     portadaTitulo: "Exercices de lecture",
     portadaObjetivo:
@@ -1876,25 +1878,35 @@ function pintarEjercicio(ejercicio, conTitulo, numero) {
       texto.appendChild(lista);
     }
   } else if (partitura.tipo === "lectura") {
+    // Un curso manda a varias sesiones de lectura: las dos claves van siempre
+    // al mismo nivel, y cada fila dice si trae notas nuevas o si es repaso.
     const destinoCaja = caja("ficha-lectura");
-    const clave = CLAVES.find((c) => c.id === partitura.clave);
-    const nivel = clave.niveles.find((n) => n.id === partitura.nivel);
 
-    const destino = document.createElement("span");
-    destino.className = "referencia-donde";
-    destino.textContent = t().lecturaEn(t().claves[clave.id], t().niveles[nivel.id]);
-    destinoCaja.appendChild(destino);
+    partitura.sesiones.forEach((sesion) => {
+      const clave = CLAVES.find((c) => c.id === sesion.clave);
+      const nivel = clave.niveles.find((n) => n.id === sesion.nivel);
 
-    const boton = document.createElement("button");
-    boton.className = "boton-control";
-    boton.textContent = t().irALectura;
-    boton.addEventListener("click", () => {
-      vibrar(15);
-      origenLectura = cursoPractica;
-      seleccionarClave(clave);
-      seleccionarNivel(nivel);
+      const fila = document.createElement("button");
+      fila.className = "lectura-sesion";
+
+      const papel = document.createElement("span");
+      papel.className = `lectura-papel lectura-papel-${sesion.papel}`;
+      papel.textContent = t().lecturaPapel[sesion.papel];
+      fila.appendChild(papel);
+
+      const destino = document.createElement("span");
+      destino.className = "referencia-donde";
+      destino.textContent = t().lecturaEn(t().claves[clave.id], t().niveles[nivel.id]);
+      fila.appendChild(destino);
+
+      fila.addEventListener("click", () => {
+        vibrar(15);
+        origenLectura = cursoPractica;
+        seleccionarClave(clave);
+        seleccionarNivel(nivel);
+      });
+      destinoCaja.appendChild(fila);
     });
-    destinoCaja.appendChild(boton);
   } else if (partitura.tipo === "referencia") {
     const refCaja = caja("ficha-referencia");
     const etiqueta = document.createElement("span");

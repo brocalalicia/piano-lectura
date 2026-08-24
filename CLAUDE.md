@@ -135,14 +135,15 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   título: cursos 1 y 2 **manos separadas**, curso 3 **manos juntas al unísono**,
   y del curso 4 en adelante **manos independientes** (alternadas en el 4, dedos
   libres en el 5) y después por contenido (acordes, legato/staccato, escalas).
-- **La lectura va en dos carriles, uno por clave**, y las dos empiezan en el
-  curso 1. La regla es que **el bloque de lectura cubra las notas que toca la
-  técnica de ese mismo curso**, no menos: si un ejercicio baja o sube a un
-  registro nuevo, la lectura de ese registro entra en ese curso o antes.
-  El reparto: sol inicial 1 (c1) → fa inicial 1 (c1) → fa inicial 2 (c2) →
-  sol inicial 2 (c3) → repasos alternando clave (c4 sol 1, c5 fa 1, c6 sol 2,
-  c7 fa 2) → sol intermedio (c8) → fa intermedio (c9). Del curso 6 en adelante
-  la lectura ya va por delante de la técnica, que es lo que se busca.
+- **Las dos claves van siempre juntas y al mismo nivel**: nunca se avanza una
+  y se deja la otra atrás. Un curso puede llevar varias sesiones de lectura, y
+  cada una dice si trae **notas nuevas** o si es para **afianzar** lo anterior,
+  con `dosClaves(nivel, papel)`. La otra regla es que el bloque de lectura
+  cubra las notas que toca la técnica de ese mismo curso, no menos.
+  El reparto de Principiante 1: inicial 1 nuevas (c1) → inicial 1 afianzar +
+  inicial 2 nuevas (c2) → inicial 2 afianzar + intermedio nuevas (c3) → y de
+  ahí dos vueltas de repaso, inicial 1 / inicial 2 / intermedio en los cursos
+  4-6 y 7-9, con el 9 haciendo las seis sesiones como evaluación.
 - **A partir del curso 6 cada clase lleva un bloque de repertorio**, sacado de
   *Essential Piano Repertoire, Preparatory Level* (Keith Snell), en el orden
   progresivo del propio libro.
