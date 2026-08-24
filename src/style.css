@@ -371,12 +371,6 @@ body {
   color: var(--color-texto);
 }
 
-.ejercicio-objetivo {
-  font-size: 0.88rem;
-  color: var(--color-texto-tenue);
-  line-height: 1.35;
-}
-
 /* Ficha de un ejercicio que remite a un metodo con derechos: no hay partitura,
    se dice de que libro es y en que pagina. */
 #ejercicio-referencia {
@@ -490,14 +484,6 @@ body {
   font-size: 1.5rem;
   font-weight: 800;
   text-align: center;
-}
-
-#ejercicio-objetivo {
-  margin: 0;
-  max-width: 480px;
-  text-align: center;
-  color: var(--color-texto-cuerpo);
-  line-height: 1.45;
 }
 
 #ejercicio-contenido {

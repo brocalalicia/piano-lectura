@@ -1730,14 +1730,13 @@ function renderizarPracticaLista() {
         filas.push({
           grupo: tecnica,
           titulo: { es: t().tecnicaTitulo, fr: t().tecnicaTitulo },
-          objetivo: tecnica.map((e) => txt(e.titulo)).join(" · "),
           tipo: "dibujada",
         });
         tecnicaPuesta = true;
       }
       return;
     }
-    filas.push({ grupo: [ejercicio], titulo: ejercicio.titulo, objetivo: txt(ejercicio.objetivo), tipo: ejercicio.partitura.tipo });
+    filas.push({ grupo: [ejercicio], titulo: ejercicio.titulo, tipo: ejercicio.partitura.tipo });
   });
 
   filas.forEach((fila, indice) => {
@@ -1767,12 +1766,6 @@ function renderizarPracticaLista() {
     cabecera.appendChild(clase);
 
     texto.appendChild(cabecera);
-
-    const objetivo = document.createElement("span");
-    objetivo.className = "ejercicio-objetivo";
-    objetivo.textContent = fila.objetivo;
-    texto.appendChild(objetivo);
-
     boton.appendChild(texto);
 
     boton.addEventListener("click", () => {

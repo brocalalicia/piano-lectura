@@ -94,6 +94,9 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   la explica, no al final de toda la teoría. Un curso empieza por teoría y
   acaba en el piano, nunca al revés.
 - Cada bloque lleva su etiqueta visible: Teoría, Lectura, Técnica o Método.
+- **En la lista de un curso, cada lección es sólo su título y su etiqueta.**
+  Nada de líneas de resumen debajo. El `objetivo` sigue en el catálogo para
+  saber de qué va cada bloque, pero no se pinta.
 - **Los bloques de Método no llevan indicaciones propias.** Su «Cómo trabajarlo»
   es siempre `COMO_TRABAJAR`, el método de la profesora, igual en todos los
   cursos: se monta a manos separadas y se juntan después, y cada nota se
