@@ -655,6 +655,75 @@ const PREPARACION_PULGAR = aDosManos(
   }
 );
 
+// Curso 1: el mismo recorrido de Cinco dedos en redondas pero al reves, que
+// obliga a leer de arriba abajo y a invertir la digitacion.
+const BAJAR_REDONDAS_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "g/4", d: "5", f: "w" }, { barra: true },
+        { n: "f/4", d: "4", f: "w" }, { barra: true },
+        { n: "e/4", d: "3", f: "w" }, { barra: true },
+        { n: "d/4", d: "2", f: "w" }, { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const BAJAR_REDONDAS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/4", d: "1", f: "w" }, { barra: true },
+        { n: "b/3", d: "2", f: "w" }, { barra: true },
+        { n: "a/3", d: "3", f: "w" }, { barra: true },
+        { n: "g/3", d: "4", f: "w" }, { barra: true },
+        { n: "f/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+// Curso 1: las dos manos salen del do central con el pulgar y se alejan de el.
+// Es la misma tecla escrita en las dos claves, que es lo que explica la teoria
+// de esta clase.
+const PULGARES_DO_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "w" }, { barra: true },
+        { n: "d/4", d: "2", f: "w" }, { barra: true },
+        { n: "e/4", d: "3", f: "w" }, { barra: true },
+        { n: "d/4", d: "2", f: "w" }, { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const PULGARES_DO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/4", d: "1", f: "w" }, { barra: true },
+        { n: "b/3", d: "2", f: "w" }, { barra: true },
+        { n: "a/3", d: "3", f: "w" }, { barra: true },
+        { n: "b/3", d: "2", f: "w" }, { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
 // Curso 2: las tres figuras en el mismo ejercicio, en la posicion de do
 // central, para que la variedad este en el ritmo y no en las notas.
 const MEZCLA_FIGURAS_MD = {
@@ -807,6 +876,8 @@ const JUNTAS_DOS_CUARTOS_MI = {
 
 // --- Las de una mano, ya unificadas --------------------------------------
 const CINCO_DEDOS_REDONDAS = aDosManos(CINCO_DEDOS_REDONDAS_MD, CINCO_DEDOS_REDONDAS_MI);
+const BAJAR_REDONDAS = aDosManos(BAJAR_REDONDAS_MD, BAJAR_REDONDAS_MI);
+const PULGARES_DO = aDosManos(PULGARES_DO_MD, PULGARES_DO_MI);
 const CINCO_DEDOS_NEGRAS = aDosManos(CINCO_DEDOS_DERECHA, CINCO_DEDOS_IZQUIERDA);
 const NOTAS_REPETIDAS_DOS = aDosManos(NOTAS_REPETIDAS, NOTAS_REPETIDAS_MI);
 const MEZCLA_FIGURAS = aDosManos(MEZCLA_FIGURAS_MD, MEZCLA_FIGURAS_MI);
@@ -1114,6 +1185,14 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             { es: "Una nota por compás: tiempo de sobra para colocar el dedo y escuchar.", fr: "Une note par mesure : tout le temps de placer le doigt et d'écouter le son." },
             { es: ["Primero la mano derecha, después la izquierda. Todavía no a la vez.", "Cuenta cuatro en cada nota, en voz alta, y dedos curvos.", "Las dos manos se juntan en el do central: la derecha lo empieza con el pulgar y la izquierda lo acaba con el pulgar."], fr: ["D'abord la main droite, ensuite la gauche. Pas encore ensemble.", "Compte quatre sur chaque note, à voix haute, et garde les doigts arrondis.", "Les deux mains se rejoignent sur le do central : la droite le commence du pouce, la gauche le termine du pouce."] },
             CINCO_DEDOS_REDONDAS),
+          ejercicio("p1c1-bajar", { es: "Bajar de sol a do", fr: "Descendre du sol au do" },
+            { es: "El mismo camino al revés: la lectura va de arriba abajo y los dedos, del 5 al 1.", fr: "Le même chemin à l'envers : la lecture va de haut en bas et les doigts, du 5 au 1." },
+            { es: ["Bajar cuesta más que subir: ve más despacio de lo que crees.", "En la izquierda es al contrario, del 1 al 5, y empieza en el do central."], fr: ["Descendre est plus difficile que monter : va plus lentement que tu ne le crois.", "À la main gauche c'est l'inverse, du 1 au 5, et cela commence sur le do central."] },
+            BAJAR_REDONDAS),
+          ejercicio("p1c1-pulgares", { es: "Los dos pulgares en el do central", fr: "Les deux pouces sur le do central" },
+            { es: "Las dos manos salen de la misma tecla y se alejan de ella con el mismo dedo.", fr: "Les deux mains partent de la même touche et s'en éloignent avec le même doigt." },
+            { es: ["Es la misma tecla en los dos pentagramas: en clave de sol cuelga por debajo y en clave de fa asoma por encima.", "Toca la derecha y después la izquierda, y fíjate en que el mismo número cae en teclas distintas."], fr: ["C'est la même touche sur les deux portées : en clé de sol elle pend sous la portée, en clé de fa elle dépasse au-dessus.", "Joue la droite puis la gauche, et remarque que le même chiffre tombe sur des touches différentes."] },
+            PULGARES_DO),
           referencia("p1c1-ref", { es: "Práctica a manos separadas", fr: "Travail en mains séparées" },
             [
               pouillard({ es: "Presentación págs. 4-6 y cap. I pág. 8", fr: "Présentation p. 4-6 et chap. I p. 8" }),
