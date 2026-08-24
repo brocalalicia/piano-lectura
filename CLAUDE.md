@@ -146,8 +146,14 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   de lo más reciente a lo más antiguo. El reparto de Principiante 1: inicial 1
   nuevas (c1) → inicial 1 afianzar + inicial 2 nuevas (c2) → inicial 2 afianzar
   + intermedio nuevas (c3) → intermedio, precisión (c4) y velocidad (c5) →
-  inicial 2 (c6) → inicial 1 (c7) → inicial 2 e intermedio juntos (c8) → las
-  seis sesiones como evaluación (c9).
+  inicial 2 (c6) → las líneas del centro, nuevas (c7) → esas más inicial 1 (c8)
+  → las ocho sesiones como evaluación (c9).
+- **Ojo con los nombres de los niveles avanzados: no son simétricos.** En clave
+  de sol, Avanzado 1 es el extremo agudo y Avanzado 2 baja al do central; en
+  clave de fa es al revés, Avanzado 1 sube al do central y Avanzado 2 es el
+  extremo grave. Por eso el par que cruza el centro se escribe con
+  `lineasDelCentro()` y no con `dosClaves()`. Los dos extremos de verdad (sol
+  Avanzado 1 y fa Avanzado 2) no entran en Principiante 1.
 - **A partir del curso 6 cada clase lleva un bloque de repertorio**, sacado de
   *Essential Piano Repertoire, Preparatory Level* (Keith Snell), en el orden
   progresivo del propio libro.
