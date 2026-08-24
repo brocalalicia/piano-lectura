@@ -881,10 +881,6 @@ const JUNTAS_DOS_CUARTOS_MI = {
 };
 
 // --- Las de una mano, ya unificadas --------------------------------------
-const CINCO_DEDOS_NEGRAS = aDosManos(CINCO_DEDOS_DERECHA, CINCO_DEDOS_IZQUIERDA);
-const NOTAS_REPETIDAS_DOS = aDosManos(NOTAS_REPETIDAS, NOTAS_REPETIDAS_MI);
-const MEZCLA_FIGURAS = aDosManos(MEZCLA_FIGURAS_MD, MEZCLA_FIGURAS_MI);
-const DESDE_EL_MENIQUE = aDosManos(DESDE_EL_MENIQUE_MD, DESDE_EL_MENIQUE_MI);
 const JUNTAS_TRES_CUARTOS = aDosManos(JUNTAS_TRES_CUARTOS_MD, JUNTAS_TRES_CUARTOS_MI);
 const JUNTAS_DOS_CUARTOS = aDosManos(JUNTAS_DOS_CUARTOS_MD, JUNTAS_DOS_CUARTOS_MI);
 const TERCERAS = aDosManos(TERCERAS_MD, TERCERAS_MI);
@@ -1254,22 +1250,38 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             { es: "Ampliar en las dos claves", fr: "Élargir dans les deux clés" },
             { es: "De sol a do agudo por arriba y de do a sol grave por abajo: las notas que rodean la posición de cinco dedos.", fr: "De sol à do aigu vers le haut et de do à sol grave vers le bas : les notes qui entourent la position de cinq doigts." },
             { es: ["Empieza afianzando Inicial 1 en las dos claves y sigue con Inicial 2.", "En clave de fa, ojo con el do: en el curso 1 estaba arriba, en su línea adicional, y aquí está en el segundo espacio."], fr: ["Commence par consolider le Débutant 1 dans les deux clés, puis passe au Débutant 2.", "En clé de fa, attention au do : au cours 1 il était en haut, sur sa ligne supplémentaire, et ici il est au deuxième interligne."] }),
-          ejercicio("p1c2-negras", { es: "Cinco dedos en negras", fr: "Cinq doigts en noires" },
+          ejercicio("p1c2-negras", { es: "Cinco dedos en negras, mano derecha", fr: "Cinq doigts en noires, main droite" },
             { es: "Subir y bajar sin parar entre nota y nota.", fr: "Monter et descendre sans s'arrêter entre les notes." },
-            { es: ["Metrónomo a 60, una negra por clic.", "Una mano y después la otra, a la misma velocidad las dos."], fr: ["Métronome à 60, une noire par clic.", "Une main puis l'autre, à la même vitesse toutes les deux."] },
-            CINCO_DEDOS_NEGRAS),
-          ejercicio("p1c2-mezcla", { es: "Mezclar las tres figuras", fr: "Mêler les trois figures" },
+            { es: ["Metrónomo a 60, una negra por clic.", "Los cinco dedos igual de fuertes: el 4 y el 5 tienden a quedarse cortos."], fr: ["Métronome à 60, une noire par clic.", "Les cinq doigts aussi forts les uns que les autres : le 4 et le 5 ont tendance à rester faibles."] },
+            unaMano(CINCO_DEDOS_DERECHA)),
+          ejercicio("p1c2-negras-mi", { es: "Cinco dedos en negras, mano izquierda", fr: "Cinq doigts en noires, main gauche" },
+            { es: "Lo mismo con la izquierda, en la posición de do grave.", fr: "La même chose à la main gauche, en position de do grave." },
+            { es: ["El mismo tempo que la derecha: si no llega, baja el metrónomo para las dos.", "Aquí el meñique empieza en el do, una octava por debajo del do central."], fr: ["Le même tempo qu'à la main droite : si elle ne suit pas, baisse le métronome pour les deux.", "Ici l'auriculaire part du do, une octave sous le do central."] },
+            unaMano(CINCO_DEDOS_IZQUIERDA)),
+          ejercicio("p1c2-mezcla", { es: "Mezclar las tres figuras, mano derecha", fr: "Mêler les trois figures, main droite" },
             { es: "Redonda, blanca y negra en el mismo ejercicio: hay que contar de verdad.", fr: "Ronde, blanche et noire dans le même exercice : il faut compter pour de bon." },
             { es: ["Cuenta 1-2-3-4 en voz alta de principio a fin, sin parar entre compases.", "La blanca dura dos: no la sueltes cuando entra la siguiente."], fr: ["Compte 1-2-3-4 à voix haute du début à la fin, sans t'arrêter entre les mesures.", "La blanche dure deux temps : ne la lâche pas quand la suivante arrive."] },
-            MEZCLA_FIGURAS),
-          ejercicio("p1c2-menique", { es: "Empezar por el meñique", fr: "Commencer par l'auriculaire" },
+            unaMano(MEZCLA_FIGURAS_MD)),
+          ejercicio("p1c2-mezcla-mi", { es: "Mezclar las tres figuras, mano izquierda", fr: "Mêler les trois figures, main gauche" },
+            { es: "El mismo ritmo con la izquierda, en la posición de do central.", fr: "Le même rythme à la main gauche, en position de do central." },
+            { es: ["Cuenta en voz alta igual que con la derecha, sin mirar el teclado.", "Aquí el pulgar es el que llega arriba, al do central."], fr: ["Compte à voix haute comme à la main droite, sans regarder le clavier.", "Ici c'est le pouce qui arrive en haut, sur le do central."] },
+            unaMano(MEZCLA_FIGURAS_MI)),
+          ejercicio("p1c2-menique", { es: "Empezar por el meñique, mano derecha", fr: "Commencer par l'auriculaire, main droite" },
             { es: "Arrancar por el dedo más débil en vez de por el pulgar.", fr: "Démarrer par le doigt le plus faible au lieu du pouce." },
-            { es: ["El meñique tiende a hundirse: vigila que la nota suene igual de fuerte que las demás.", "Las dos manos empiezan por su 5: la derecha en el sol, la izquierda en el fa."], fr: ["L'auriculaire a tendance à s'affaisser : veille à ce que sa note sonne aussi fort que les autres.", "Les deux mains démarrent par leur 5 : la droite sur le sol, la gauche sur le fa."] },
-            DESDE_EL_MENIQUE),
-          ejercicio("p1c2-repetidas", { es: "Notas repetidas", fr: "Notes répétées" },
+            { es: ["El meñique tiende a hundirse: vigila que su nota suene igual de fuerte que las demás.", "Empieza en el sol, baja hasta el do central y vuelve."], fr: ["L'auriculaire a tendance à s'affaisser : veille à ce que sa note sonne aussi fort que les autres.", "Pars du sol, descends jusqu'au do central et remonte."] },
+            unaMano(DESDE_EL_MENIQUE_MD)),
+          ejercicio("p1c2-menique-mi", { es: "Empezar por el meñique, mano izquierda", fr: "Commencer par l'auriculaire, main gauche" },
+            { es: "La izquierda también arranca por su 5, que aquí está en el fa.", fr: "La main gauche démarre elle aussi par son 5, qui se trouve ici sur le fa." },
+            { es: ["Empieza en el fa, sube hasta el do central y vuelve.", "El mismo cuidado con el meñique que en la derecha."], fr: ["Pars du fa, monte jusqu'au do central et redescends.", "Le même soin pour l'auriculaire qu'à la main droite."] },
+            unaMano(DESDE_EL_MENIQUE_MI)),
+          ejercicio("p1c2-repetidas", { es: "Notas repetidas, mano derecha", fr: "Notes répétées, main droite" },
             { es: "Que el sonido salga del dedo y no del brazo.", fr: "Que le son vienne du doigt et non du bras." },
             { es: ["El brazo se queda quieto; sólo se mueve el dedo.", "Las dos notas iguales tienen que sonar iguales."], fr: ["Le bras reste immobile ; seul le doigt bouge.", "Les deux notes identiques doivent sonner de la même façon."] },
-            NOTAS_REPETIDAS_DOS),
+            unaMano(NOTAS_REPETIDAS)),
+          ejercicio("p1c2-repetidas-mi", { es: "Notas repetidas, mano izquierda", fr: "Notes répétées, main gauche" },
+            { es: "Lo mismo con la izquierda, donde cuesta más igualar las dos notas.", fr: "La même chose à la main gauche, où il est plus difficile d'égaliser les deux notes." },
+            { es: ["El brazo se queda quieto; sólo se mueve el dedo.", "Escucha las dos notas: con la izquierda la segunda suele salir más floja."], fr: ["Le bras reste immobile ; seul le doigt bouge.", "Écoute les deux notes : à la main gauche, la seconde sort souvent plus faible."] },
+            unaMano(NOTAS_REPETIDAS_MI)),
           referencia("p1c2-ref", { es: "Primeras melodías a manos separadas", fr: "Premières mélodies en mains séparées" },
             [
               pouillard({ es: "cap. I págs. 11-14", fr: "chap. I p. 11-14" }),
