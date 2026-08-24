@@ -122,6 +122,13 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   el 4; la corchea en el 5, cuando las manos ya van juntas y tiene sentido
   partir el tiempo; y la semicorchea en el 7, antes del repertorio, sólo para
   reconocerla. Nada de corcheas antes del curso 5.
+- **Compases, orden de aparición**: 4/4 desde el principio, y el 3/4 y el 2/4
+  en el curso 3, en la misma clase en que se explica qué son los dos números.
+  Un compás nuevo entra con ejercicios que lo usen, no sólo con la teoría.
+- **Dos ejercicios no pueden llevar las mismas notas.** Dentro de una posición
+  de cinco dedos la variedad sale del ritmo, de la dirección (empezar por el
+  pulgar o por el meñique), del compás y de la posición de la mano, no de
+  inventar notas que todavía no se leen.
 - **El programa Principiante está pensado para adultos**: el texto le habla al
   alumno de tú, no al profesor sobre un niño.
 - Un bloque `referencia` cita **varios métodos a la vez**, porque en clase se

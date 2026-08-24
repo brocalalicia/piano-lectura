@@ -61,32 +61,6 @@ const NOTAS_REPETIDAS = {
   ],
 };
 
-const MANOS_JUNTAS = {
-  tipo: "dibujada",
-  compas: "4/4",
-  sistemas: [
-    {
-      clef: "treble",
-      notas: [
-        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
-        { barra: true },
-        { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3" }, { n: "d/4", d: "2" },
-        { barra: true },
-        { n: "c/4", d: "1", f: "w" },
-      ],
-    },
-    {
-      clef: "bass",
-      notas: [
-        { n: "c/3", d: "5" }, { n: "d/3", d: "4" }, { n: "e/3", d: "3" }, { n: "f/3", d: "2" },
-        { barra: true },
-        { n: "g/3", d: "1" }, { n: "f/3", d: "2" }, { n: "e/3", d: "3" }, { n: "d/3", d: "4" },
-        { barra: true },
-        { n: "c/3", d: "5", f: "w" },
-      ],
-    },
-  ],
-};
 
 // Los dos pulgares sobre el do central: las manos se separan y se juntan.
 const MOVIMIENTO_CONTRARIO = {
@@ -681,10 +655,164 @@ const PREPARACION_PULGAR = aDosManos(
   }
 );
 
+// Curso 2: las tres figuras en el mismo ejercicio, en la posicion de do
+// central, para que la variedad este en el ritmo y no en las notas.
+const MEZCLA_FIGURAS_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "h" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" },
+        { barra: true },
+        { n: "f/4", d: "4", f: "h" }, { n: "g/4", d: "5", f: "h" },
+        { barra: true },
+        { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3", f: "h" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const MEZCLA_FIGURAS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "f/3", d: "5", f: "h" }, { n: "g/3", d: "4" }, { n: "a/3", d: "3" },
+        { barra: true },
+        { n: "b/3", d: "2", f: "h" }, { n: "c/4", d: "1", f: "h" },
+        { barra: true },
+        { n: "c/4", d: "1" }, { n: "b/3", d: "2" }, { n: "a/3", d: "3", f: "h" },
+        { barra: true },
+        { n: "f/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+// Curso 2: las dos manos arrancan por el dedo mas debil, el 5, en vez de por
+// el pulgar como en todo lo anterior.
+const DESDE_EL_MENIQUE_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3" }, { n: "d/4", d: "2" },
+        { barra: true },
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
+        { barra: true },
+        { n: "g/4", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+const DESDE_EL_MENIQUE_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "f/3", d: "5" }, { n: "g/3", d: "4" }, { n: "a/3", d: "3" }, { n: "b/3", d: "2" },
+        { barra: true },
+        { n: "c/4", d: "1" }, { n: "b/3", d: "2" }, { n: "a/3", d: "3" }, { n: "g/3", d: "4" },
+        { barra: true },
+        { n: "f/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+// Curso 3: el unisono en 3/4, tres tiempos por compas.
+const JUNTAS_TRES_CUARTOS_MD = {
+  tipo: "dibujada",
+  compas: "3/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "h" }, { n: "d/4", d: "2" },
+        { barra: true },
+        { n: "e/4", d: "3", f: "h" }, { n: "f/4", d: "4" },
+        { barra: true },
+        { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3" },
+        { barra: true },
+        { n: "d/4", d: "2" }, { n: "c/4", d: "1", f: "h" },
+      ],
+    },
+  ],
+};
+
+const JUNTAS_TRES_CUARTOS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "h" }, { n: "d/3", d: "4" },
+        { barra: true },
+        { n: "e/3", d: "3", f: "h" }, { n: "f/3", d: "2" },
+        { barra: true },
+        { n: "g/3", d: "1" }, { n: "f/3", d: "2" }, { n: "e/3", d: "3" },
+        { barra: true },
+        { n: "d/3", d: "4" }, { n: "c/3", d: "5", f: "h" },
+      ],
+    },
+  ],
+};
+
+// Curso 3: el unisono en 2/4, donde la blanca llena el compas entero.
+const JUNTAS_DOS_CUARTOS_MD = {
+  tipo: "dibujada",
+  compas: "2/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" },
+        { barra: true },
+        { n: "e/4", d: "3", f: "h" },
+        { barra: true },
+        { n: "f/4", d: "4" }, { n: "e/4", d: "3" },
+        { barra: true },
+        { n: "d/4", d: "2", f: "h" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "h" },
+      ],
+    },
+  ],
+};
+
+const JUNTAS_DOS_CUARTOS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5" }, { n: "d/3", d: "4" },
+        { barra: true },
+        { n: "e/3", d: "3", f: "h" },
+        { barra: true },
+        { n: "f/3", d: "2" }, { n: "e/3", d: "3" },
+        { barra: true },
+        { n: "d/3", d: "4", f: "h" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "h" },
+      ],
+    },
+  ],
+};
+
 // --- Las de una mano, ya unificadas --------------------------------------
 const CINCO_DEDOS_REDONDAS = aDosManos(CINCO_DEDOS_REDONDAS_MD, CINCO_DEDOS_REDONDAS_MI);
 const CINCO_DEDOS_NEGRAS = aDosManos(CINCO_DEDOS_DERECHA, CINCO_DEDOS_IZQUIERDA);
 const NOTAS_REPETIDAS_DOS = aDosManos(NOTAS_REPETIDAS, NOTAS_REPETIDAS_MI);
+const MEZCLA_FIGURAS = aDosManos(MEZCLA_FIGURAS_MD, MEZCLA_FIGURAS_MI);
+const DESDE_EL_MENIQUE = aDosManos(DESDE_EL_MENIQUE_MD, DESDE_EL_MENIQUE_MI);
+const JUNTAS_TRES_CUARTOS = aDosManos(JUNTAS_TRES_CUARTOS_MD, JUNTAS_TRES_CUARTOS_MI);
+const JUNTAS_DOS_CUARTOS = aDosManos(JUNTAS_DOS_CUARTOS_MD, JUNTAS_DOS_CUARTOS_MI);
 const TERCERAS = aDosManos(TERCERAS_MD, TERCERAS_MI);
 const BLANCAS_Y_NEGRAS = aDosManos(BLANCAS_Y_NEGRAS_MD, BLANCAS_Y_NEGRAS_MI);
 const TOCAR_Y_CALLAR_DOS = aDosManos(TOCAR_Y_CALLAR, TOCAR_Y_CALLAR_MI);
@@ -1021,6 +1149,14 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             { es: "Subir y bajar sin parar entre nota y nota.", fr: "Monter et descendre sans s'arrêter entre les notes." },
             { es: ["Metrónomo a 60, una negra por clic.", "Una mano y después la otra, a la misma velocidad las dos."], fr: ["Métronome à 60, une noire par clic.", "Une main puis l'autre, à la même vitesse toutes les deux."] },
             CINCO_DEDOS_NEGRAS),
+          ejercicio("p1c2-mezcla", { es: "Mezclar las tres figuras", fr: "Mêler les trois figures" },
+            { es: "Redonda, blanca y negra en el mismo ejercicio: hay que contar de verdad.", fr: "Ronde, blanche et noire dans le même exercice : il faut compter pour de bon." },
+            { es: ["Cuenta 1-2-3-4 en voz alta de principio a fin, sin parar entre compases.", "La blanca dura dos: no la sueltes cuando entra la siguiente."], fr: ["Compte 1-2-3-4 à voix haute du début à la fin, sans t'arrêter entre les mesures.", "La blanche dure deux temps : ne la lâche pas quand la suivante arrive."] },
+            MEZCLA_FIGURAS),
+          ejercicio("p1c2-menique", { es: "Empezar por el meñique", fr: "Commencer par l'auriculaire" },
+            { es: "Arrancar por el dedo más débil en vez de por el pulgar.", fr: "Démarrer par le doigt le plus faible au lieu du pouce." },
+            { es: ["El meñique tiende a hundirse: vigila que la nota suene igual de fuerte que las demás.", "Las dos manos empiezan por su 5: la derecha en el sol, la izquierda en el fa."], fr: ["L'auriculaire a tendance à s'affaisser : veille à ce que sa note sonne aussi fort que les autres.", "Les deux mains démarrent par leur 5 : la droite sur le sol, la gauche sur le fa."] },
+            DESDE_EL_MENIQUE),
           ejercicio("p1c2-repetidas", { es: "Notas repetidas", fr: "Notes répétées" },
             { es: "Que el sonido salga del dedo y no del brazo.", fr: "Que le son vienne du doigt et non du bras." },
             { es: ["El brazo se queda quieto; sólo se mueve el dedo.", "Las dos notas iguales tienen que sonar iguales."], fr: ["Le bras reste immobile ; seul le doigt bouge.", "Les deux notes identiques doivent sonner de la même façon."] },
@@ -1068,14 +1204,22 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               concepto({ es: "Número de arriba", fr: "Chiffre du haut" }, { es: "Cuántos tiempos hay en cada compás: 2, 3 o 4 en los compases que vas a ver ahora.", fr: "Combien de temps compte chaque mesure : 2, 3 ou 4 dans les mesures que tu verras pour l'instant." }),
               concepto({ es: "Número de abajo", fr: "Chiffre du bas" }, { es: "Qué figura vale un tiempo: 2 es la blanca, 4 la negra y 8 la corchea. Es la redonda dividida en esas partes.", fr: "Quelle figure vaut un temps : 2 pour la blanche, 4 pour la noire, 8 pour la croche. C'est la ronde divisée en autant de parts." }),
             ]),
+          teoria("p1c3-compases", { es: "Los compases de 3/4 y 2/4", fr: "Les mesures à 3/4 et 2/4" },
+            { es: "No todos los compases tienen cuatro tiempos. Con el mismo número de abajo, el 4, que sigue diciendo que la negra vale un tiempo, el de arriba cambia la cuenta: en 3/4 se cuenta 1-2-3, como un vals, y en 2/4 se cuenta 1-2, como una marcha. Las notas pueden ser las mismas y la música suena distinta, porque el apoyo del primer tiempo cae en otro sitio.", fr: "Toutes les mesures ne comptent pas quatre temps. Avec le même chiffre du bas, le 4, qui continue d'indiquer que la noire vaut un temps, celui du haut change le compte : à 3/4 on compte 1-2-3, comme une valse, et à 2/4 on compte 1-2, comme une marche. Les notes peuvent être les mêmes et la musique sonne autrement, parce que l'appui du premier temps tombe ailleurs." },
+            { es: ["Da palmas en 3/4 y en 2/4 antes de tocar nada.", "Los dos ejercicios de hoy llevan las mismas notas: lo único que cambia es el compás."], fr: ["Frappe dans les mains à 3/4 puis à 2/4 avant de jouer quoi que ce soit.", "Les deux exercices du jour ont les mêmes notes : seule la mesure change."] },
+            COMPASES_TRES_DOS),
           lectura("p1c3-lectura", [...dosClaves("inicial2", "afianzar"), ...dosClaves("intermedio", "nuevas")],
             { es: "Subir y bajar: el registro completo", fr: "Monter et descendre : tout le registre" },
             { es: "De do agudo a sol agudo por arriba y de fa grave a do por abajo: hasta donde llegan las manos en la posición de sol.", fr: "De do aigu à sol aigu vers le haut et de fa grave à do vers le bas : jusqu'où vont les mains dans la position de sol." },
             { es: ["Afianza Inicial 2 en las dos claves antes de entrar en Intermedio.", "Son las notas de la posición de sol: las lees justo el día que las tocas."], fr: ["Consolide le Débutant 2 dans les deux clés avant d'aborder l'Intermédiaire.", "Ce sont les notes de la position de sol : tu les lis le jour même où tu les joues."] }),
-          ejercicio("p1c3-paralelo", { es: "Manos juntas en paralelo", fr: "Mains ensemble en parallèle" },
-            { es: "Coordinar las dos manos tocando lo mismo a la vez.", fr: "Coordonner les deux mains en jouant la même chose en même temps." },
-            { es: ["Los dedos van cruzados: el 1 con el 5, el 2 con el 4.", "Si una mano se adelanta, vuelve a manos separadas."], fr: ["Les doigts se répondent en miroir : le 1 avec le 5, le 2 avec le 4.", "Si une main prend de l'avance, reviens aux mains séparées."] },
-            MANOS_JUNTAS),
+          ejercicio("p1c3-tresquartos", { es: "Manos juntas en 3/4", fr: "Mains ensemble à 3/4" },
+            { es: "El unísono en compás de tres tiempos, con el apoyo siempre en el primero.", fr: "L'unisson à trois temps, avec l'appui toujours sur le premier." },
+            { es: ["Cuenta 1-2-3 en voz alta y apoya el 1: es lo que hace que suene a vals.", "Los dedos van cruzados: el 1 con el 5, el 2 con el 4."], fr: ["Compte 1-2-3 à voix haute et appuie le 1 : c'est ce qui donne l'allure de valse.", "Les doigts se répondent en miroir : le 1 avec le 5, le 2 avec le 4."] },
+            JUNTAS_TRES_CUARTOS),
+          ejercicio("p1c3-doscuartos", { es: "Manos juntas en 2/4", fr: "Mains ensemble à 2/4" },
+            { es: "Dos tiempos por compás: la blanca llena el compás entero ella sola.", fr: "Deux temps par mesure : la blanche remplit à elle seule toute la mesure." },
+            { es: ["Cuenta 1-2 y marca el 1 con el pie.", "Compáralo con el de 3/4: son las mismas notas y suenan distinto."], fr: ["Compte 1-2 et marque le 1 du pied.", "Compare-le à celui à 3/4 : ce sont les mêmes notes et elles sonnent autrement."] },
+            JUNTAS_DOS_CUARTOS),
           ejercicio("p1c3-blancasnegras", { es: "Manos juntas: blancas y negras", fr: "Mains ensemble : blanches et noires" },
             { es: "Juntar las manos cuando las figuras no son todas iguales.", fr: "Réunir les mains lorsque les figures n'ont pas toutes la même durée." },
             { es: ["Cuenta en voz alta: la blanca dura dos y no se suelta antes.", "Si una mano se adelanta, vuelve a manos separadas y sube el tempo despacio."], fr: ["Compte à voix haute : la blanche dure deux temps et ne se lâche pas avant.", "Si une main prend de l'avance, reviens aux mains séparées et augmente le tempo progressivement."] },
@@ -1197,10 +1341,6 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             { es: "El sostenido sube la nota a la tecla de al lado, hacia la derecha; el bemol la baja hacia la izquierda. Casi siempre son las teclas negras.", fr: "Le dièse élève la note d'un demi-ton, vers la touche voisine de droite ; le bémol l'abaisse d'un demi-ton, vers la gauche. Dans la plupart des cas, il s'agit d'une touche noire." },
             { es: ["Fa sostenido y si bemol son los dos primeros que te vas a encontrar.", "Sólo reconocerlos: tocarlos llega con las escalas."], fr: ["Fa dièse et si bémol sont les deux premières que tu rencontreras.", "Seulement les reconnaître : les jouer viendra avec les gammes."] },
             ALTERACIONES),
-          teoria("p1c6-compases", { es: "Los compases de 3/4 y 2/4", fr: "Les mesures à 3/4 et 2/4" },
-            { es: "El número de abajo dice qué figura vale un tiempo y el de arriba cuántos hay por compás. En 3/4 se cuenta 1-2-3, como un vals.", fr: "Le chiffre du bas indique quelle figure vaut un temps, celui du haut combien de temps compte chaque mesure. À 3/4, on compte 1-2-3, comme une valse." },
-            { es: ["Da palmas en 3/4 y en 2/4 antes de tocarlo."], fr: ["Frappe dans les mains à 3/4 et à 2/4 avant de jouer."] },
-            COMPASES_TRES_DOS),
           referencia("p1c6-ref", { es: "Primeros acordes y alteraciones", fr: "Premiers accords et altérations" },
             [
               pouillard({ es: "cap. III págs. 28-31", fr: "chap. III p. 28-31" }),
@@ -1287,7 +1427,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             { es: ["Los preparatorios antes que la escala entera."], fr: ["Les préparatoires avant la gamme entière."] }),
           referencia("p1c8-rep", { es: "Repertorio", fr: "Répertoire" },
             [repertorio({ es: "March in G (Türk), pág. 7, y Minuet (Reinagle), pág. 8", fr: "March in G (Türk), p. 7, et Minuet (Reinagle), p. 8" })],
-            { es: "Un minueto clásico en 3/4: el mismo compás del curso 6, ahora dentro de una pieza.", fr: "Un menuet classique à 3/4 : la mesure vue au cours 6, cette fois dans une pièce." },
+            { es: "Un minueto clásico en 3/4: el mismo compás del curso 3, ahora dentro de una pieza.", fr: "Un menuet classique à 3/4 : la mesure vue au cours 3, cette fois dans une pièce." },
             { es: ["Cuenta 1-2-3 en voz alta durante las primeras lecturas.", "Apoya el primer tiempo de cada compás."], fr: ["Compte 1-2-3 à voix haute lors des premières lectures.", "Appuie le premier temps de chaque mesure."] }),
           lectura("p1c8-lectura", [...lineasDelCentro("afianzar"), ...dosClaves("inicial1", "afianzar")],
             { es: "Cruzar el centro sin dudar", fr: "Franchir le centre sans hésiter" },
