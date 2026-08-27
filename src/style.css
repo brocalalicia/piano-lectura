@@ -1049,6 +1049,28 @@ body[data-estado="menu-programa"] #menu-programa {
   box-shadow: 0 0 0 var(--color-boton-sombra);
 }
 
+/* Adelante y atras por las lecciones del curso, al pie de la ficha. */
+#ejercicio-navegacion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.ejercicio-paso {
+  flex: 0 0 auto;
+}
+
+.ejercicio-posicion {
+  flex: 1 1 auto;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--color-texto-tenue);
+}
+
 #controles {
   display: flex;
   align-items: center;

@@ -193,6 +193,13 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   añaden niveles de lectura, revisar a dónde apuntan los bloques `lectura`.
 - Si se entra a la lectura desde un curso, el botón de volver regresa **a ese
   curso** desde cualquier pantalla del ejercicio, y lo dice: «← Curso 3».
+- La ficha de una lección lleva al pie **Anterior / posición / Siguiente**. En
+  la primera y la última lección del curso, el botón del extremo salta al curso
+  preparado anterior o siguiente («← Curso 2», «Curso 4 →»), de modo que el
+  nivel entero se recorre en cadena sin volver al menú. En los dos extremos del
+  nivel, ese botón no se pinta. Las filas se calculan al vuelo con
+  `filasDelCurso()`, nunca se guardan: llevan textos traducidos y se quedarían
+  obsoletas al cambiar de idioma.
   Entrando por el menú de Lectura, vuelve a los menús como siempre.
 
 ## Niveles

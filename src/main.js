@@ -92,6 +92,9 @@ const TRADUCCIONES = {
     clases: { teoria: "Teoría", dibujada: "Técnica", referencia: "Método", lectura: "Lectura" },
     conceptosTitulo: "Conceptos",
     tecnicaTitulo: "Ejercicios de piano",
+    ejercicioAnterior: "Anterior",
+    ejercicioSiguiente: "Siguiente",
+    ejercicioPosicion: (n, total) => `${n} de ${total}`,
     compasArriba: "cuántos tiempos hay en cada compás",
     compasAbajo: "qué figura vale un tiempo",
     compasEquivalencia: "El número de abajo, figura por figura:",
@@ -203,6 +206,9 @@ const TRADUCCIONES = {
     clases: { teoria: "Théorie", dibujada: "Technique", referencia: "Méthode", lectura: "Lecture" },
     conceptosTitulo: "Notions",
     tecnicaTitulo: "Exercices au piano",
+    ejercicioAnterior: "Précédent",
+    ejercicioSiguiente: "Suivant",
+    ejercicioPosicion: (n, total) => `${n} sur ${total}`,
     compasArriba: "combien de temps par mesure",
     compasAbajo: "quelle figure vaut un temps",
     compasEquivalencia: "Le chiffre du bas, figure par figure :",
@@ -335,6 +341,7 @@ const practicaEjercicioEl = document.getElementById("practica-ejercicio");
 const ejercicioTituloEl = document.getElementById("ejercicio-titulo");
 const ejercicioClaseEl = document.getElementById("ejercicio-clase");
 const ejercicioContenidoEl = document.getElementById("ejercicio-contenido");
+const ejercicioNavegacionEl = document.getElementById("ejercicio-navegacion");
 const portadaTituloEl = document.getElementById("portada-titulo");
 const portadaObjetivoEl = document.getElementById("portada-objetivo");
 const consisteTituloEl = document.getElementById("portada-consiste-titulo");
@@ -384,6 +391,8 @@ let cursoPractica = null;
 // volver a el desde cualquier pantalla del ejercicio.
 let origenLectura = null;
 let ejercicioPractica = null;
+// Que fila de la lista del curso se esta viendo, para poder ir adelante y atras.
+let filaPractica = 0;
 let cuentaAtrasIntervalId = null;
 
 let aciertos = 0;
@@ -1713,18 +1722,14 @@ function renderizarPracticaCursos() {
   });
 }
 
-function renderizarPracticaLista() {
-  if (!cursoPractica) return;
-
-  practicaListaTituloEl.textContent = `${t().practicaCursoTitulo(cursoPractica.numero)} · ${txt(cursoPractica.titulo)}`;
-  practicaListaEjerciciosEl.innerHTML = "";
-
-  // Los ejercicios de piano van todos juntos en una sola pagina, que es la
-  // rutina tecnica de la clase; el resto de bloques, uno por fila.
-  const tecnica = cursoPractica.ejercicios.filter((e) => e.partitura.tipo === "dibujada");
+// Las lecciones de un curso, tal como se listan: los ejercicios de piano van
+// todos juntos en una sola fila, que es la rutina tecnica de la clase, y el
+// resto de bloques ocupan una fila cada uno.
+function filasDelCurso(curso) {
+  const tecnica = curso.ejercicios.filter((e) => e.partitura.tipo === "dibujada");
   const filas = [];
   let tecnicaPuesta = false;
-  cursoPractica.ejercicios.forEach((ejercicio) => {
+  curso.ejercicios.forEach((ejercicio) => {
     if (ejercicio.partitura.tipo === "dibujada") {
       if (!tecnicaPuesta && tecnica.length > 0) {
         filas.push({
@@ -1738,8 +1743,26 @@ function renderizarPracticaLista() {
     }
     filas.push({ grupo: [ejercicio], titulo: ejercicio.titulo, tipo: ejercicio.partitura.tipo });
   });
+  return filas;
+}
 
-  filas.forEach((fila, indice) => {
+// El curso preparado que hay antes o despues del que se esta viendo, para
+// poder encadenar los cursos sin volver al menu.
+function cursoVecino(paso) {
+  if (!nivelPractica || !cursoPractica) return null;
+  for (let i = cursoPractica.numero - 1 + paso; i >= 0 && i < nivelPractica.cursos.length; i += paso) {
+    if (nivelPractica.cursos[i].ejercicios.length > 0) return { curso: nivelPractica.cursos[i], numero: i + 1 };
+  }
+  return null;
+}
+
+function renderizarPracticaLista() {
+  if (!cursoPractica) return;
+
+  practicaListaTituloEl.textContent = `${t().practicaCursoTitulo(cursoPractica.numero)} · ${txt(cursoPractica.titulo)}`;
+  practicaListaEjerciciosEl.innerHTML = "";
+
+  filasDelCurso(cursoPractica).forEach((fila, indice) => {
     const boton = document.createElement("button");
     boton.className = "ejercicio-fila";
 
@@ -1770,7 +1793,7 @@ function renderizarPracticaLista() {
 
     boton.addEventListener("click", () => {
       vibrar(15);
-      irAPracticaEjercicio(fila.grupo);
+      irAPracticaEjercicio(indice);
     });
 
     practicaListaEjerciciosEl.appendChild(boton);
@@ -1792,6 +1815,57 @@ function renderizarPracticaEjercicio() {
   ejercicioPractica.forEach((ejercicio, indice) => {
     ejercicioContenidoEl.appendChild(pintarEjercicio(ejercicio, varios, indice + 1));
   });
+
+  pintarNavegacionEjercicio();
+}
+
+// Adelante y atras por las lecciones del curso. En los extremos, el salto
+// encadena con el curso preparado anterior o siguiente, para poder recorrer
+// el nivel entero sin volver al menu.
+function pintarNavegacionEjercicio() {
+  ejercicioNavegacionEl.innerHTML = "";
+  if (!cursoPractica) return;
+
+  const filas = filasDelCurso(cursoPractica);
+
+  const boton = (texto, alPulsar) => {
+    const b = document.createElement("button");
+    b.className = "boton-control compacto ejercicio-paso";
+    b.textContent = texto;
+    b.addEventListener("click", () => {
+      vibrar(15);
+      alPulsar();
+    });
+    return b;
+  };
+
+  const irAlCurso = (vecino, cual) => {
+    cursoPractica = { ...vecino.curso, numero: vecino.numero };
+    irAPracticaEjercicio(cual === "ultima" ? filasDelCurso(cursoPractica).length - 1 : 0);
+  };
+
+  if (filaPractica > 0) {
+    ejercicioNavegacionEl.appendChild(boton(`← ${t().ejercicioAnterior}`, () => irAPracticaEjercicio(filaPractica - 1)));
+  } else {
+    const previo = cursoVecino(-1);
+    if (previo) {
+      ejercicioNavegacionEl.appendChild(boton(`← ${t().practicaCursoTitulo(previo.numero)}`, () => irAlCurso(previo, "ultima")));
+    }
+  }
+
+  const posicion = document.createElement("span");
+  posicion.className = "ejercicio-posicion";
+  posicion.textContent = t().ejercicioPosicion(filaPractica + 1, filas.length);
+  ejercicioNavegacionEl.appendChild(posicion);
+
+  if (filaPractica < filas.length - 1) {
+    ejercicioNavegacionEl.appendChild(boton(`${t().ejercicioSiguiente} →`, () => irAPracticaEjercicio(filaPractica + 1)));
+  } else {
+    const siguiente = cursoVecino(1);
+    if (siguiente) {
+      ejercicioNavegacionEl.appendChild(boton(`${t().practicaCursoTitulo(siguiente.numero)} →`, () => irAlCurso(siguiente, "primera")));
+    }
+  }
 }
 
 // Una ficha completa: su titulo si van varias juntas, el objetivo, la
@@ -1972,8 +2046,10 @@ function irAPracticaLista(curso, numero) {
   actualizarUI();
 }
 
-function irAPracticaEjercicio(grupo) {
-  ejercicioPractica = grupo;
+function irAPracticaEjercicio(indice) {
+  const filas = filasDelCurso(cursoPractica);
+  filaPractica = Math.max(0, Math.min(indice, filas.length - 1));
+  ejercicioPractica = filas[filaPractica].grupo;
   estado = "practica-ejercicio";
   // Se muestra la ficha antes de dibujarla: medir un elemento oculto da cero,
   // y el arbol de silencios necesita medir para centrarlos.
