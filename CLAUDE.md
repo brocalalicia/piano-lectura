@@ -71,7 +71,7 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   piano de un curso van todos en una sola página**, que es la rutina técnica
   de la clase; el resto de bloques ocupan una fila cada uno. **Tres niveles**,
   con dificultad progresiva de un curso al
-  siguiente: **Primeros pasos** (`primeros-pasos`, 11 cursos), **Tomando vuelo**
+  siguiente: **Primeros pasos** (`primeros-pasos`, 10 cursos), **Tomando vuelo**
   (`tomando-vuelo`) y **En escena** (`en-escena`). Sólo el primero está
   preparado; los otros dos salen en el menú con el botón sombreado y
   «En preparación», que es lo que hace `boton.disabled` cuando un nivel no
@@ -147,9 +147,12 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   después.
 - **Temario de Primeros pasos, curso a curso**: 1 el pentagrama y las dos
   claves · 2 las figuras · 3 el compás y la línea divisoria · 4 los silencios ·
-  5 la corchea y su silencio · 6 sostenidos y bemoles · 7 los acordes · 8 las
-  semicorcheas y su silencio · 9 el puntillo y la ligadura de prolongación ·
-  10 compases binarios y ternarios · 11 el paso del pulgar y la escala de do.
+  5 la corchea y su silencio · 6 sostenidos y bemoles · 7 los acordes y la
+  escala · 8 las semicorcheas y su silencio · 9 el puntillo y la ligadura de
+  prolongación · 10 compases binarios y ternarios.
+- El **paso del pulgar y la escala de do** no son un curso aparte: van como
+  técnica del curso 7, junto a los acordes, porque el acorde y la escala son
+  las dos maneras de salir de la posición de cinco dedos.
 - **Una figura nueva entra siempre con su silencio**, y el curso siguiente se
   apoya en la anterior: el puntillo del 9 es lo que permite entender el tiempo
   de 6/8 del 10.
