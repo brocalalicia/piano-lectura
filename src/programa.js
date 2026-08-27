@@ -291,33 +291,6 @@ const FIGURAS_Y_ARBOL = { ...FIGURAS, arbol: { figuras: ["redonda", "blanca", "n
 // Los mismos tres compases, pero callados.
 const MANOS = { manos: true };
 
-// La derecha lleva la melodia y la izquierda acompana, de fa a do.
-const MELODIA_Y_ACOMPANAMIENTO = {
-  compas: "4/4",
-  sistemas: [
-    {
-      clef: "treble",
-      notas: [
-        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
-        { barra: true },
-        { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3" }, { n: "d/4", d: "2" },
-        { barra: true },
-        { n: "c/4", d: "1", f: "w" },
-      ],
-    },
-    {
-      clef: "bass",
-      notas: [
-        { n: "c/4", d: "1" }, { n: "c/4", d: "1" }, { n: "a/3", d: "3" }, { n: "a/3", d: "3" },
-        { barra: true },
-        { n: "f/3", d: "5" }, { n: "f/3", d: "5" }, { n: "a/3", d: "3" }, { n: "a/3", d: "3" },
-        { barra: true },
-        { n: "f/3", d: "5", f: "w" },
-      ],
-    },
-  ],
-};
-
 // --- Ejercicios con silencios (curso 4) ---------------------------------
 
 const TOCAR_Y_CALLAR = {
@@ -398,18 +371,147 @@ const SILENCIOS = {
   ],
 };
 
-// Un compas de negras y otro de corcheas: el doble de notas en el mismo sitio.
+// Tres compases que cuentan la historia entera: negras, las mismas notas en
+// corcheas (el doble en el mismo sitio) y la corchea alternando con su
+// silencio, que dura lo mismo que ella.
+// Va en 2/4 a proposito: los tres compases caben en una linea corta y las
+// notas se siguen leyendo en el movil.
 const CORCHEAS = {
-  compas: "4/4",
+  compas: "2/4",
   arbol: { figuras: ["redonda", "blanca", "negra", "corchea"] },
   sistemas: [
     {
       clef: "treble",
       notas: [
-        { n: "c/4" }, { n: "d/4" }, { n: "e/4" }, { n: "f/4" },
+        { n: "c/4" }, { n: "d/4" },
         { barra: true },
         { n: "c/4", f: "8" }, { n: "c/4", f: "8" }, { n: "d/4", f: "8" }, { n: "d/4", f: "8" },
-        { n: "e/4", f: "8" }, { n: "e/4", f: "8" }, { n: "f/4", f: "8" }, { n: "f/4", f: "8" },
+        { barra: true },
+        { n: "c/4", f: "8" }, { silencio: true, f: "8" }, { n: "d/4", f: "8" }, { silencio: true, f: "8" },
+      ],
+    },
+  ],
+};
+
+// --- Curso 5: las corcheas y su silencio ---------------------------------
+
+const CORCHEAS_SEGUIDAS_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "8" }, { n: "d/4", d: "2", f: "8" }, { n: "e/4", d: "3", f: "8" }, { n: "f/4", d: "4", f: "8" },
+        { n: "g/4", d: "5", f: "8" }, { n: "f/4", d: "4", f: "8" }, { n: "e/4", d: "3", f: "8" }, { n: "d/4", d: "2", f: "8" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const CORCHEAS_SEGUIDAS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "8" }, { n: "d/3", d: "4", f: "8" }, { n: "e/3", d: "3", f: "8" }, { n: "f/3", d: "2", f: "8" },
+        { n: "g/3", d: "1", f: "8" }, { n: "f/3", d: "2", f: "8" }, { n: "e/3", d: "3", f: "8" }, { n: "d/3", d: "4", f: "8" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+const NEGRAS_Y_CORCHEAS_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" },
+        { n: "e/4", d: "3", f: "8" }, { n: "f/4", d: "4", f: "8" }, { n: "g/4", d: "5", f: "8" }, { n: "f/4", d: "4", f: "8" },
+        { barra: true },
+        { n: "e/4", d: "3" }, { n: "d/4", d: "2" }, { n: "c/4", d: "1", f: "h" },
+      ],
+    },
+  ],
+};
+
+const NEGRAS_Y_CORCHEAS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5" }, { n: "d/3", d: "4" },
+        { n: "e/3", d: "3", f: "8" }, { n: "f/3", d: "2", f: "8" }, { n: "g/3", d: "1", f: "8" }, { n: "f/3", d: "2", f: "8" },
+        { barra: true },
+        { n: "e/3", d: "3" }, { n: "d/3", d: "4" }, { n: "c/3", d: "5", f: "h" },
+      ],
+    },
+  ],
+};
+
+const CORCHEA_Y_SILENCIO_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "8" }, { silencio: true, f: "8" }, { n: "d/4", d: "2", f: "8" }, { silencio: true, f: "8" },
+        { n: "e/4", d: "3", f: "8" }, { silencio: true, f: "8" }, { n: "f/4", d: "4", f: "8" }, { silencio: true, f: "8" },
+        { barra: true },
+        { n: "g/4", d: "5", f: "h" }, { silencio: true, f: "h" },
+      ],
+    },
+  ],
+};
+
+const CORCHEA_Y_SILENCIO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "8" }, { silencio: true, f: "8" }, { n: "d/3", d: "4", f: "8" }, { silencio: true, f: "8" },
+        { n: "e/3", d: "3", f: "8" }, { silencio: true, f: "8" }, { n: "f/3", d: "2", f: "8" }, { silencio: true, f: "8" },
+        { barra: true },
+        { n: "g/3", d: "1", f: "h" }, { silencio: true, f: "h" },
+      ],
+    },
+  ],
+};
+
+// La izquierda toca justo donde calla la derecha: el silencio de corchea es lo
+// que deja el hueco, asi que hay que contarlo para entrar a tiempo.
+const ALTERNAS_EN_CORCHEAS_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "8" }, { silencio: true, f: "8" }, { n: "d/4", d: "2", f: "8" }, { silencio: true, f: "8" },
+        { n: "e/4", d: "3", f: "8" }, { silencio: true, f: "8" }, { n: "f/4", d: "4", f: "8" }, { silencio: true, f: "8" },
+        { barra: true },
+        { n: "g/4", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+const ALTERNAS_EN_CORCHEAS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { silencio: true, f: "8" }, { n: "c/3", d: "5", f: "8" }, { silencio: true, f: "8" }, { n: "d/3", d: "4", f: "8" },
+        { silencio: true, f: "8" }, { n: "e/3", d: "3", f: "8" }, { silencio: true, f: "8" }, { n: "f/3", d: "2", f: "8" },
+        { barra: true },
+        { n: "g/3", d: "1", f: "w" },
       ],
     },
   ],
@@ -587,40 +689,6 @@ const POSICION_SOL = aDosManos(
           { n: "d/3", d: "1" }, { n: "c/3", d: "2" }, { n: "b/2", d: "3" }, { n: "a/2", d: "4" },
           { barra: true },
           { n: "g/2", d: "5", f: "w" },
-        ],
-      },
-    ],
-  }
-);
-
-// Las manos empiezan separadas y se juntan en el do central.
-const CONTRARIO_HACIA_DENTRO = aDosManos(
-  {
-    tipo: "dibujada",
-    compas: "4/4",
-    sistemas: [
-      {
-        clef: "treble",
-        notas: [
-          { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3" }, { n: "d/4", d: "2" },
-          { barra: true },
-          { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
-          { barra: true },
-          { n: "g/4", d: "5", f: "w" },
-        ],
-      },
-    ],
-  },
-  {
-    sistemas: [
-      {
-        clef: "bass",
-        notas: [
-          { n: "f/3", d: "5" }, { n: "g/3", d: "4" }, { n: "a/3", d: "3" }, { n: "b/3", d: "2" },
-          { barra: true },
-          { n: "c/4", d: "1" }, { n: "b/3", d: "2" }, { n: "a/3", d: "3" }, { n: "g/3", d: "4" },
-          { barra: true },
-          { n: "f/3", d: "5", f: "w" },
         ],
       },
     ],
@@ -891,6 +959,10 @@ const DOS_NOTAS_DOS = aDosManos(DOS_NOTAS, DOS_NOTAS_MI);
 const ESCALA_DO = aDosManos(ESCALA_DO_DERECHA, ESCALA_DO_IZQUIERDA);
 const ARPEGIO_DO_DOS = aDosManos(ARPEGIO_DO, ARPEGIO_DO_MI);
 const ACORDES_DOS = aDosManos(ACORDES_TRES_SONIDOS, ACORDES_TRES_SONIDOS_MI);
+const CORCHEAS_SEGUIDAS = aDosManos(CORCHEAS_SEGUIDAS_MD, CORCHEAS_SEGUIDAS_MI);
+const NEGRAS_Y_CORCHEAS = aDosManos(NEGRAS_Y_CORCHEAS_MD, NEGRAS_Y_CORCHEAS_MI);
+const CORCHEA_Y_SILENCIO = aDosManos(CORCHEA_Y_SILENCIO_MD, CORCHEA_Y_SILENCIO_MI);
+const ALTERNAS_EN_CORCHEAS = aDosManos(ALTERNAS_EN_CORCHEAS_MD, ALTERNAS_EN_CORCHEAS_MI);
 
 // --- Ilustraciones de teoria -------------------------------------------
 
@@ -1403,33 +1475,55 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
         ],
       },
       {
-        titulo: { es: "Movimiento contrario e independencia", fr: "Mouvement contraire et indépendance" },
+        titulo: { es: "La corchea y su silencio", fr: "La croche et son silence" },
         objetivo: {
-          es: "Que cada mano vaya a lo suyo sin arrastrar a la otra.",
-          fr: "Que chaque main suive son chemin sans entraîner l'autre.",
+          es: "Partir el tiempo en dos: dos notas donde antes había una, y medio tiempo de silencio.",
+          fr: "Partager le temps en deux : deux notes là où il n'y en avait qu'une, et un demi-temps de silence.",
         },
         ejercicios: [
-          ejercicio("p1c5-contrario", { es: "Movimiento contrario", fr: "Mouvement contraire" },
-            { es: "Las manos hacen lo mismo pero hacia lados opuestos.", fr: "Les mains font la même chose mais en sens opposé." },
-            { es: ["Los dos pulgares comparten el do central: cada uno toca el suyo.", "Es más fácil que el paralelo: los dedos van emparejados, 1 con 1."], fr: ["Les deux pouces partagent le do central : chacun joue le sien.", "C'est plus facile que le parallèle : les doigts vont par paires, 1 avec 1."] },
-            MOVIMIENTO_CONTRARIO),
-          teoria("p1c5-independencia", { es: "Cada mano, un papel", fr: "Chaque main, un rôle" },
-            { es: "Casi siempre una mano lleva la melodía y la otra acompaña. La que acompaña suena más floja: no toca menos, pesa menos.", fr: "Le plus souvent, une main porte la mélodie et l'autre l'accompagne. L'accompagnement se joue plus doucement : il ne comporte pas moins de notes, il pèse moins." },
-            { es: ["Toca la melodía en f y el acompañamiento en p.", "La izquierda se mueve poco y repite: es su papel, no es que toque menos."], fr: ["Joue la mélodie en f et l'accompagnement en p.", "La gauche bouge peu et répète : c'est son rôle, pas qu'elle joue moins."] },
-            MELODIA_Y_ACOMPANAMIENTO),
-          teoria("p1c5-corchea", { es: "La corchea", fr: "La croche" },
-            { es: "Hasta ahora la figura más corta era la negra, de un tiempo. La corchea dura la mitad, así que entran dos en cada negra: se cuenta uno-y, dos-y. Se escribe como la negra pero con un corchete en el palo.", fr: "Jusqu'ici, la figure la plus brève était la noire, qui vaut un temps. La croche en vaut la moitié : il en faut deux pour remplir une noire, et l'on compte un-et, deux-et. Elle s'écrit comme la noire, avec un crochet au bout de la queue." },
-            { es: ["Cuenta uno-y dos-y tres-y cuatro-y sin cambiar la velocidad del pie.", "Con las manos ya juntas, es el momento de partir el tiempo."], fr: ["Compte un-et deux-et trois-et quatre-et sans changer la vitesse du pied.", "Les mains étant déjà ensemble, c'est le moment de partager le temps."] },
+          teoria("p1c5-corchea", { es: "La corchea y su silencio", fr: "La croche et son silence" },
+            {
+              es: [
+                "Hasta ahora la figura más corta era la negra, de un tiempo. La corchea dura la mitad, así que entran dos en cada negra: se cuenta uno-y, dos-y.",
+                "Se escribe como la negra pero con un corchete en el palo, y cuando van varias seguidas los corchetes se sustituyen por una barra que las agrupa por tiempos.",
+                "El silencio de corchea calla exactamente lo mismo, medio tiempo, y se escribe con un solo garabato apoyado en el centro del pentagrama.",
+                "En el ejemplo: primero un compás de negras, después las mismas notas en corcheas —el doble en el mismo sitio— y al final la corchea alternando con su silencio.",
+              ],
+              fr: [
+                "Jusqu'ici, la figure la plus brève était la noire, qui vaut un temps. La croche en vaut la moitié : il en faut deux pour remplir une noire, et l'on compte un-et, deux-et.",
+                "Elle s'écrit comme la noire, avec un crochet au bout de la queue ; quand plusieurs croches se suivent, les crochets cèdent la place à une barre qui les regroupe par temps.",
+                "Le silence de croche fait taire exactement la même durée, un demi-temps, et s'écrit d'un seul signe posé au centre de la portée.",
+                "Dans l'exemple : d'abord une mesure de noires, puis les mêmes notes en croches — deux fois plus dans le même espace — et enfin la croche alternant avec son silence.",
+              ],
+            },
+            { es: ["Cuenta uno-y dos-y tres-y cuatro-y sin cambiar la velocidad del pie.", "El silencio de corchea se cuenta igual que la corchea: el «y» sigue estando ahí aunque no suene."], fr: ["Compte un-et deux-et trois-et quatre-et sans changer la vitesse du pied.", "Le silence de croche se compte comme la croche : le « et » est toujours là, même s'il ne sonne pas."] },
             CORCHEAS,
             [
               concepto({ es: "Corchea", fr: "Croche" }, { es: "Medio tiempo. Dos corcheas ocupan lo mismo que una negra.", fr: "Un demi-temps. Deux croches valent une noire." }),
               concepto({ es: "Corchete", fr: "Crochet" }, { es: "El rabito del palo que distingue la corchea de la negra.", fr: "Le petit appendice recourbé au bout de la queue, qui distingue la croche de la noire." }),
               concepto({ es: "Barra de unión", fr: "Barre de ligature" }, { es: "Cuando van varias corcheas seguidas, los corchetes se sustituyen por una barra que las agrupa por tiempos.", fr: "Quand plusieurs croches se suivent, les crochets cèdent la place à une barre qui les regroupe par temps." }),
+              concepto({ es: "Silencio de corchea", fr: "Silence de croche" }, { es: "Medio tiempo callado, lo que dura una corchea. Se apoya en el centro del pentagrama.", fr: "Un demi-temps de silence, la durée d'une croche. Il se pose au centre de la portée." }),
             ]),
-          ejercicio("p1c5-hacia-dentro", { es: "Contrario hacia dentro", fr: "Contraire vers l'intérieur" },
-            { es: "Al revés que el anterior: las manos empiezan separadas y se encuentran en el do central.", fr: "À l'inverse du précédent : les mains partent écartées et se rejoignent sur le do central." },
-            { es: ["Los dos pulgares llegan al do central a la vez, en el mismo tiempo.", "Cuesta más que hacia fuera: ahí es donde se nota la independencia."], fr: ["Les deux pouces arrivent au do central en même temps, sur le même temps.", "Plus difficile que vers l'extérieur : c'est là que se mesure l'indépendance."] },
-            CONTRARIO_HACIA_DENTRO),
+          lectura("p1c5-lectura", dosClaves("intermedio", "afianzar"),
+            { es: "Repaso del Intermedio, a velocidad", fr: "Révision de l'Intermédiaire, en vitesse" },
+            { es: "El mismo registro que la clase anterior, ahora bajando el tiempo.", fr: "Le même registre que la semaine passée, cette fois en baissant le temps." },
+            { es: ["Compara el tiempo con el del curso 4: hoy es la única medida que cuenta.", "Si por correr fallas más, vuelve al ritmo de antes."], fr: ["Compare le temps avec celui du cours 4 : c'est aujourd'hui la seule mesure qui compte.", "Si la vitesse te fait faire plus de fautes, reviens à l'allure précédente."] }),
+          ejercicio("p1c5-seguidas", { es: "Dos corcheas por tiempo", fr: "Deux croches par temps" },
+            { es: "Ocho notas donde antes cabían cuatro, sin que el pulso se mueva.", fr: "Huit notes là où il n'en tenait que quatre, sans que la pulsation bouge." },
+            { es: ["Métrónomo a 60 y dos notas por clic: el pie no acelera, las manos sí.", "Si te enredas, toca el compás en negras y después dóblalo."], fr: ["Métronome à 60 et deux notes par clic : le pied n'accélère pas, les mains si.", "Si tu t'emmêles, joue la mesure en noires puis double-la."] },
+            CORCHEAS_SEGUIDAS),
+          ejercicio("p1c5-negras-corcheas", { es: "Negras y corcheas en el mismo compás", fr: "Noires et croches dans la même mesure" },
+            { es: "Cambiar de figura sin cambiar de velocidad, que es lo que de verdad cuesta.", fr: "Changer de figure sans changer de vitesse, ce qui est le vrai difficile." },
+            { es: ["Cuenta uno-y dos-y en voz alta durante todo el ejercicio, también en las negras.", "El error típico es correr en las corcheas: son la mitad de una negra, ni más ni menos."], fr: ["Compte un-et deux-et à voix haute d'un bout à l'autre, y compris sur les noires.", "L'erreur classique est de précipiter les croches : elles valent la moitié d'une noire, ni plus ni moins."] },
+            NEGRAS_Y_CORCHEAS),
+          ejercicio("p1c5-silencio", { es: "Corchea y silencio de corchea", fr: "Croche et silence de croche" },
+            { es: "Tocar en el tiempo y callar en el «y», con las dos manos a la vez.", fr: "Jouer sur le temps et se taire sur le « et », des deux mains à la fois." },
+            { es: ["El dedo se levanta justo en el «y»: el silencio empieza cuando acaba la nota, no después.", "Sigue contando en voz alta durante el silencio."], fr: ["Le doigt se lève juste sur le « et » : le silence commence quand la note finit, pas après.", "Continue de compter à voix haute pendant le silence."] },
+            CORCHEA_Y_SILENCIO),
+          ejercicio("p1c5-alternas", { es: "Manos alternas en corcheas", fr: "Mains alternées en croches" },
+            { es: "La izquierda toca justo en el hueco que deja la derecha.", fr: "La main gauche joue exactement dans le trou que laisse la droite." },
+            { es: ["Muy despacio: aquí el silencio de corchea es lo que marca la entrada de la otra mano.", "Monta cada mano sola contando en voz alta y júntalas sólo cuando las dos entren a tiempo."], fr: ["Très lentement : ici c'est le silence de croche qui donne l'entrée de l'autre main.", "Monte chaque main seule en comptant à voix haute et ne les réunis que lorsque les deux entrent à temps."] },
+            ALTERNAS_EN_CORCHEAS),
           referencia("p1c5-ref", { es: "Ganando independencia: dedos libres", fr: "Gagner en indépendance : doigts libres" },
             [
               pouillard({ es: "cap. III págs. 26-27", fr: "chap. III p. 26-27" }),
@@ -1437,10 +1531,6 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               aaron({ es: "págs. 31-32", fr: "p. 31-32" }),
             ],
             { es: "Cada mano hace algo distinto sin arrastrar a la otra, y dentro de cada mano unos dedos tocan mientras los demás se quedan quietos.", fr: "Chaque main fait quelque chose de différent sans entraîner l'autre, et dans chaque main certains doigts jouent pendant que les autres restent en place." }),
-          lectura("p1c5-lectura", dosClaves("intermedio", "afianzar"),
-            { es: "Repaso del Intermedio, a velocidad", fr: "Révision de l'Intermédiaire, en vitesse" },
-            { es: "El mismo registro que la clase anterior, ahora bajando el tiempo.", fr: "Le même registre que la semaine passée, cette fois en baissant le temps." },
-            { es: ["Compara el tiempo con el del curso 4: hoy es la única medida que cuenta.", "Si por correr fallas más, vuelve al ritmo de antes."], fr: ["Compare le temps avec celui du cours 4 : c'est aujourd'hui la seule mesure qui compte.", "Si la vitesse te fait faire plus de fautes, reviens à l'allure précédente."] }),
         ],
       },
       {

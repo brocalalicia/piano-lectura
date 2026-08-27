@@ -138,9 +138,13 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   nota y va debajo; `silencio: true` la convierte en silencio.
 - **Ritmo, orden de aparición**: la redonda se toca ya en el curso 1, y la
   teoría de redonda, blanca y negra va en el 2; los silencios de esas tres en
-  el 4; la corchea en el 5, cuando las manos ya van juntas y tiene sentido
-  partir el tiempo; y la semicorchea en el 7, antes del repertorio, sólo para
-  reconocerla. Nada de corcheas antes del curso 5.
+  el 4; **la corchea y su silencio juntos en el 5**, cuando las manos ya van
+  juntas y tiene sentido partir el tiempo; y la semicorchea en el 7, antes del
+  repertorio, sólo para reconocerla. Nada de corcheas antes del curso 5.
+- **Una figura nueva entra con su silencio, y los ejercicios del curso la usan
+  de verdad.** No vale presentarla en la teoría y dejar la técnica en lo de
+  antes: el curso 5 son cuatro ejercicios de corcheas, uno de ellos con las
+  manos alternándose en el hueco que deja el silencio de corchea.
 - **Compases, orden de aparición**: 4/4 desde el principio, y el 3/4 y el 2/4
   en el curso 3, en la misma clase en que se explica qué son los dos números.
   Un compás nuevo entra con ejercicios que lo usen, no sólo con la teoría.
