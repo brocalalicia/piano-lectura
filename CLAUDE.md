@@ -64,7 +64,8 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 ## Programa de práctica
 - La app tiene dos programas: **Lectura** (leer notas) y **Lecciones de piano**
   (ejercicios técnicos, en francés «Leçons de piano»). Se eligen en la primera
-  pantalla, bajo el título «Aprende y mejora tu técnica con Alicia». En el
+  pantalla, bajo el título «Aprende y mejora tu técnica de piano con Alicia».
+  En el
   código el segundo programa sigue llamándose `practica`.
 - Lecciones de piano: nivel → curso → lista de bloques → ficha. **Los ejercicios de
   piano de un curso van todos en una sola página**, que es la rutina técnica
