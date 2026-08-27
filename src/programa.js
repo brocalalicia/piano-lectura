@@ -62,34 +62,6 @@ const NOTAS_REPETIDAS = {
 };
 
 
-// Los dos pulgares sobre el do central: las manos se separan y se juntan.
-const MOVIMIENTO_CONTRARIO = {
-  tipo: "dibujada",
-  compas: "4/4",
-  sistemas: [
-    {
-      clef: "treble",
-      notas: [
-        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
-        { barra: true },
-        { n: "g/4", d: "5" }, { n: "f/4", d: "4" }, { n: "e/4", d: "3" }, { n: "d/4", d: "2" },
-        { barra: true },
-        { n: "c/4", d: "1", f: "w" },
-      ],
-    },
-    {
-      clef: "bass",
-      notas: [
-        { n: "c/4", d: "1" }, { n: "b/3", d: "2" }, { n: "a/3", d: "3" }, { n: "g/3", d: "4" },
-        { barra: true },
-        { n: "f/3", d: "5" }, { n: "g/3", d: "4" }, { n: "a/3", d: "3" }, { n: "b/3", d: "2" },
-        { barra: true },
-        { n: "c/4", d: "1", f: "w" },
-      ],
-    },
-  ],
-};
-
 const ESCALA_DO_DERECHA = {
   tipo: "dibujada",
   compas: "4/4",
@@ -518,12 +490,57 @@ const ALTERNAS_EN_CORCHEAS_MI = {
 };
 
 const SEMICORCHEAS = {
+  compas: "2/4",
   arbol: { figuras: ["negra", "corchea", "semicorchea"] },
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", f: "16" }, { n: "c/4", f: "16" }, { n: "c/4", f: "16" }, { n: "c/4", f: "16" },
+        { n: "d/4", f: "16" }, { n: "d/4", f: "16" }, { n: "d/4", f: "16" }, { n: "d/4", f: "16" },
+        { barra: true },
+        { n: "c/4", f: "16" }, { silencio: true, f: "16" }, { n: "d/4", f: "16" }, { silencio: true, f: "16" },
+        { n: "e/4", f: "16" }, { silencio: true, f: "16" }, { n: "f/4", f: "16" }, { silencio: true, f: "16" },
+      ],
+    },
+  ],
+};
+
+// La misma duracion escrita de dos maneras: blanca ligada a negra y blanca con
+// puntillo suenan igual.
+const PUNTILLO_Y_LIGADURA = {
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", f: "h", ligado: true }, { n: "c/4" }, { n: "d/4" },
+        { barra: true },
+        { n: "c/4", f: "hd" }, { n: "d/4" },
+      ],
+    },
+  ],
+};
+
+// En 6/8 el compas tiene dos tiempos y cada uno se parte en tres corcheas.
+const COMPAS_TERNARIO = {
+  compas: "6/8",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", f: "8" }, { n: "d/4", f: "8" }, { n: "e/4", f: "8" },
+        { n: "f/4", f: "8" }, { n: "e/4", f: "8" }, { n: "d/4", f: "8" },
+        { barra: true },
+        { n: "c/4", f: "qd" }, { n: "e/4", f: "qd" },
+      ],
+    },
+  ],
 };
 
 const ALTERACIONES = {
   tipo: "teoria",
-  compas: "4/4",
+  compas: "2/4",
   sistemas: [
     {
       clef: "treble",
@@ -948,6 +965,367 @@ const JUNTAS_DOS_CUARTOS_MI = {
   ],
 };
 
+// --- Curso 6: sostenidos y bemoles ---------------------------------------
+
+// La misma tecla blanca y la negra que tiene al lado, una y otra vez: es la
+// distancia mas corta que hay en el piano.
+const MEDIO_TONO_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "c/4", alt: "#", d: "2" }, { n: "c/4", d: "1" }, { n: "c/4", alt: "#", d: "2" },
+        { barra: true },
+        { n: "d/4", d: "2" }, { n: "d/4", alt: "#", d: "3" }, { n: "d/4", d: "2" }, { n: "d/4", alt: "#", d: "3" },
+        { barra: true },
+        { n: "e/4", d: "3", f: "w" },
+      ],
+    },
+  ],
+};
+
+const MEDIO_TONO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5" }, { n: "c/3", alt: "#", d: "4" }, { n: "c/3", d: "5" }, { n: "c/3", alt: "#", d: "4" },
+        { barra: true },
+        { n: "d/3", d: "4" }, { n: "d/3", alt: "#", d: "3" }, { n: "d/3", d: "4" }, { n: "d/3", alt: "#", d: "3" },
+        { barra: true },
+        { n: "e/3", d: "3", f: "w" },
+      ],
+    },
+  ],
+};
+
+// Los mismos cinco dedos con el fa natural y con el fa sostenido, para oir en
+// que cambia. Con el sostenido es la posicion de sol mayor.
+const FA_SOSTENIDO_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", d: "4" },
+        { barra: true },
+        { n: "g/4", d: "5", f: "w" },
+        { barra: true },
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" }, { n: "e/4", d: "3" }, { n: "f/4", alt: "#", d: "4" },
+        { barra: true },
+        { n: "g/4", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+const FA_SOSTENIDO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5" }, { n: "d/3", d: "4" }, { n: "e/3", d: "3" }, { n: "f/3", d: "2" },
+        { barra: true },
+        { n: "g/3", d: "1", f: "w" },
+        { barra: true },
+        { n: "c/3", d: "5" }, { n: "d/3", d: "4" }, { n: "e/3", d: "3" }, { n: "f/3", alt: "#", d: "2" },
+        { barra: true },
+        { n: "g/3", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+// Lo mismo desde el fa: con el si bemol es la posicion de fa mayor.
+const SI_BEMOL_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "f/4", d: "1" }, { n: "g/4", d: "2" }, { n: "a/4", d: "3" }, { n: "b/4", d: "4" },
+        { barra: true },
+        { n: "c/5", d: "5", f: "w" },
+        { barra: true },
+        { n: "f/4", d: "1" }, { n: "g/4", d: "2" }, { n: "a/4", d: "3" }, { n: "b/4", alt: "b", d: "4" },
+        { barra: true },
+        { n: "c/5", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+const SI_BEMOL_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "f/3", d: "5" }, { n: "g/3", d: "4" }, { n: "a/3", d: "3" }, { n: "b/3", d: "2" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+        { barra: true },
+        { n: "f/3", d: "5" }, { n: "g/3", d: "4" }, { n: "a/3", d: "3" }, { n: "b/3", alt: "b", d: "2" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+// --- Curso 8: las semicorcheas y su silencio -----------------------------
+
+const SEMICORCHEAS_SEGUIDAS_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "16" }, { n: "d/4", d: "2", f: "16" }, { n: "e/4", d: "3", f: "16" }, { n: "f/4", d: "4", f: "16" },
+        { n: "g/4", d: "5", f: "16" }, { n: "f/4", d: "4", f: "16" }, { n: "e/4", d: "3", f: "16" }, { n: "d/4", d: "2", f: "16" },
+        { n: "c/4", d: "1", f: "h" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const SEMICORCHEAS_SEGUIDAS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "16" }, { n: "d/3", d: "4", f: "16" }, { n: "e/3", d: "3", f: "16" }, { n: "f/3", d: "2", f: "16" },
+        { n: "g/3", d: "1", f: "16" }, { n: "f/3", d: "2", f: "16" }, { n: "e/3", d: "3", f: "16" }, { n: "d/3", d: "4", f: "16" },
+        { n: "c/3", d: "5", f: "h" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+const NEGRAS_Y_SEMICORCHEAS_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1" }, { n: "d/4", d: "2" },
+        { n: "e/4", d: "3", f: "16" }, { n: "f/4", d: "4", f: "16" }, { n: "g/4", d: "5", f: "16" }, { n: "f/4", d: "4", f: "16" },
+        { n: "e/4", d: "3" },
+        { barra: true },
+        { n: "d/4", d: "2", f: "h" }, { n: "c/4", d: "1", f: "h" },
+      ],
+    },
+  ],
+};
+
+const NEGRAS_Y_SEMICORCHEAS_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5" }, { n: "d/3", d: "4" },
+        { n: "e/3", d: "3", f: "16" }, { n: "f/3", d: "2", f: "16" }, { n: "g/3", d: "1", f: "16" }, { n: "f/3", d: "2", f: "16" },
+        { n: "e/3", d: "3" },
+        { barra: true },
+        { n: "d/3", d: "4", f: "h" }, { n: "c/3", d: "5", f: "h" },
+      ],
+    },
+  ],
+};
+
+const SEMICORCHEA_Y_SILENCIO_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "16" }, { silencio: true, f: "16" }, { n: "d/4", d: "2", f: "16" }, { silencio: true, f: "16" },
+        { n: "e/4", d: "3", f: "16" }, { silencio: true, f: "16" }, { n: "f/4", d: "4", f: "16" }, { silencio: true, f: "16" },
+        { n: "g/4", d: "5", f: "h" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const SEMICORCHEA_Y_SILENCIO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "16" }, { silencio: true, f: "16" }, { n: "d/3", d: "4", f: "16" }, { silencio: true, f: "16" },
+        { n: "e/3", d: "3", f: "16" }, { silencio: true, f: "16" }, { n: "f/3", d: "2", f: "16" }, { silencio: true, f: "16" },
+        { n: "g/3", d: "1", f: "h" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+// --- Curso 9: el puntillo y la ligadura de prolongacion ------------------
+
+const PUNTILLO_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "hd" }, { n: "d/4", d: "2" },
+        { barra: true },
+        { n: "e/4", d: "3", f: "qd" }, { n: "f/4", d: "4", f: "8" }, { n: "g/4", d: "5", f: "h" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const PUNTILLO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "hd" }, { n: "d/3", d: "4" },
+        { barra: true },
+        { n: "e/3", d: "3", f: "qd" }, { n: "f/3", d: "2", f: "8" }, { n: "g/3", d: "1", f: "h" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+// "ligado" ata la nota con la siguiente: suenan como una sola, tambien por
+// encima de la linea divisoria.
+const LIGADURA_MD = {
+  tipo: "dibujada",
+  compas: "4/4",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "h" }, { n: "c/4", d: "1", f: "h", ligado: true },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+        { barra: true },
+        { n: "e/4", d: "3", ligado: true }, { n: "e/4", d: "3", f: "h" }, { n: "d/4", d: "2" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "w" },
+      ],
+    },
+  ],
+};
+
+const LIGADURA_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "h" }, { n: "c/3", d: "5", f: "h", ligado: true },
+        { barra: true },
+        { n: "c/3", d: "5", f: "w" },
+        { barra: true },
+        { n: "e/3", d: "3", ligado: true }, { n: "e/3", d: "3", f: "h" }, { n: "d/3", d: "4" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "w" },
+      ],
+    },
+  ],
+};
+
+// --- Curso 10: compases binarios y ternarios -----------------------------
+
+// En 6/8 el compas tiene dos tiempos y cada uno se parte en tres corcheas,
+// que es lo que agrupa la barra de union.
+const SEIS_OCHO_MD = {
+  tipo: "dibujada",
+  compas: "6/8",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "8" }, { n: "d/4", d: "2", f: "8" }, { n: "e/4", d: "3", f: "8" },
+        { n: "f/4", d: "4", f: "8" }, { n: "e/4", d: "3", f: "8" }, { n: "d/4", d: "2", f: "8" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "8" }, { n: "d/4", d: "2", f: "8" }, { n: "e/4", d: "3", f: "8" },
+        { n: "f/4", d: "4", f: "8" }, { n: "g/4", d: "5", f: "8" }, { n: "f/4", d: "4", f: "8" },
+        { barra: true },
+        { n: "e/4", d: "3", f: "qd" }, { n: "c/4", d: "1", f: "qd" },
+      ],
+    },
+  ],
+};
+
+const SEIS_OCHO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "8" }, { n: "d/3", d: "4", f: "8" }, { n: "e/3", d: "3", f: "8" },
+        { n: "f/3", d: "2", f: "8" }, { n: "e/3", d: "3", f: "8" }, { n: "d/3", d: "4", f: "8" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "8" }, { n: "d/3", d: "4", f: "8" }, { n: "e/3", d: "3", f: "8" },
+        { n: "f/3", d: "2", f: "8" }, { n: "g/3", d: "1", f: "8" }, { n: "f/3", d: "2", f: "8" },
+        { barra: true },
+        { n: "e/3", d: "3", f: "qd" }, { n: "c/3", d: "5", f: "qd" },
+      ],
+    },
+  ],
+};
+
+// El tiempo de 6/8 es una negra con puntillo: aqui se alterna el tiempo
+// entero con sus tres corcheas, para sentir que duran lo mismo.
+const TIEMPO_CON_PUNTILLO_MD = {
+  tipo: "dibujada",
+  compas: "6/8",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "c/4", d: "1", f: "qd" },
+        { n: "c/4", d: "1", f: "8" }, { n: "d/4", d: "2", f: "8" }, { n: "e/4", d: "3", f: "8" },
+        { barra: true },
+        { n: "f/4", d: "4", f: "qd" },
+        { n: "f/4", d: "4", f: "8" }, { n: "e/4", d: "3", f: "8" }, { n: "d/4", d: "2", f: "8" },
+        { barra: true },
+        { n: "c/4", d: "1", f: "8" }, { n: "d/4", d: "2", f: "8" }, { n: "e/4", d: "3", f: "8" },
+        { n: "c/4", d: "1", f: "qd" },
+      ],
+    },
+  ],
+};
+
+const TIEMPO_CON_PUNTILLO_MI = {
+  sistemas: [
+    {
+      clef: "bass",
+      notas: [
+        { n: "c/3", d: "5", f: "qd" },
+        { n: "c/3", d: "5", f: "8" }, { n: "d/3", d: "4", f: "8" }, { n: "e/3", d: "3", f: "8" },
+        { barra: true },
+        { n: "f/3", d: "2", f: "qd" },
+        { n: "f/3", d: "2", f: "8" }, { n: "e/3", d: "3", f: "8" }, { n: "d/3", d: "4", f: "8" },
+        { barra: true },
+        { n: "c/3", d: "5", f: "8" }, { n: "d/3", d: "4", f: "8" }, { n: "e/3", d: "3", f: "8" },
+        { n: "c/3", d: "5", f: "qd" },
+      ],
+    },
+  ],
+};
+
 // --- Las de una mano, ya unificadas --------------------------------------
 const JUNTAS_TRES_CUARTOS = aDosManos(JUNTAS_TRES_CUARTOS_MD, JUNTAS_TRES_CUARTOS_MI);
 const JUNTAS_DOS_CUARTOS = aDosManos(JUNTAS_DOS_CUARTOS_MD, JUNTAS_DOS_CUARTOS_MI);
@@ -960,6 +1338,16 @@ const ESCALA_DO = aDosManos(ESCALA_DO_DERECHA, ESCALA_DO_IZQUIERDA);
 const ARPEGIO_DO_DOS = aDosManos(ARPEGIO_DO, ARPEGIO_DO_MI);
 const ACORDES_DOS = aDosManos(ACORDES_TRES_SONIDOS, ACORDES_TRES_SONIDOS_MI);
 const CORCHEAS_SEGUIDAS = aDosManos(CORCHEAS_SEGUIDAS_MD, CORCHEAS_SEGUIDAS_MI);
+const MEDIO_TONO = aDosManos(MEDIO_TONO_MD, MEDIO_TONO_MI);
+const FA_SOSTENIDO = aDosManos(FA_SOSTENIDO_MD, FA_SOSTENIDO_MI);
+const SI_BEMOL = aDosManos(SI_BEMOL_MD, SI_BEMOL_MI);
+const SEMICORCHEAS_SEGUIDAS = aDosManos(SEMICORCHEAS_SEGUIDAS_MD, SEMICORCHEAS_SEGUIDAS_MI);
+const NEGRAS_Y_SEMICORCHEAS = aDosManos(NEGRAS_Y_SEMICORCHEAS_MD, NEGRAS_Y_SEMICORCHEAS_MI);
+const SEMICORCHEA_Y_SILENCIO = aDosManos(SEMICORCHEA_Y_SILENCIO_MD, SEMICORCHEA_Y_SILENCIO_MI);
+const PUNTILLO = aDosManos(PUNTILLO_MD, PUNTILLO_MI);
+const LIGADURA = aDosManos(LIGADURA_MD, LIGADURA_MI);
+const SEIS_OCHO = aDosManos(SEIS_OCHO_MD, SEIS_OCHO_MI);
+const TIEMPO_CON_PUNTILLO = aDosManos(TIEMPO_CON_PUNTILLO_MD, TIEMPO_CON_PUNTILLO_MI);
 const NEGRAS_Y_CORCHEAS = aDosManos(NEGRAS_Y_CORCHEAS_MD, NEGRAS_Y_CORCHEAS_MI);
 const CORCHEA_Y_SILENCIO = aDosManos(CORCHEA_Y_SILENCIO_MD, CORCHEA_Y_SILENCIO_MI);
 const ALTERNAS_EN_CORCHEAS = aDosManos(ALTERNAS_EN_CORCHEAS_MD, ALTERNAS_EN_CORCHEAS_MI);
@@ -1534,71 +1922,267 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
         ],
       },
       {
-        titulo: { es: "Acordes y alteraciones", fr: "Accords et altérations" },
+        titulo: { es: "Sostenidos y bemoles", fr: "Dièses et bémols" },
         objetivo: {
-          es: "Dos notas a la vez, las teclas negras en la partitura y otros compases.",
-          fr: "Deux notes à la fois, les touches noires sur la partition et de nouveaux chiffrages de mesure.",
+          es: "Las teclas negras en la partitura: subir y bajar una nota medio tono.",
+          fr: "Les touches noires sur la partition : monter et descendre une note d'un demi-ton.",
         },
         ejercicios: [
-          ejercicio("p1c6-dosnotas", { es: "Dos notas a la vez", fr: "Deux notes à la fois" },
-            { es: "Que las dos suenen exactamente juntas y con el mismo peso.", fr: "Que les deux sonnent exactement ensemble et avec le même poids." },
-            { es: ["Deja caer el brazo; no aprietes con los dedos.", "Escucha si una de las dos se adelanta."], fr: ["Laisse tomber le bras ; ne serre pas avec les doigts.", "Écoute si l'une des deux devance l'autre."] },
-            DOS_NOTAS_DOS),
           teoria("p1c6-alteraciones", { es: "Sostenidos y bemoles", fr: "Dièses et bémols" },
-            { es: "El sostenido sube la nota a la tecla de al lado, hacia la derecha; el bemol la baja hacia la izquierda. Casi siempre son las teclas negras.", fr: "Le dièse élève la note d'un demi-ton, vers la touche voisine de droite ; le bémol l'abaisse d'un demi-ton, vers la gauche. Dans la plupart des cas, il s'agit d'une touche noire." },
-            { es: ["Fa sostenido y si bemol son los dos primeros que te vas a encontrar.", "Sólo reconocerlos: tocarlos llega con las escalas."], fr: ["Fa dièse et si bémol sont les deux premières que tu rencontreras.", "Seulement les reconnaître : les jouer viendra avec les gammes."] },
-            ALTERACIONES),
-          referencia("p1c6-ref", { es: "Primeros acordes y alteraciones", fr: "Premiers accords et altérations" },
+            {
+              es: [
+                "El sostenido sube la nota a la tecla de al lado hacia la derecha; el bemol la baja a la de al lado hacia la izquierda. Esa distancia, la más corta que hay en el piano, es el medio tono.",
+                "Casi siempre la tecla de al lado es negra, y por eso las alteraciones son la puerta de entrada a las teclas negras.",
+                "El becuadro deshace la alteración y devuelve la nota a su tecla blanca.",
+                "La alteración vale hasta el final del compás: si la nota vuelve a aparecer en ese mismo compás, sigue alterada aunque no lleve el signo.",
+              ],
+              fr: [
+                "Le dièse élève la note vers la touche voisine de droite ; le bémol l'abaisse vers la touche voisine de gauche. Cet écart, le plus petit du clavier, s'appelle le demi-ton.",
+                "La touche voisine est presque toujours noire : les altérations sont donc la porte d'entrée des touches noires.",
+                "Le bécarre annule l'altération et ramène la note à sa touche blanche.",
+                "Une altération vaut jusqu'à la fin de la mesure : si la note revient dans cette même mesure, elle reste altérée même sans le signe.",
+              ],
+            },
+            { es: ["Fa sostenido y si bemol son los dos primeros que te vas a encontrar.", "Antes de tocar, di en voz alta qué tecla es: «fa sostenido, la negra de la derecha»."], fr: ["Fa dièse et si bémol sont les deux premières que tu rencontreras.", "Avant de jouer, dis à voix haute de quelle touche il s'agit : « fa dièse, la noire de droite »."] },
+            ALTERACIONES,
             [
-              pouillard({ es: "cap. III págs. 28-31", fr: "chap. III p. 28-31" }),
-              chornet({ es: "págs. 26-28, primeros acordes", fr: "p. 26-28, premiers accords" }),
-              aaron({ es: "págs. 20-22 y 33-34", fr: "p. 20-22 et 33-34" }),
-            ],
-            { es: "Dos y tres notas a la vez, los intervalos de segunda a quinta y el sostenido, el bemol y el becuadro. Los acordes de tres sonidos completos llegan en el curso 9.", fr: "Deux et trois notes à la fois, les intervalles de seconde à quinte, et le dièse, le bémol et le bécarre. Les accords de trois sons complets arrivent au cours 9." }),
-          referencia("p1c6-rep", { es: "Repertorio", fr: "Répertoire" },
-            [repertorio({ es: "Bagpipe (anónimo, s. XVII), pág. 4, y Old German Dance (Praetorius), pág. 5", fr: "Bagpipe (anonyme, XVIIe s.), p. 4, et Old German Dance (Praetorius), p. 5" })],
-            { es: "La primera pieza de repertorio de verdad: dos danzas antiguas, cortas y en posición fija. Se elige una y se trabaja hasta el final del nivel.", fr: "La première vraie pièce de répertoire : deux danses anciennes, courtes et en position fixe. On en choisit une et on la travaille jusqu'à la fin du niveau." }),
+              concepto({ es: "Medio tono", fr: "Demi-ton" }, { es: "La distancia entre una tecla y la de al lado, contando también las negras. Es la más corta del piano.", fr: "L'écart entre une touche et sa voisine immédiate, touches noires comprises. C'est le plus petit du clavier." }),
+              concepto({ es: "Sostenido", fr: "Dièse" }, { es: "Sube la nota medio tono: la tecla de al lado hacia la derecha.", fr: "Élève la note d'un demi-ton : la touche voisine de droite." }),
+              concepto({ es: "Bemol", fr: "Bémol" }, { es: "Baja la nota medio tono: la tecla de al lado hacia la izquierda.", fr: "Abaisse la note d'un demi-ton : la touche voisine de gauche." }),
+              concepto({ es: "Becuadro", fr: "Bécarre" }, { es: "Anula el sostenido o el bemol y devuelve la nota a su tecla blanca.", fr: "Annule le dièse ou le bémol et ramène la note à sa touche blanche." }),
+            ]),
           lectura("p1c6-lectura", dosClaves("inicial2", "afianzar"),
             { es: "Repaso del Inicial 2", fr: "Révision du Débutant 2" },
             { es: "De sol a do agudo y de do a sol grave, que llevan tres clases sin tocarse.", fr: "De sol à do aigu et de do à sol grave, qu'on n'a pas revus depuis trois cours." },
             { es: ["Lo que no se repasa se olvida: por eso vuelven cada pocas clases.", "Si una clave va por detrás de la otra, dedícale dos sesiones seguidas."], fr: ["Ce qu'on ne révise pas s'oublie : d'où ce retour toutes les quelques séances.", "Si une clé est en retard sur l'autre, consacre-lui deux sessions d'affilée."] }),
+          ejercicio("p1c6-mediotono", { es: "El medio tono", fr: "Le demi-ton" },
+            { es: "Ir y venir entre una tecla blanca y la negra que tiene al lado.", fr: "Aller et venir entre une touche blanche et la noire qui la jouxte." },
+            { es: ["El dedo entra un poco más adentro para llegar a la negra, y la mano no gira.", "Escucha lo cerca que están las dos notas: eso es medio tono."], fr: ["Le doigt avance un peu vers le fond pour atteindre la noire, et la main ne pivote pas.", "Écoute comme les deux notes sont proches : voilà un demi-ton."] },
+            MEDIO_TONO),
+          ejercicio("p1c6-fasostenido", { es: "Con fa sostenido", fr: "Avec le fa dièse" },
+            { es: "Los mismos cinco dedos, primero con el fa natural y después con el fa sostenido.", fr: "Les mêmes cinq doigts, d'abord avec le fa naturel puis avec le fa dièse." },
+            { es: ["Toca los dos compases seguidos: sólo cambia una nota y la posición suena distinta.", "Con el fa sostenido tienes la posición de sol mayor, que usarás mucho."], fr: ["Joue les deux mesures à la suite : une seule note change et la position sonne autrement.", "Avec le fa dièse tu tiens la position de sol majeur, que tu emploieras souvent."] },
+            FA_SOSTENIDO),
+          ejercicio("p1c6-sibemol", { es: "Con si bemol", fr: "Avec le si bémol" },
+            { es: "Lo mismo desde el fa: primero con el si natural y después con el si bemol.", fr: "La même chose à partir du fa : d'abord avec le si naturel puis avec le si bémol." },
+            { es: ["El 4 baja a la negra sin que se muevan los demás dedos.", "Con el si bemol tienes la posición de fa mayor."], fr: ["Le 4 descend sur la noire sans que les autres doigts bougent.", "Avec le si bémol tu tiens la position de fa majeur."] },
+            SI_BEMOL),
+          referencia("p1c6-ref", { es: "Las alteraciones", fr: "Les altérations" },
+            [
+              pouillard({ es: "cap. III págs. 28-31", fr: "chap. III p. 28-31" }),
+              aaron({ es: "págs. 20-22, el medio tono, el sostenido, el bemol y el becuadro", fr: "p. 20-22, le demi-ton, le dièse, le bémol et le bécarre" }),
+            ],
+            { es: "El medio tono y los tres signos que lo escriben, con las primeras piezas que salen de la posición de do.", fr: "Le demi-ton et les trois signes qui le notent, avec les premières pièces qui quittent la position de do." }),
+          referencia("p1c6-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "Bagpipe (anónimo, s. XVII), pág. 4, y Old German Dance (Praetorius), pág. 5", fr: "Bagpipe (anonyme, XVIIe s.), p. 4, et Old German Dance (Praetorius), p. 5" })],
+            { es: "La primera pieza de repertorio de verdad: dos danzas antiguas, cortas y en posición fija. Se elige una y se trabaja hasta el final del nivel.", fr: "La première vraie pièce de répertoire : deux danses anciennes, courtes et en position fixe. On en choisit une et on la travaille jusqu'à la fin du niveau." }),
         ],
       },
       {
-        titulo: { es: "Primeras piezas", fr: "Premières pièces" },
+        titulo: { es: "Los acordes", fr: "Les accords" },
         objetivo: {
-          es: "Juntarlo todo en una pieza de verdad, y saber abordar una partitura nueva.",
-          fr: "Réunir tout l'acquis dans une vraie pièce et savoir aborder une nouvelle partition.",
+          es: "Varias notas a la vez: del intervalo de dos notas al acorde de tres sonidos.",
+          fr: "Plusieurs notes à la fois : de l'intervalle de deux notes à l'accord de trois sons.",
         },
         ejercicios: [
-          ejercicio("p1c7-repaso", { es: "Repaso: manos juntas", fr: "Révision : mains ensemble" },
-            { es: "Calentar con lo que ya sabe antes de leer algo nuevo.", fr: "S'échauffer avec ce que tu sais déjà avant d'aborder du nouveau." },
-            { es: ["Paralelo y contrario seguidos, sin parar entre ellos."], fr: ["Parallèle et contraire à la suite, sans s'arrêter entre les deux."] },
-            MOVIMIENTO_CONTRARIO),
-          teoria("p1c7-leer", { es: "Cómo empezar una partitura nueva", fr: "Comment aborder une nouvelle partition" },
-            { es: "Antes de tocar: mirar la clave, el compás, dónde empieza cada mano y si hay alteraciones. Después, solfear el ritmo con palmas.", fr: "Avant de jouer, examine la clé, le chiffrage de mesure, la note de départ de chaque main et les altérations éventuelles. Solfie ensuite le rythme en frappant dans les mains. Jouer vient en dernier." },
-            { es: ["Este orden, siempre el mismo, hasta que te salga solo.", "Tocar es lo último, no lo primero."], fr: ["Cet ordre, toujours le même, jusqu'à ce qu'il vienne tout seul.", "Jouer est la dernière étape, pas la première."] }),
-          teoria("p1c7-semicorchea", { es: "La semicorchea", fr: "La double croche" },
-            { es: "La semicorchea dura la mitad que la corchea, así que entran cuatro en cada negra. Lleva dos corchetes en vez de uno. Aparece en cuanto empiezas a tocar piezas de verdad, aunque sea de paso.", fr: "La double croche vaut la moitié d'une croche : il en faut quatre pour remplir une noire. Elle porte deux crochets au lieu d'un. Tu la rencontreras dès tes premières vraies pièces, ne serait-ce qu'au détour d'une mesure." },
-            { es: ["Reconocerla es suficiente por ahora: cuéntala despacio antes de tocarla.", "Si una pieza va llena de ellas, todavía no te toca."], fr: ["La reconnaître suffit pour l'instant : compte-la lentement avant de la jouer.", "Si un morceau en est plein, ce n'est pas encore pour toi."] },
+          teoria("p1c7-acorde", { es: "Qué es un acorde de tres sonidos", fr: "Qu'est-ce qu'un accord de trois sons" },
+            { es: "Se toma una nota y se le añaden la tercera y la quinta por encima, saltando una tecla blanca cada vez. Do, fa y sol son los tres acordes que sostienen casi toda la música que va a tocar.", fr: "On part d'une note et l'on ajoute au-dessus la tierce, puis la quinte, en sautant une touche blanche à chaque fois. Do, fa et sol forment les trois accords qui soutiennent presque toute la musique que tu vas jouer." },
+            { es: ["Construye tú el acorde de re y el de mi.", "El arpegio es el mismo acorde, nota a nota."], fr: ["Construis l'accord de ré et celui de mi toi-même.", "L'arpège est le même accord, note par note."] },
+            ACORDE_CONSTRUCCION),
+          lectura("p1c7-lectura", lineasDelCentro("nuevas"),
+            { es: "Avanzado: de sol grave a do central y de do central a sol", fr: "Avancé : du sol grave au do central et du do central au sol" },
+            { es: "La derecha por debajo del do central y la izquierda por encima: las notas que cada mano toma prestadas de la otra clave.", fr: "La droite sous le do central et la gauche au-dessus : les notes que chaque main emprunte à l'autre clé." },
+            { es: ["Son las mismas teclas que ya tocas, sólo que escritas en la otra clave.", "En clave de sol se llama Avanzado 2 y en clave de fa Avanzado 1: es el mismo salto, uno hacia abajo y otro hacia arriba."], fr: ["Ce sont les mêmes touches que tu joues déjà, simplement écrites dans l'autre clé.", "En clé de sol cela s'appelle Avancé 2 et en clé de fa Avancé 1 : c'est le même écart, l'un vers le bas et l'autre vers le haut."] }),
+          ejercicio("p1c7-dosnotas", { es: "Dos notas a la vez", fr: "Deux notes à la fois" },
+            { es: "Que las dos suenen exactamente juntas y con el mismo peso.", fr: "Que les deux sonnent exactement ensemble et avec le même poids." },
+            { es: ["Deja caer el brazo; no aprietes con los dedos.", "Escucha si una de las dos se adelanta."], fr: ["Laisse tomber le bras ; ne serre pas avec les doigts.", "Écoute si l'une des deux devance l'autre."] },
+            DOS_NOTAS_DOS),
+          ejercicio("p1c7-arpegio", { es: "Arpegio de do mayor", fr: "Arpège de do majeur" },
+            { es: "El acorde nota a nota, para oír de qué está hecho.", fr: "L'accord note par note, pour entendre de quoi il est fait." },
+            { es: ["Los dedos que ya han tocado se quedan sobre sus teclas.", "Sube y baja sin acelerar al llegar arriba."], fr: ["Les doigts qui ont déjà joué restent sur leurs touches.", "Monte et descends sans accélérer en arrivant en haut."] },
+            ARPEGIO_DO_DOS),
+          ejercicio("p1c7-acordes", { es: "Acordes de tres sonidos", fr: "Accords de trois sons" },
+            { es: "Do, fa y sol: los tres acordes, con las tres notas a la vez.", fr: "Do, fa et sol : les trois accords, les trois notes ensemble." },
+            { es: ["Las tres notas caen a la vez: si una se adelanta, prepara la mano antes de bajar.", "Cambia de acorde sin mirar: la mano ya sabe la forma."], fr: ["Les trois notes tombent ensemble : si l'une devance, prépare la main avant de descendre.", "Change d'accord sans regarder : la main connaît déjà la forme."] },
+            ACORDES_DOS),
+          referencia("p1c7-ref", { es: "Los primeros acordes", fr: "Les premiers accords" },
+            [
+              pouillard({ es: "cap. IV pág. 38 y cap. V págs. 51-52", fr: "chap. IV p. 38 et chap. V p. 51-52" }),
+              chornet({ es: "págs. 26-28, primeros acordes", fr: "p. 26-28, premiers accords" }),
+              aaron({ es: "págs. 33-34 y 36, tríadas y estudio de acordes en do", fr: "p. 33-34 et 36, triades et étude d'accords en do" }),
+            ],
+            { es: "Los intervalos de segunda a quinta, las tríadas de do, fa y sol, y la diferencia entre acorde y acorde quebrado.", fr: "Les intervalles de seconde à quinte, les triades de do, fa et sol, et la différence entre accord plaqué et accord brisé." }),
+          referencia("p1c7-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "Two Marches (Türk), pág. 6, y March in F (Türk), pág. 7", fr: "Two Marches (Türk), p. 6, et March in F (Türk), p. 7" })],
+            { es: "Dos marchas clásicas: pulso firme, frases de cuatro compases y manos que ya no van al unísono.", fr: "Deux marches classiques : pulsation ferme, phrases de quatre mesures et mains qui ne vont plus à l'unisson." }),
+        ],
+      },
+      {
+        titulo: { es: "Las semicorcheas y su silencio", fr: "Les doubles croches et leur silence" },
+        objetivo: {
+          es: "Partir el tiempo en cuatro, tocando y callando a un cuarto de tiempo.",
+          fr: "Partager le temps en quatre, en jouant et en se taisant au quart de temps.",
+        },
+        ejercicios: [
+          teoria("p1c8-semicorchea", { es: "La semicorchea y su silencio", fr: "La double croche et son silence" },
+            {
+              es: [
+                "La semicorchea dura la mitad que la corchea, así que entran cuatro en cada negra: se cuenta uno-e-y-a, dos-e-y-a.",
+                "Lleva dos corchetes en vez de uno, y cuando van seguidas se agrupan con doble barra de unión.",
+                "El silencio de semicorchea calla lo mismo, un cuarto de tiempo, y lleva también dos ganchos.",
+                "En el ejemplo: primero un compás de semicorcheas seguidas y después la semicorchea alternando con su silencio.",
+              ],
+              fr: [
+                "La double croche vaut la moitié d'une croche : il en faut quatre pour remplir une noire, et l'on compte un-e-et-eu, deux-e-et-eu.",
+                "Elle porte deux crochets au lieu d'un, et lorsqu'elles se suivent elles se regroupent sous une double barre de ligature.",
+                "Le silence de double croche fait taire la même durée, un quart de temps, et porte lui aussi deux crochets.",
+                "Dans l'exemple : d'abord une mesure de doubles croches à la suite, puis la double croche alternant avec son silence.",
+              ],
+            },
+            { es: ["Cuéntala despacio antes de tocarla: cuatro golpes por cada negra.", "Empieza a la mitad de velocidad de lo que crees que puedes."], fr: ["Compte-la lentement avant de la jouer : quatre coups pour chaque noire.", "Commence à la moitié de la vitesse que tu crois pouvoir tenir."] },
             SEMICORCHEAS,
             [
-              concepto({ es: "Semicorchea", fr: "Double croche" }, { es: "Un cuarto de tiempo. Cuatro semicorcheas ocupan lo mismo que una negra.", fr: "Un quart de temps. Quatre doubles croches valent une noire." }),
+              concepto({ es: "Semicorchea", fr: "Double croche" }, { es: "Un cuarto de tiempo. Cuatro semicorcheas ocupan lo mismo que una negra, y dos lo mismo que una corchea.", fr: "Un quart de temps. Quatre doubles croches valent une noire, et deux valent une croche." }),
+              concepto({ es: "Silencio de semicorchea", fr: "Silence de double croche" }, { es: "Un cuarto de tiempo callado. Se escribe con dos ganchos, apoyado en el centro del pentagrama.", fr: "Un quart de temps de silence. Il s'écrit avec deux crochets, posé au centre de la portée." }),
+              concepto({ es: "Doble barra de unión", fr: "Double barre de ligature" }, { es: "Las semicorcheas seguidas se agrupan con dos barras, una por cada corchete.", fr: "Les doubles croches qui se suivent se regroupent sous deux barres, une par crochet." }),
             ]),
-          referencia("p1c7-ref1", { es: "Legato, staccato y matices", fr: "Legato, staccato et nuances" },
+          lectura("p1c8-lectura", [...lineasDelCentro("afianzar"), ...dosClaves("inicial1", "afianzar")],
+            { es: "Repaso del Avanzado y del Inicial 1", fr: "Révision de l'Avancé et du Débutant 1" },
+            { es: "Todo lo que rodea el do central, escrito en las dos claves: es lo que más se confunde.", fr: "Tout ce qui entoure le do central, écrit dans les deux clés : c'est ce qui se confond le plus." },
+            { es: ["El acorde de sol lleva la izquierda por encima del do central: aquí lo preparas.", "Apunta precisión y tiempo: sirven para medir la evaluación del final."], fr: ["L'accord de sol conduit la main gauche au-dessus du do central : tu le prépares ici.", "Note la précision et le temps : ils serviront à mesurer l'évaluation finale."] }),
+          ejercicio("p1c8-seguidas", { es: "Cuatro semicorcheas por tiempo", fr: "Quatre doubles croches par temps" },
+            { es: "Dieciséis notas donde antes cabían cuatro, sin que el pulso se mueva.", fr: "Seize notes là où il n'en tenait que quatre, sans que la pulsation bouge." },
+            { es: ["Metrónomo a 50 y cuatro notas por clic; sube de cinco en cinco cuando salga limpio.", "Si se enreda, tócalo en corcheas primero y después dóblalo."], fr: ["Métronome à 50 et quatre notes par clic ; monte de cinq en cinq quand c'est net.", "Si ça s'emmêle, joue-le d'abord en croches puis double."] },
+            SEMICORCHEAS_SEGUIDAS),
+          ejercicio("p1c8-negras", { es: "Negras y semicorcheas en el mismo compás", fr: "Noires et doubles croches dans la même mesure" },
+            { es: "Pasar de una nota por tiempo a cuatro sin cambiar la velocidad del pie.", fr: "Passer d'une note par temps à quatre sans changer la vitesse du pied." },
+            { es: ["El pie sigue marcando negras: son las manos las que van al cuádruple.", "Cuenta uno-e-y-a en voz alta también durante las negras."], fr: ["Le pied continue de marquer les noires : ce sont les mains qui vont quatre fois plus vite.", "Compte un-e-et-eu à voix haute, y compris pendant les noires."] },
+            NEGRAS_Y_SEMICORCHEAS),
+          ejercicio("p1c8-silencio", { es: "Semicorchea y silencio de semicorchea", fr: "Double croche et silence de double croche" },
+            { es: "Un cuarto de tiempo sonando y un cuarto callado, una y otra vez.", fr: "Un quart de temps qui sonne et un quart qui se tait, encore et encore." },
+            { es: ["El dedo se levanta enseguida: aquí el silencio es tan corto como la nota.", "Despacio, o el silencio desaparece y todo suena ligado."], fr: ["Le doigt se lève aussitôt : ici le silence est aussi bref que la note.", "Lentement, sinon le silence disparaît et tout sonne lié."] },
+            SEMICORCHEA_Y_SILENCIO),
+          referencia("p1c8-ref", { es: "Legato, staccato y matices", fr: "Legato, staccato et nuances" },
             [
               pouillard({ es: "cap. VII págs. 64-68", fr: "chap. VII p. 64-68" }),
               chornet({ es: "págs. 29-32, legato y staccato, y págs. 33-36, Czerny op. 599 nº 1-8", fr: "p. 29-32, legato et staccato, et p. 33-36, Czerny op. 599 nº 1-8" }),
               aaron({ es: "págs. 25-27", fr: "p. 25-27" }),
             ],
             { es: "Los dos ataques básicos, ligado y picado, y las primeras indicaciones de matiz sobre estudios cortos.", fr: "Les deux attaques de base, lié et piqué, et les premières indications de nuance sur de courtes études." }),
-          referencia("p1c7-rep", { es: "Repertorio", fr: "Répertoire" },
-            [repertorio({ es: "Two Marches (Türk), pág. 6, y March in F (Türk), pág. 7", fr: "Two Marches (Türk), p. 6, et March in F (Türk), p. 7" })],
-            { es: "Dos marchas clásicas: pulso firme, frases de cuatro compases y manos que ya no van al unísono.", fr: "Deux marches classiques : pulsation ferme, phrases de quatre mesures et mains qui ne vont plus à l'unisson." }),
-          lectura("p1c7-lectura", lineasDelCentro("nuevas"),
-            { es: "Avanzado: de sol grave a do central y de do central a sol", fr: "Avancé : du sol grave au do central et du do central au sol" },
-            { es: "La derecha por debajo del do central y la izquierda por encima: las notas que cada mano toma prestadas de la otra clave.", fr: "La droite sous le do central et la gauche au-dessus : les notes que chaque main emprunte à l'autre clé." },
-            { es: ["Son las mismas teclas que ya tocas, sólo que escritas en la otra clave.", "En clave de sol se llama Avanzado 2 y en clave de fa Avanzado 1: es el mismo salto, uno hacia abajo y otro hacia arriba."], fr: ["Ce sont les mêmes touches que tu joues déjà, simplement écrites dans l'autre clé.", "En clé de sol cela s'appelle Avancé 2 et en clé de fa Avancé 1 : c'est le même écart, l'un vers le bas et l'autre vers le haut."] }),
+          referencia("p1c8-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "March in G (Türk), pág. 7, y Minuet (Reinagle), pág. 8", fr: "March in G (Türk), p. 7, et Minuet (Reinagle), p. 8" })],
+            { es: "Un minueto clásico en 3/4: el mismo compás del curso 3, ahora dentro de una pieza.", fr: "Un menuet classique à 3/4 : la mesure vue au cours 3, cette fois dans une pièce." }),
+        ],
+      },
+      {
+        titulo: { es: "El puntillo y la ligadura", fr: "Le point et la liaison" },
+        objetivo: {
+          es: "Alargar una nota: con un punto a su derecha o atándola a la siguiente.",
+          fr: "Allonger une note : par un point à sa droite ou en la liant à la suivante.",
+        },
+        ejercicios: [
+          teoria("p1c9-puntillo", { es: "El puntillo y la ligadura de prolongación", fr: "Le point et la liaison de prolongation" },
+            {
+              es: [
+                "Hasta ahora cada figura duraba lo que dice su nombre. Hay dos maneras de alargarla.",
+                "El puntillo es un punto a la derecha de la nota y le añade la mitad de lo que vale: una blanca con puntillo dura tres tiempos, y una negra con puntillo, uno y medio.",
+                "La ligadura de prolongación es una curva que une dos notas de la misma altura: no se toca la segunda, se suman las dos duraciones en un solo sonido.",
+                "Sirve, entre otras cosas, para alargar una nota por encima de la línea divisoria, que es lo único que no puede hacer el puntillo.",
+                "En el ejemplo, los dos compases suenan exactamente igual: blanca ligada a negra y blanca con puntillo son la misma duración escrita de dos maneras.",
+              ],
+              fr: [
+                "Jusqu'ici, chaque figure durait ce que dit son nom. Il existe deux façons de l'allonger.",
+                "Le point se place à droite de la note et lui ajoute la moitié de sa valeur : une blanche pointée dure trois temps, une noire pointée, un temps et demi.",
+                "La liaison de prolongation est une courbe qui unit deux notes de même hauteur : on ne rejoue pas la seconde, on additionne les deux durées en un seul son.",
+                "Elle sert notamment à prolonger une note par-dessus la barre de mesure, ce que le point ne peut pas faire.",
+                "Dans l'exemple, les deux mesures sonnent exactement pareil : blanche liée à une noire et blanche pointée sont la même durée écrite de deux façons.",
+              ],
+            },
+            { es: ["Cuenta en voz alta la nota larga entera: uno, dos, tres.", "No confundas esta curva con la de fraseo: la de prolongación une dos notas iguales."], fr: ["Compte à voix haute toute la durée de la note longue : un, deux, trois.", "Ne confonds pas cette courbe avec celle du phrasé : la liaison de prolongation unit deux notes identiques."] },
+            PUNTILLO_Y_LIGADURA,
+            [
+              concepto({ es: "Puntillo", fr: "Point" }, { es: "Un punto a la derecha de la nota. Le añade la mitad de su valor.", fr: "Un point à droite de la note. Il lui ajoute la moitié de sa valeur." }),
+              concepto({ es: "Blanca con puntillo", fr: "Blanche pointée" }, { es: "Tres tiempos: dos de la blanca y uno del puntillo.", fr: "Trois temps : deux pour la blanche et un pour le point." }),
+              concepto({ es: "Negra con puntillo", fr: "Noire pointée" }, { es: "Un tiempo y medio: uno de la negra y medio del puntillo.", fr: "Un temps et demi : un pour la noire et un demi pour le point." }),
+              concepto({ es: "Ligadura de prolongación", fr: "Liaison de prolongation" }, { es: "Une dos notas de la misma altura en un solo sonido. La segunda no se vuelve a tocar.", fr: "Elle unit deux notes de même hauteur en un seul son. La seconde ne se rejoue pas." }),
+            ]),
+          lectura("p1c9-lectura", dosClaves("inicial2", "afianzar"),
+            { es: "Repaso del Inicial 2, a velocidad", fr: "Révision du Débutant 2, en vitesse" },
+            { es: "De sol a do agudo y de do a sol grave, ahora buscando el tiempo.", fr: "De sol à do aigu et de do à sol grave, cette fois en cherchant le temps." },
+            { es: ["Compara con el tiempo del curso 6: es el mismo nivel, cinco clases después."], fr: ["Compare avec le temps du cours 6 : c'est le même niveau, cinq séances plus tard."] }),
+          ejercicio("p1c9-puntillo-tec", { es: "Notas con puntillo", fr: "Notes pointées" },
+            { es: "Sostener tres tiempos y tiempo y medio sin quedarse corto.", fr: "Tenir trois temps, puis un temps et demi, sans écourter." },
+            { es: ["Cuenta en voz alta toda la nota larga: el error típico es soltarla antes.", "La negra con puntillo acaba en el «y»: la corchea que viene detrás entra ahí."], fr: ["Compte à voix haute toute la note longue : l'erreur classique est de la lâcher trop tôt.", "La noire pointée finit sur le « et » : la croche qui suit entre là."] },
+            PUNTILLO),
+          ejercicio("p1c9-ligadura", { es: "Ligaduras de prolongación", fr: "Liaisons de prolongation" },
+            { es: "Una sola nota larga escrita con dos figuras, también por encima de la línea divisoria.", fr: "Une seule note longue écrite avec deux figures, y compris par-dessus la barre de mesure." },
+            { es: ["La segunda nota no se toca: el dedo se queda hundido y sigues contando.", "Si vuelves a tocarla, se oye. Grábate y compruébalo."], fr: ["La seconde note ne se joue pas : le doigt reste enfoncé et tu continues de compter.", "Si tu la rejoues, cela s'entend. Enregistre-toi et vérifie."] },
+            LIGADURA),
+          referencia("p1c9-ref", { es: "El puntillo y las ligaduras", fr: "Le point et les liaisons" },
+            [
+              pouillard({ es: "cap. VI págs. 54-62", fr: "chap. VI p. 54-62" }),
+              chornet({ es: "págs. 37-38, Czerny op. 139", fr: "p. 37-38, Czerny op. 139" }),
+              aaron({ es: "pág. 15, ligaduras, y pág. 30, negras con puntillo", fr: "p. 15, liaisons, et p. 30, noires pointées" }),
+            ],
+            { es: "Las dos maneras de alargar una nota, sobre piezas donde ya no todas las figuras duran lo mismo.", fr: "Les deux façons d'allonger une note, sur des pièces où les figures n'ont plus toutes la même durée." }),
+          referencia("p1c9-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "Promenade (Reinagle), pág. 9", fr: "Promenade (Reinagle), p. 9" })],
+            { es: "Una pieza con las dos manos independientes, donde la izquierda sostiene notas largas mientras la derecha se mueve.", fr: "Une pièce aux deux mains indépendantes, où la gauche tient des notes longues pendant que la droite bouge." }),
+        ],
+      },
+      {
+        titulo: { es: "Compases binarios y ternarios", fr: "Mesures binaires et ternaires" },
+        objetivo: {
+          es: "El tiempo se puede partir en dos o en tres, y eso cambia el compás entero.",
+          fr: "Le temps peut se diviser en deux ou en trois, et cela change toute la mesure.",
+        },
+        ejercicios: [
+          teoria("p1c10-compases", { es: "Compases binarios y ternarios", fr: "Mesures binaires et ternaires" },
+            {
+              es: [
+                "Todos los compases que has visto hasta ahora —4/4, 3/4, 2/4— tienen algo en común: cada tiempo se parte en dos. Son compases de subdivisión binaria.",
+                "Hay otros en los que cada tiempo se parte en tres. El más común es el 6/8: seis corcheas por compás, agrupadas de tres en tres, o sea dos tiempos de tres corcheas cada uno.",
+                "Por eso en 6/8 el tiempo no es una negra sino una negra con puntillo, que es justo lo que vale tres corcheas. De ahí que el puntillo del curso anterior haga falta aquí.",
+                "El número de arriba, 6, cuenta corcheas; pero se siente en dos, no en seis. Se cuenta un-dos-tres, dos-dos-tres.",
+                "La barra de unión lo deja ver: agrupa las corcheas de tres en tres, y cada grupo es un tiempo.",
+              ],
+              fr: [
+                "Toutes les mesures vues jusqu'ici — 4/4, 3/4, 2/4 — ont un point commun : chaque temps se divise en deux. Ce sont des mesures à subdivision binaire.",
+                "Il en existe d'autres où chaque temps se divise en trois. La plus courante est le 6/8 : six croches par mesure, groupées trois par trois, soit deux temps de trois croches.",
+                "C'est pourquoi, à 6/8, le temps n'est pas une noire mais une noire pointée, qui vaut précisément trois croches. D'où l'utilité du point vu au cours précédent.",
+                "Le chiffre du haut, 6, compte des croches ; mais la mesure se ressent à deux, pas à six. On compte un-deux-trois, deux-deux-trois.",
+                "La barre de ligature le rend visible : elle groupe les croches trois par trois, et chaque groupe est un temps.",
+              ],
+            },
+            { es: ["Da palmas en 6/8 marcando sólo los dos tiempos, y cuenta las tres corcheas por dentro.", "Compáralo con el 3/4: tres tiempos con dos corcheas cada uno, que no es lo mismo aunque haya seis corcheas."], fr: ["Frappe dans les mains à 6/8 en ne marquant que les deux temps, et compte les trois croches intérieurement.", "Compare avec le 3/4 : trois temps de deux croches chacun, ce qui n'est pas la même chose bien qu'il y ait six croches."] },
+            COMPAS_TERNARIO,
+            [
+              concepto({ es: "Subdivisión binaria", fr: "Subdivision binaire" }, { es: "Cada tiempo se parte en dos. Es lo que pasa en 4/4, 3/4 y 2/4.", fr: "Chaque temps se divise en deux. C'est le cas du 4/4, du 3/4 et du 2/4." }),
+              concepto({ es: "Subdivisión ternaria", fr: "Subdivision ternaire" }, { es: "Cada tiempo se parte en tres. Es lo que pasa en 6/8, 9/8 y 12/8.", fr: "Chaque temps se divise en trois. C'est le cas du 6/8, du 9/8 et du 12/8." }),
+              concepto({ es: "El 6/8", fr: "Le 6/8" }, { es: "Seis corcheas por compás agrupadas de tres en tres: dos tiempos, y cada tiempo es una negra con puntillo.", fr: "Six croches par mesure groupées trois par trois : deux temps, et chaque temps est une noire pointée." }),
+            ]),
+          lectura("p1c10-lectura", [...dosClaves("intermedio", "afianzar"), ...lineasDelCentro("afianzar")],
+            { es: "Repaso del Intermedio y del Avanzado", fr: "Révision de l'Intermédiaire et de l'Avancé" },
+            { es: "Los dos niveles que más cuestan, juntos, antes de la evaluación.", fr: "Les deux niveaux les plus difficiles, ensemble, avant l'évaluation." },
+            { es: ["Apunta precisión y tiempo de las cuatro sesiones: son la referencia del curso 11."], fr: ["Note la précision et le temps des quatre sessions : ils servent de référence pour le cours 11."] }),
+          ejercicio("p1c10-seisocho", { es: "Seis corcheas por compás", fr: "Six croches par mesure" },
+            { es: "Sentir el compás en dos tiempos aunque haya seis corcheas.", fr: "Ressentir la mesure à deux temps bien qu'elle compte six croches." },
+            { es: ["Marca con el pie sólo dos veces por compás, en la primera corchea de cada grupo.", "Apoya la primera de cada tres: eso es lo que hace que se oiga en dos y no en seis."], fr: ["Bats du pied deux fois seulement par mesure, sur la première croche de chaque groupe.", "Appuie la première de chaque groupe de trois : c'est ce qui fait entendre deux temps et non six."] },
+            SEIS_OCHO),
+          ejercicio("p1c10-puntillo", { es: "El tiempo con puntillo", fr: "Le temps pointé" },
+            { es: "La negra con puntillo dura exactamente lo mismo que sus tres corcheas.", fr: "La noire pointée dure exactement autant que ses trois croches." },
+            { es: ["Alterna los dos compases sin parar: el pie no cambia de velocidad.", "Si la negra con puntillo se queda corta, cuenta sus tres corcheas por dentro."], fr: ["Alterne les deux mesures sans t'arrêter : le pied ne change pas de vitesse.", "Si la noire pointée est écourtée, compte ses trois croches intérieurement."] },
+            TIEMPO_CON_PUNTILLO),
+          referencia("p1c10-ref", { es: "Compases nuevos", fr: "Nouvelles mesures" },
+            [
+              pouillard({ es: "cap. VII págs. 70-76", fr: "chap. VII p. 70-76" }),
+              chornet({ es: "págs. 33-36, Czerny op. 599 nº 1-8", fr: "p. 33-36, Czerny op. 599 nº 1-8" }),
+              aaron({ es: "págs. 37 y 39, compás nuevo y Dance of the Wooden Shoes", fr: "p. 37 et 39, nouvelle mesure et Dance of the Wooden Shoes" }),
+            ],
+            { es: "Piezas fuera del 4/4, donde el compás se cuenta de otra manera y el acento cae en otro sitio.", fr: "Des pièces hors du 4/4, où la mesure se compte autrement et où l'accent tombe ailleurs." }),
+          referencia("p1c10-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "Sonatina, I. Allegro moderato (Wilton), pág. 10", fr: "Sonatine, I. Allegro moderato (Wilton), p. 10" })],
+            { es: "Un primer movimiento de sonatina, con las dos manos independientes y acordes en la izquierda.", fr: "Un premier mouvement de sonatine, aux deux mains indépendantes et avec des accords à la main gauche." }),
         ],
       },
       {
@@ -1608,67 +2192,32 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
           fr: "Sortir de la position fixe : la gamme de do majeur aux deux mains.",
         },
         ejercicios: [
-          ejercicio("p1c8-preparacion", { es: "Preparación del paso del pulgar", fr: "Préparation du passage du pouce" },
-            { es: "Sólo el movimiento del cruce, sin la escala entera.", fr: "Seulement le mouvement du croisement, sans la gamme entière." },
-            { es: ["Derecha: el pulgar pasa por debajo del 3. Izquierda: el 3 cruza por encima del pulgar.", "Muy lento y repetido, hasta que el cruce no se oiga."], fr: ["Droite : le pouce passe sous le 3. Gauche : le 3 croise par-dessus le pouce.", "Très lentement, en répétant, jusqu'à ce que le croisement ne s'entende plus."] },
-            PREPARACION_PULGAR),
-          ejercicio("p1c8-md", { es: "Escala de do mayor", fr: "Gamme de do majeur" },
-            { es: "El pulgar pasa por debajo del 3 para tocar el fa.", fr: "Le pouce passe sous le 3 pour jouer le fa." },
-            { es: ["Prepara el pulgar mientras suenan el 2 y el 3.", "La mano no da tirones: el codo acompaña."], fr: ["Prépare le pouce pendant que sonnent le 2 et le 3.", "La main ne doit pas sursauter : le coude accompagne le mouvement."] },
-            ESCALA_DO),
-          teoria("p1c8-escala", { es: "Por qué la escala se digita así", fr: "Pourquoi la gamme se doigte ainsi" },
+          teoria("p1c11-escala", { es: "Por qué la escala se digita así", fr: "Pourquoi la gamme se doigte ainsi" },
             { es: "La mano tiene cinco dedos y la escala ocho notas, así que hay que pasar el pulgar una vez. Se pasa donde menos se nota, entre el mi y el fa.", fr: "La main compte cinq doigts, la gamme huit notes : il faut donc passer le pouce une fois. Ce passage se place là où il s'entend le moins, entre le mi et le fa." },
             { es: ["Dilo en voz alta antes de tocar: dónde pasa el pulgar y por qué.", "La digitación es la misma en todas las escalas de teclas blancas."], fr: ["Dis-le à voix haute avant de jouer : où passe le pouce et pourquoi.", "Le doigté est le même dans toutes les gammes de touches blanches."] },
             ESCALA_DO_DERECHA),
-          referencia("p1c8-ref", { es: "Paso del pulgar y escala de do mayor", fr: "Passage du pouce et gamme de do majeur" },
+          lectura("p1c11-lectura", [...dosClaves("inicial1", "afianzar"), ...dosClaves("inicial2", "afianzar"), ...dosClaves("intermedio", "afianzar"), ...lineasDelCentro("afianzar")],
+            { es: "Evaluación: los cuatro niveles en las dos claves", fr: "Évaluation : les quatre niveaux dans les deux clés" },
+            { es: "Las ocho sesiones del nivel, una detrás de otra: es la foto de dónde estás.", fr: "Les huit sessions du niveau, l'une après l'autre : c'est la photo de là où tu en es." },
+            { es: ["Repártelas en dos sesiones de estudio, no las hagas todas de un tirón.", "Compara con los tiempos del curso 1: ahí se ve el camino hecho.", "Si las ocho salen sueltas, estás listo para Tomando vuelo."], fr: ["Répartis-les sur deux séances de travail, ne les enchaîne pas toutes d'un coup.", "Compare avec les temps du cours 1 : c'est là qu'on voit le chemin parcouru.", "Si les huit sont fluides, tu es prêt pour Prendre son envol."] }),
+          ejercicio("p1c11-preparacion", { es: "Preparación del paso del pulgar", fr: "Préparation du passage du pouce" },
+            { es: "Sólo el movimiento del cruce, sin la escala entera.", fr: "Seulement le mouvement du croisement, sans la gamme entière." },
+            { es: ["Derecha: el pulgar pasa por debajo del 3. Izquierda: el 3 cruza por encima del pulgar.", "Muy lento y repetido, hasta que el cruce no se oiga."], fr: ["Droite : le pouce passe sous le 3. Gauche : le 3 croise par-dessus le pouce.", "Très lentement, en répétant, jusqu'à ce que le croisement ne s'entende plus."] },
+            PREPARACION_PULGAR),
+          ejercicio("p1c11-escala", { es: "Escala de do mayor", fr: "Gamme de do majeur" },
+            { es: "El pulgar pasa por debajo del 3 para tocar el fa.", fr: "Le pouce passe sous le 3 pour jouer le fa." },
+            { es: ["Prepara el pulgar mientras suenan el 2 y el 3.", "La mano no da tirones: el codo acompaña."], fr: ["Prépare le pouce pendant que sonnent le 2 et le 3.", "La main ne doit pas sursauter : le coude accompagne le mouvement."] },
+            ESCALA_DO),
+          referencia("p1c11-ref", { es: "Paso del pulgar y escala de do mayor", fr: "Passage du pouce et gamme de do majeur" },
             [
               pouillard({ es: "cap. IV págs. 34-35", fr: "chap. IV p. 34-35" }),
               chornet({ es: "págs. 43-46, preparatorios y escalas", fr: "p. 43-46, préparatoires et gammes" }),
               aaron({ es: "págs. 51, 53 y 61-62", fr: "p. 51, 53 et 61-62" }),
             ],
-            { es: "El mecanismo explicado, los ejercicios preparatorios —antes que la escala entera— y la escala completa, con la tabla de digitaciones del Aaron para consultarla.", fr: "Le mécanisme expliqué, les exercices préparatoires — avant la gamme entière — et la gamme complète, avec le tableau de doigtés de l'Aaron pour référence." }),
-          referencia("p1c8-rep", { es: "Repertorio", fr: "Répertoire" },
-            [repertorio({ es: "March in G (Türk), pág. 7, y Minuet (Reinagle), pág. 8", fr: "March in G (Türk), p. 7, et Minuet (Reinagle), p. 8" })],
-            { es: "Un minueto clásico en 3/4: el mismo compás del curso 3, ahora dentro de una pieza.", fr: "Un menuet classique à 3/4 : la mesure vue au cours 3, cette fois dans une pièce." }),
-          lectura("p1c8-lectura", [...lineasDelCentro("afianzar"), ...dosClaves("inicial1", "afianzar")],
-            { es: "Repaso del Avanzado y del Inicial 1", fr: "Révision de l'Avancé et du Débutant 1" },
-            { es: "Todo lo que rodea el do central, escrito en las dos claves: es lo que más se confunde.", fr: "Tout ce qui entoure le do central, écrit dans les deux clés : c'est ce qui se confond le plus." },
-            { es: ["El acorde de sol del curso 9 lleva la izquierda por encima del do central: hoy lo preparas.", "Apunta precisión y tiempo: sirven para medir el curso 9."], fr: ["L'accord de sol du cours 9 conduit la main gauche au-dessus du do central : tu le prépares aujourd'hui.", "Note la précision et le temps : ils serviront à mesurer le cours 9."] }),
-        ],
-      },
-      {
-        titulo: { es: "Arpegios y acordes de tres sonidos", fr: "Arpèges et accords de trois sons" },
-        objetivo: {
-          es: "Abrir la mano más allá de los cinco dedos seguidos y cerrar el nivel.",
-          fr: "Ouvrir la main au-delà des cinq doigts consécutifs et achever le niveau.",
-        },
-        ejercicios: [
-          ejercicio("p1c9-arpegio", { es: "Arpegio de do mayor", fr: "Arpège de do majeur" },
-            { es: "El salto de sol a do lo hace el 5, no la muñeca.", fr: "Le saut de sol à do se fait avec le 5, pas avec le poignet." },
-            { es: ["Las cuatro notas suenan igual de fuertes.", "Sin acelerar en la bajada."], fr: ["Les quatre notes doivent sonner avec la même intensité.", "Sans accélérer à la descente."] },
-            ARPEGIO_DO_DOS),
-          ejercicio("p1c9-acordes", { es: "Acordes de tres sonidos", fr: "Accords de trois sons" },
-            { es: "Tres notas a la vez, juntas y con el mismo peso.", fr: "Trois notes à la fois, ensemble et avec le même poids." },
-            { es: ["Deja caer el brazo: el acorde no se aprieta con los dedos.", "Escucha si alguna de las tres suena más floja."], fr: ["Laisse tomber le bras : l'accord ne se serre pas avec les doigts.", "Écoute si l'une des trois sonne plus faible."] },
-            ACORDES_DOS),
-          teoria("p1c9-acorde", { es: "Qué es un acorde de tres sonidos", fr: "Qu'est-ce qu'un accord de trois sons" },
-            { es: "Se toma una nota y se le añaden la tercera y la quinta por encima, saltando una tecla blanca cada vez. Do, fa y sol son los tres acordes que sostienen casi toda la música que va a tocar.", fr: "On part d'une note et l'on ajoute au-dessus la tierce, puis la quinte, en sautant une touche blanche à chaque fois. Do, fa et sol forment les trois accords qui soutiennent presque toute la musique que tu vas jouer." },
-            { es: ["Construye tú el acorde de re y el de mi.", "El arpegio es el mismo acorde, nota a nota."], fr: ["Construis l'accord de ré et celui de mi toi-même.", "L'arpège est le même accord, note par note."] },
-            ACORDE_CONSTRUCCION),
-          referencia("p1c9-ref", { es: "Acordes de tres sonidos", fr: "Accords de trois sons" },
-            [
-              pouillard({ es: "cap. IV pág. 38 y cap. V págs. 51-52", fr: "chap. IV p. 38 et chap. V p. 51-52" }),
-              chornet({ es: "págs. 51 y 59, Bach y Mozart", fr: "p. 51 et 59, Bach et Mozart" }),
-              aaron({ es: "págs. 36, 43 y 46, estudios de acordes en do, fa y sol", fr: "p. 36, 43 et 46, études d'accords en do, fa et sol" }),
-            ],
-            { es: "Los acordes de do, fa y sol sobre la partitura, cómo se enlazan y la diferencia entre acorde y acorde quebrado. Con esto cerrado, el nivel está terminado.", fr: "Les accords de do, fa et sol sur la partition, comment ils s'enchaînent, et la différence entre accord plaqué et accord brisé. Une fois cela acquis, le niveau est terminé." }),
-          referencia("p1c9-rep", { es: "Repertorio", fr: "Répertoire" },
-            [repertorio({ es: "Promenade (Reinagle), pág. 9, y Sonatina, I. Allegro moderato (Wilton), pág. 10", fr: "Promenade (Reinagle), p. 9, et Sonatine, I. Allegro moderato (Wilton), p. 10" })],
-            { es: "La pieza que cierra el nivel: un primer movimiento de sonatina, con las dos manos independientes y acordes en la izquierda.", fr: "La pièce qui clôt le niveau : un premier mouvement de sonatine, avec les deux mains indépendantes et des accords à la main gauche." }),
-          lectura("p1c9-lectura", [...dosClaves("inicial1", "afianzar"), ...dosClaves("inicial2", "afianzar"), ...dosClaves("intermedio", "afianzar"), ...lineasDelCentro("afianzar")],
-            { es: "Evaluación: los cuatro niveles en las dos claves", fr: "Évaluation : les quatre niveaux dans les deux clés" },
-            { es: "Las ocho sesiones del nivel, una detrás de otra: es la foto de dónde estás.", fr: "Les huit sessions du niveau, l'une après l'autre : c'est la photo de là où tu en es." },
-            { es: ["Repártelas en dos sesiones de estudio, no las hagas todas de un tirón.", "Compara con los tiempos del curso 1: ahí se ve el camino hecho.", "Si las ocho salen sueltas, estás listo para Tomando vuelo."], fr: ["Répartis-les sur deux séances de travail, ne les enchaîne pas toutes d'un coup.", "Compare avec les temps du cours 1 : c'est là qu'on voit le chemin parcouru.", "Si les huit sont fluides, tu es prêt pour Prendre son envol."] }),
+            { es: "El mecanismo explicado, los ejercicios preparatorios —antes que la escala entera— y la escala completa, con la tabla de digitaciones del Aaron para consultarla. Con esto cerrado, el nivel está terminado.", fr: "Le mécanisme expliqué, les exercices préparatoires — avant la gamme entière — et la gamme complète, avec le tableau de doigtés de l'Aaron pour référence. Une fois cela acquis, le niveau est terminé." }),
+          referencia("p1c11-rep", { es: "Repertorio", fr: "Répertoire" },
+            [repertorio({ es: "Sonatina, II. Minuet (Wilton), pág. 11", fr: "Sonatine, II. Menuet (Wilton), p. 11" })],
+            { es: "La pieza que cierra el nivel: el segundo movimiento de la sonatina, para tocarlo de memoria delante de alguien.", fr: "La pièce qui clôt le niveau : le second mouvement de la sonatine, à jouer de mémoire devant quelqu'un." }),
         ],
       },
     ],

@@ -1,4 +1,4 @@
-import { Renderer, Stave, StaveNote, Formatter, Annotation, BarNote, StaveConnector, Accidental } from "vexflow";
+import { Renderer, Stave, StaveNote, Formatter, Annotation, BarNote, StaveConnector, Accidental, Beam, Dot, StaveTie } from "vexflow";
 import { NIVELES_PRACTICA } from "./programa.js";
 import * as Tone from "tone";
 import "./style.css";
@@ -1021,6 +1021,9 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
         clef: sistema.clef,
       });
       if (nota.alt) staveNote.addModifier(new Accidental(nota.alt), 0);
+      // El puntillo se pide aparte: la duracion "hd" se entiende, pero el
+      // punto no se dibuja solo.
+      if (String(nota.f || "").includes("d")) Dot.buildAndAttach([staveNote], { all: true });
 
       // "t" es el nombre de la nota y va siempre debajo; "d" es la digitacion.
       if (nota.t) {
@@ -1035,7 +1038,24 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
       return staveNote;
     });
 
+    // Las barras de union se construyen antes de formatear, porque cambian la
+    // direccion de los palos, y se pintan despues.
+    const barras = gruposDeBarra(sistema, sistema.compas || partitura.compas)
+      .map((grupo) => new Beam(grupo.map((i) => notas[i])));
+
     Formatter.FormatAndDraw(contexto, pentagramas[indice], notas);
+    barras.forEach((barra) => barra.setContext(contexto).draw());
+
+    // "ligado" ata una nota a la siguiente: es la ligadura de prolongacion,
+    // que suma las dos duraciones en un solo sonido.
+    sistema.notas.forEach((nota, i) => {
+      if (!nota.ligado) return;
+      const siguiente = sistema.notas.findIndex((n, j) => j > i && !n.barra);
+      if (siguiente === -1) return;
+      new StaveTie({ firstNote: notas[i], lastNote: notas[siguiente], firstIndices: [0], lastIndices: [0] })
+        .setContext(contexto)
+        .draw();
+    });
 
     // La digitacion se pinta aparte. Puesta como anotacion de VexFlow queda
     // pegada a la cabeza de la nota, y en las redondas, que no tienen palo,
@@ -1115,6 +1135,40 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
 }
 
 const SVG_NS = "http://www.w3.org/2000/svg";
+
+// Cuanto vale cada figura en tiempos. La "d" del final es el puntillo, que
+// anade la mitad.
+const VALOR_FIGURA = { w: 4, h: 2, q: 1, 8: 0.5, 16: 0.25 };
+function duracionDe(figura) {
+  const base = VALOR_FIGURA[(figura || "q").replace("d", "")] || 1;
+  return String(figura).includes("d") ? base * 1.5 : base;
+}
+
+// VexFlow no une las corcheas por su cuenta: hay que agrupar y pintar las
+// barras a mano. Se agrupan por tiempo, que es como se leen: en los compases
+// de subdivision ternaria (6/8, 9/8, 12/8) el tiempo son tres corcheas, y en
+// los demas una negra.
+function gruposDeBarra(sistema, compas) {
+  const [arriba, abajo] = String(compas || "4/4").split("/").map(Number);
+  const porGrupo = abajo === 8 && arriba % 3 === 0 ? 1.5 : 1;
+  const grupos = [];
+  let actual = [];
+  let suma = 0;
+  const cerrar = () => {
+    if (actual.length > 1) grupos.push(actual);
+    actual = [];
+    suma = 0;
+  };
+  sistema.notas.forEach((nota, i) => {
+    const ligable = !nota.barra && !nota.silencio && (nota.f === "8" || nota.f === "16");
+    if (!ligable) return cerrar();
+    actual.push(i);
+    suma += duracionDe(nota.f);
+    if (suma >= porGrupo - 1e-9) cerrar();
+  });
+  cerrar();
+  return grupos;
+}
 // Alto maximo de cualquier ilustracion, en px: por encima de esto se come la
 // pantalla y hay que hacer scroll para leer el texto que la acompana.
 const ALTO_MAXIMO_DIBUJO = 340;

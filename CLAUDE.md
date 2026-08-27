@@ -70,8 +70,8 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - Lecciones de piano: nivel → curso → lista de bloques → ficha. **Los ejercicios de
   piano de un curso van todos en una sola página**, que es la rutina técnica
   de la clase; el resto de bloques ocupan una fila cada uno. **Tres niveles**,
-  de nueve cursos cada uno y con dificultad progresiva de un curso al
-  siguiente: **Primeros pasos** (`primeros-pasos`), **Tomando vuelo**
+  con dificultad progresiva de un curso al
+  siguiente: **Primeros pasos** (`primeros-pasos`, 11 cursos), **Tomando vuelo**
   (`tomando-vuelo`) y **En escena** (`en-escena`). Sólo el primero está
   preparado; los otros dos salen en el menú con el botón sombreado y
   «En preparación», que es lo que hace `boton.disabled` cuando un nivel no
@@ -135,19 +135,32 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   hacen lo mismo, y verlas bajo una llave hace pensar que suenan a la vez.
   Juntas y al unísono llegan en el curso 3, e independientes a partir del 4.
 - En las partituras, `d` es la digitación y va encima; `t` es el nombre de la
-  nota y va debajo; `silencio: true` la convierte en silencio.
-- **Ritmo, orden de aparición**: la redonda se toca ya en el curso 1, y la
-  teoría de redonda, blanca y negra va en el 2; los silencios de esas tres en
-  el 4; **la corchea y su silencio juntos en el 5**, cuando las manos ya van
-  juntas y tiene sentido partir el tiempo; y la semicorchea en el 7, antes del
-  repertorio, sólo para reconocerla. Nada de corcheas antes del curso 5.
+  nota y va debajo; `silencio: true` la convierte en silencio; `alt` pone un
+  sostenido (`"#"`), un bemol (`"b"`) o un becuadro (`"n"`); una `d` al final de
+  la figura (`"hd"`, `"qd"`) es el puntillo; y `ligado: true` ata la nota con la
+  siguiente con una ligadura de prolongación, también por encima de la línea
+  divisoria.
+- **Las barras de unión se dibujan a mano**: VexFlow no une las corcheas por su
+  cuenta. `gruposDeBarra()` las agrupa por tiempo —tres corcheas en los compases
+  de subdivisión ternaria, una negra en los demás— y las barras se construyen
+  antes de formatear, porque cambian la dirección de los palos, y se pintan
+  después.
+- **Temario de Primeros pasos, curso a curso**: 1 el pentagrama y las dos
+  claves · 2 las figuras · 3 el compás y la línea divisoria · 4 los silencios ·
+  5 la corchea y su silencio · 6 sostenidos y bemoles · 7 los acordes · 8 las
+  semicorcheas y su silencio · 9 el puntillo y la ligadura de prolongación ·
+  10 compases binarios y ternarios · 11 el paso del pulgar y la escala de do.
+- **Una figura nueva entra siempre con su silencio**, y el curso siguiente se
+  apoya en la anterior: el puntillo del 9 es lo que permite entender el tiempo
+  de 6/8 del 10.
 - **Una figura nueva entra con su silencio, y los ejercicios del curso la usan
   de verdad.** No vale presentarla en la teoría y dejar la técnica en lo de
   antes: el curso 5 son cuatro ejercicios de corcheas, uno de ellos con las
   manos alternándose en el hueco que deja el silencio de corchea.
 - **Compases, orden de aparición**: 4/4 desde el principio, y el 3/4 y el 2/4
   en el curso 3, en la misma clase en que se explica qué son los dos números.
-  Un compás nuevo entra con ejercicios que lo usen, no sólo con la teoría.
+  Un compás nuevo entra con ejercicios que lo usen, no sólo con la teoría, y el
+  6/8 llega en el curso 10.
 - **El título de un bloque de lectura dice el nivel y las notas**, con las
   mismas palabras que usa el menú de Lectura en `t().rangos`. Nada de títulos
   evocadores: si el curso trae nivel nuevo, se nombra ese nivel con su rango;
