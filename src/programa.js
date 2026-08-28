@@ -538,8 +538,15 @@ const COMPAS_TERNARIO = {
   ],
 };
 
+// El pentagrama con el sostenido y el bemol, y debajo el teclado con los dos
+// unicos sitios donde dos teclas blancas son vecinas sin negra en medio:
+// mi-fa y si-do estan a un semitono, todas las demas a un tono.
 const ALTERACIONES = {
   tipo: "teoria",
+  teclado: {
+    octavas: 2,
+    marcadas: [{ indice: 6 }, { indice: 7 }, { indice: 9 }, { indice: 10 }],
+  },
   compas: "2/4",
   sistemas: [
     {
@@ -1924,40 +1931,46 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
       {
         titulo: { es: "Sostenidos y bemoles", fr: "Dièses et bémols" },
         objetivo: {
-          es: "Las teclas negras en la partitura: subir y bajar una nota medio tono.",
-          fr: "Les touches noires sur la partition : monter et descendre une note d'un demi-ton.",
+          es: "El tono y el semitono, y los signos que suben o bajan una nota un semitono.",
+          fr: "Le ton et le demi-ton, et les signes qui montent ou descendent une note d'un demi-ton.",
         },
         ejercicios: [
           teoria("p1c6-alteraciones", { es: "Sostenidos y bemoles", fr: "Dièses et bémols" },
             {
               es: [
-                "El sostenido sube la nota a la tecla de al lado hacia la derecha; el bemol la baja a la de al lado hacia la izquierda. Esa distancia, la más corta que hay en el piano, es el medio tono.",
-                "Casi siempre la tecla de al lado es negra, y por eso las alteraciones son la puerta de entrada a las teclas negras.",
+                "La distancia más corta que hay en el piano es el semitono: pasar a la tecla de al lado sin saltarse ninguna, contando también las negras. También se le llama medio tono.",
+                "Dos semitonos seguidos hacen un tono. Do y re están a un tono, porque entre los dos queda una tecla negra.",
+                "Pero no siempre hay negra en medio: entre mi y fa, y entre si y do, no hay ninguna, así que esos dos pares de teclas blancas están a un semitono. Son los dos únicos sitios del teclado donde pasa, y están marcados en el dibujo.",
+                "El sostenido sube la nota un semitono, a la tecla de al lado hacia la derecha; el bemol la baja un semitono, hacia la izquierda. Casi siempre esa vecina es una tecla negra, y por eso las alteraciones son la puerta de entrada a las teclas negras.",
                 "El becuadro deshace la alteración y devuelve la nota a su tecla blanca.",
                 "La alteración vale hasta el final del compás: si la nota vuelve a aparecer en ese mismo compás, sigue alterada aunque no lleve el signo.",
               ],
               fr: [
-                "Le dièse élève la note vers la touche voisine de droite ; le bémol l'abaisse vers la touche voisine de gauche. Cet écart, le plus petit du clavier, s'appelle le demi-ton.",
-                "La touche voisine est presque toujours noire : les altérations sont donc la porte d'entrée des touches noires.",
+                "Le plus petit écart du piano est le demi-ton : passer à la touche voisine sans en sauter aucune, touches noires comprises.",
+                "Deux demi-tons consécutifs font un ton. Do et ré sont distants d'un ton, puisqu'une touche noire les sépare.",
+                "Mais il n'y a pas toujours de noire entre deux : entre mi et fa, et entre si et do, il n'y en a aucune, si bien que ces deux paires de touches blanches sont à un demi-ton. Ce sont les deux seuls endroits du clavier où cela se produit, et ils sont marqués sur le dessin.",
+                "Le dièse élève la note d'un demi-ton, vers la touche voisine de droite ; le bémol l'abaisse d'un demi-ton, vers la gauche. Cette voisine est presque toujours une touche noire : les altérations sont donc la porte d'entrée des touches noires.",
                 "Le bécarre annule l'altération et ramène la note à sa touche blanche.",
                 "Une altération vaut jusqu'à la fin de la mesure : si la note revient dans cette même mesure, elle reste altérée même sans le signe.",
               ],
             },
-            { es: ["Fa sostenido y si bemol son los dos primeros que te vas a encontrar.", "Antes de tocar, di en voz alta qué tecla es: «fa sostenido, la negra de la derecha»."], fr: ["Fa dièse et si bémol sont les deux premières que tu rencontreras.", "Avant de jouer, dis à voix haute de quelle touche il s'agit : « fa dièse, la noire de droite »."] },
+            { es: ["Busca en el teclado los dos sitios donde dos blancas son vecinas: mi-fa y si-do.", "Fa sostenido y si bemol son las dos alteraciones que te vas a encontrar primero.", "Antes de tocar, di en voz alta qué tecla es: «fa sostenido, la negra de la derecha»."], fr: ["Cherche sur le clavier les deux endroits où deux blanches se touchent : mi-fa et si-do.", "Fa dièse et si bémol sont les deux premières altérations que tu rencontreras.", "Avant de jouer, dis à voix haute de quelle touche il s'agit : « fa dièse, la noire de droite »."] },
             ALTERACIONES,
             [
-              concepto({ es: "Medio tono", fr: "Demi-ton" }, { es: "La distancia entre una tecla y la de al lado, contando también las negras. Es la más corta del piano.", fr: "L'écart entre une touche et sa voisine immédiate, touches noires comprises. C'est le plus petit du clavier." }),
-              concepto({ es: "Sostenido", fr: "Dièse" }, { es: "Sube la nota medio tono: la tecla de al lado hacia la derecha.", fr: "Élève la note d'un demi-ton : la touche voisine de droite." }),
-              concepto({ es: "Bemol", fr: "Bémol" }, { es: "Baja la nota medio tono: la tecla de al lado hacia la izquierda.", fr: "Abaisse la note d'un demi-ton : la touche voisine de gauche." }),
+              concepto({ es: "Semitono", fr: "Demi-ton" }, { es: "La distancia entre una tecla y la de al lado, contando también las negras. Es la más corta del piano; también se le llama medio tono.", fr: "L'écart entre une touche et sa voisine immédiate, touches noires comprises. C'est le plus petit du clavier." }),
+              concepto({ es: "Tono", fr: "Ton" }, { es: "Dos semitonos. Entre las dos teclas queda otra en medio, casi siempre negra: do y re están a un tono.", fr: "Deux demi-tons. Une touche s'intercale entre les deux, presque toujours noire : do et ré sont distants d'un ton." }),
+              concepto({ es: "Mi-fa y si-do", fr: "Mi-fa et si-do" }, { es: "Los dos únicos pares de teclas blancas sin negra en medio. Están a un semitono, no a un tono.", fr: "Les deux seules paires de touches blanches sans noire entre elles. Elles sont distantes d'un demi-ton, non d'un ton." }),
+              concepto({ es: "Sostenido", fr: "Dièse" }, { es: "Sube la nota un semitono: la tecla de al lado hacia la derecha.", fr: "Élève la note d'un demi-ton : la touche voisine de droite." }),
+              concepto({ es: "Bemol", fr: "Bémol" }, { es: "Baja la nota un semitono: la tecla de al lado hacia la izquierda.", fr: "Abaisse la note d'un demi-ton : la touche voisine de gauche." }),
               concepto({ es: "Becuadro", fr: "Bécarre" }, { es: "Anula el sostenido o el bemol y devuelve la nota a su tecla blanca.", fr: "Annule le dièse ou le bémol et ramène la note à sa touche blanche." }),
             ]),
           lectura("p1c6-lectura", dosClaves("inicial2", "afianzar"),
             { es: "Repaso del Inicial 2", fr: "Révision du Débutant 2" },
             { es: "De sol a do agudo y de do a sol grave, que llevan tres clases sin tocarse.", fr: "De sol à do aigu et de do à sol grave, qu'on n'a pas revus depuis trois cours." },
             { es: ["Lo que no se repasa se olvida: por eso vuelven cada pocas clases.", "Si una clave va por detrás de la otra, dedícale dos sesiones seguidas."], fr: ["Ce qu'on ne révise pas s'oublie : d'où ce retour toutes les quelques séances.", "Si une clé est en retard sur l'autre, consacre-lui deux sessions d'affilée."] }),
-          ejercicio("p1c6-mediotono", { es: "El medio tono", fr: "Le demi-ton" },
+          ejercicio("p1c6-mediotono", { es: "El semitono", fr: "Le demi-ton" },
             { es: "Ir y venir entre una tecla blanca y la negra que tiene al lado.", fr: "Aller et venir entre une touche blanche et la noire qui la jouxte." },
-            { es: ["El dedo entra un poco más adentro para llegar a la negra, y la mano no gira.", "Escucha lo cerca que están las dos notas: eso es medio tono."], fr: ["Le doigt avance un peu vers le fond pour atteindre la noire, et la main ne pivote pas.", "Écoute comme les deux notes sont proches : voilà un demi-ton."] },
+            { es: ["El dedo entra un poco más adentro para llegar a la negra, y la mano no gira.", "Escucha lo cerca que están las dos notas: eso es un semitono, la distancia más corta del piano."], fr: ["Le doigt avance un peu vers le fond pour atteindre la noire, et la main ne pivote pas.", "Écoute comme les deux notes sont proches : voilà un demi-ton, le plus petit écart du piano."] },
             MEDIO_TONO),
           ejercicio("p1c6-fasostenido", { es: "Con fa sostenido", fr: "Avec le fa dièse" },
             { es: "Los mismos cinco dedos, primero con el fa natural y después con el fa sostenido.", fr: "Les mêmes cinq doigts, d'abord avec le fa naturel puis avec le fa dièse." },
@@ -1972,7 +1985,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               pouillard({ es: "cap. III págs. 28-31", fr: "chap. III p. 28-31" }),
               aaron({ es: "págs. 20-22, el medio tono, el sostenido, el bemol y el becuadro", fr: "p. 20-22, le demi-ton, le dièse, le bémol et le bécarre" }),
             ],
-            { es: "El medio tono y los tres signos que lo escriben, con las primeras piezas que salen de la posición de do.", fr: "Le demi-ton et les trois signes qui le notent, avec les premières pièces qui quittent la position de do." }),
+            { es: "El tono y el semitono, los tres signos que alteran una nota, y las primeras piezas que salen de la posición de do.", fr: "Le ton et le demi-ton, les trois signes qui altèrent une note, et les premières pièces qui quittent la position de do." }),
           referencia("p1c6-rep", { es: "Repertorio", fr: "Répertoire" },
             [repertorio({ es: "Bagpipe (anónimo, s. XVII), pág. 4, y Old German Dance (Praetorius), pág. 5", fr: "Bagpipe (anonyme, XVIIe s.), p. 4, et Old German Dance (Praetorius), p. 5" })],
             { es: "La primera pieza de repertorio de verdad: dos danzas antiguas, cortas y en posición fija. Se elige una y se trabaja hasta el final del nivel.", fr: "La première vraie pièce de répertoire : deux danses anciennes, courtes et en position fixe. On en choisit une et on la travaille jusqu'à la fin du niveau." }),

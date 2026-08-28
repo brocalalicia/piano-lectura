@@ -118,7 +118,10 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   **conceptos con su definición** y una ilustración. La ilustración es un
   pentagrama dibujado con VexFlow, **un teclado de piano**, **las dos manos con
   los dedos numerados** o el **árbol de duraciones**. Todo lo que no es
-  notación sobre un pentagrama se dibuja aparte, en SVG.
+  notación sobre un pentagrama se dibuja aparte, en SVG. **Un bloque puede
+  llevar más de una ilustración**: la lección del tono y el semitono enseña el
+  pentagrama y debajo el teclado, porque el intervalo se entiende mirando las
+  teclas.
 - En el teclado, **cada mano lleva su color**: la derecha va en
   `--color-primario` y la izquierda en `--color-mano-izquierda`. El do central
   sale partido por la mitad, con los dos colores, porque pertenece a las dos

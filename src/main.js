@@ -1951,9 +1951,13 @@ function pintarEjercicio(ejercicio, conTitulo, numero) {
 
   if (partitura.sistemas) {
     dibujarPartituraEjercicio(caja("ficha-partitura"), partitura);
-  } else if (partitura.teclado) {
+  }
+  // El teclado puede acompanar al pentagrama, no solo sustituirlo: hay
+  // lecciones, como la del tono y el semitono, que se ven en los dos sitios.
+  if (partitura.teclado) {
     dibujarTeclado(caja("ficha-partitura"), partitura.teclado);
-  } else if (partitura.manos) {
+  }
+  if (partitura.manos) {
     dibujarManos(caja("ficha-partitura"));
   }
 
