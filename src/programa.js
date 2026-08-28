@@ -559,6 +559,27 @@ const ALTERACIONES = {
   ],
 };
 
+// Tres compases con armadura de sol, que lleva un fa sostenido. En el primero
+// los fa suenan sostenidos sin que se escriba nada; en el segundo un becuadro
+// los vuelve naturales hasta el final del compas; en el tercero la linea
+// divisoria ha borrado el becuadro y vuelve a mandar la armadura.
+const ARMADURA_Y_ACCIDENTALES = {
+  compas: "2/4",
+  armadura: "G",
+  sistemas: [
+    {
+      clef: "treble",
+      notas: [
+        { n: "f/4", t: "fa#" }, { n: "f/4", t: "fa#" },
+        { barra: true },
+        { n: "f/4", t: "fa#" }, { n: "f/4", alt: "n", t: "fa" },
+        { barra: true },
+        { n: "f/4", t: "fa#" }, { n: "f/4", t: "fa#" },
+      ],
+    },
+  ],
+};
+
 const DOS_NOTAS = {
   tipo: "dibujada",
   compas: "4/4",
@@ -1487,6 +1508,7 @@ function teoria(id, titulo, texto, indicaciones, ejemplo, conceptos) {
       ...(ejemplo && ejemplo.compasEsquema ? { compasEsquema: ejemplo.compasEsquema } : {}),
       ...(ejemplo && ejemplo.arbol ? { arbol: ejemplo.arbol } : {}),
       ...(ejemplo && ejemplo.sistemas ? { compas: ejemplo.compas, sistemas: ejemplo.sistemas } : {}),
+      ...(ejemplo && ejemplo.armadura ? { armadura: ejemplo.armadura } : {}),
     },
   };
 }
@@ -1963,6 +1985,35 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               concepto({ es: "Sostenido", fr: "Dièse" }, { es: "Sube la nota un semitono: la tecla de al lado hacia la derecha.", fr: "Élève la note d'un demi-ton : la touche voisine de droite." }),
               concepto({ es: "Bemol", fr: "Bémol" }, { es: "Baja la nota un semitono: la tecla de al lado hacia la izquierda.", fr: "Abaisse la note d'un demi-ton : la touche voisine de gauche." }),
               concepto({ es: "Becuadro", fr: "Bécarre" }, { es: "Anula el sostenido o el bemol y devuelve la nota a su tecla blanca.", fr: "Annule le dièse ou le bémol et ramène la note à sa touche blanche." }),
+            ]),
+          teoria("p1c6-armadura", { es: "La armadura y las alteraciones accidentales", fr: "L'armure et les altérations accidentelles" },
+            {
+              es: [
+                "Un sostenido o un bemol casi nunca aparecen por capricho: pertenecen a una tonalidad, que es el conjunto de notas sobre el que está construida la pieza. Do mayor no lleva ninguna alteración, sol mayor lleva fa sostenido y fa mayor lleva si bemol.",
+                "Las alteraciones de la tonalidad se escriben una sola vez, al principio de cada pentagrama y justo después de la clave: eso es la armadura. Valen para toda la pieza y en todas las octavas, aunque no se vuelvan a escribir.",
+                "En el ejemplo la armadura lleva un fa sostenido, así que todos los fa suenan sostenidos sin que haya que marcar ninguno.",
+                "Una alteración accidental es la que aparece suelta en mitad de la pieza, delante de una nota. No está en la armadura: es una excepción de ese momento.",
+                "La accidental vale hasta la línea divisoria. Desde que se escribe, esa misma nota queda alterada durante el resto del compás aunque no se repita el signo, y un becuadro dentro del compás la anula: a partir de ahí vuelve a ser natural hasta que el compás acabe.",
+                "En el compás siguiente ya no vale nada de eso: la línea divisoria borra las accidentales y la nota vuelve a lo que diga la armadura. Por eso el tercer compás del ejemplo suena otra vez con fa sostenido.",
+                "Dos excepciones que conviene conocer: si una nota alterada está ligada por encima de la línea divisoria, la ligadura mantiene la alteración hasta que la nota acaba; y muchas ediciones vuelven a escribir el signo en el compás siguiente, a veces entre paréntesis, sólo como recordatorio. Es una alteración de precaución y no cambia nada.",
+              ],
+              fr: [
+                "Un dièse ou un bémol n'apparaissent presque jamais par hasard : ils appartiennent à une tonalité, l'ensemble de notes sur lequel le morceau est bâti. Do majeur ne porte aucune altération, sol majeur porte un fa dièse et fa majeur un si bémol.",
+                "Les altérations de la tonalité s'écrivent une seule fois, au début de chaque portée et juste après la clé : c'est l'armure. Elles valent pour tout le morceau et à toutes les octaves, même si on ne les réécrit pas.",
+                "Dans l'exemple, l'armure porte un fa dièse : tous les fa sonnent donc dièse sans qu'il faille en marquer aucun.",
+                "Une altération accidentelle est celle qui surgit isolément au milieu du morceau, devant une note. Elle n'est pas à l'armure : c'est une exception du moment.",
+                "L'accidentelle vaut jusqu'à la barre de mesure. Dès qu'elle est écrite, cette même note reste altérée jusqu'à la fin de la mesure même si le signe ne se répète pas, et un bécarre placé dans la mesure l'annule : à partir de là, la note redevient naturelle jusqu'à la fin de la mesure.",
+                "À la mesure suivante, plus rien de tout cela ne vaut : la barre de mesure efface les accidentelles et la note revient à ce que dit l'armure. C'est pourquoi la troisième mesure de l'exemple sonne de nouveau avec un fa dièse.",
+                "Deux exceptions à connaître : si une note altérée est liée par-dessus la barre de mesure, la liaison conserve l'altération jusqu'à la fin de la note ; et bien des éditions réécrivent le signe à la mesure suivante, parfois entre parenthèses, en simple rappel. C'est une altération de précaution, elle ne change rien.",
+              ],
+            },
+            { es: ["Mira siempre la armadura antes de tocar: es lo primero que hay después de la clave.", "Si dudas dentro de un compás, vuelve al principio del compás y léelo entero de nuevo.", "Regla corta: la armadura manda en toda la pieza, la accidental sólo hasta la línea divisoria."], fr: ["Regarde toujours l'armure avant de jouer : c'est ce qui suit immédiatement la clé.", "En cas de doute dans une mesure, reprends-la depuis son début et relis-la en entier.", "Règle courte : l'armure vaut pour tout le morceau, l'accidentelle seulement jusqu'à la barre de mesure."] },
+            ARMADURA_Y_ACCIDENTALES,
+            [
+              concepto({ es: "Tonalidad", fr: "Tonalité" }, { es: "El conjunto de notas sobre el que está construida una pieza. Cada tonalidad tiene sus alteraciones fijas.", fr: "L'ensemble de notes sur lequel un morceau est bâti. Chaque tonalité a ses altérations fixes." }),
+              concepto({ es: "Armadura", fr: "Armure" }, { es: "Las alteraciones de la tonalidad, escritas al principio de cada pentagrama después de la clave. Valen para toda la pieza y en todas las octavas.", fr: "Les altérations de la tonalité, écrites au début de chaque portée après la clé. Elles valent pour tout le morceau et à toutes les octaves." }),
+              concepto({ es: "Alteración accidental", fr: "Altération accidentelle" }, { es: "La que aparece suelta delante de una nota. Vale desde ahí hasta la línea divisoria, y no más allá.", fr: "Celle qui surgit isolément devant une note. Elle vaut de là jusqu'à la barre de mesure, et pas au-delà." }),
+              concepto({ es: "Alteración de precaución", fr: "Altération de précaution" }, { es: "El mismo signo repetido en el compás siguiente, a veces entre paréntesis, sólo para recordarlo. No cambia nada.", fr: "Le même signe répété à la mesure suivante, parfois entre parenthèses, en simple rappel. Il ne change rien." }),
             ]),
           lectura("p1c6-lectura", dosClaves("inicial2", "afianzar"),
             { es: "Repaso del Inicial 2", fr: "Révision du Débutant 2" },

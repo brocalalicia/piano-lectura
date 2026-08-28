@@ -992,6 +992,10 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   const pentagramas = partitura.sistemas.map((sistema, indice) => {
     const pentagrama = new Stave(0, 40 + indice * separacion, ancho);
     pentagrama.addClef(sistema.clef);
+    // La armadura va entre la clave y el compas, y es la que dice que notas
+    // estan alteradas en toda la pieza.
+    const armadura = sistema.armadura || partitura.armadura;
+    if (armadura) pentagrama.addKeySignature(armadura);
     const compas = sistema.compas || partitura.compas;
     if (compas) pentagrama.addTimeSignature(compas);
     pentagrama.setContext(contexto).draw();

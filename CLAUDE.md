@@ -142,7 +142,8 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   sostenido (`"#"`), un bemol (`"b"`) o un becuadro (`"n"`); una `d` al final de
   la figura (`"hd"`, `"qd"`) es el puntillo; y `ligado: true` ata la nota con la
   siguiente con una ligadura de prolongación, también por encima de la línea
-  divisoria.
+  divisoria. `armadura` (`"G"`, `"F"`…) pinta la armadura entre la clave y el
+  compás.
 - **Las barras de unión se dibujan a mano**: VexFlow no une las corcheas por su
   cuenta. `gruposDeBarra()` las agrupa por tiempo —tres corcheas en los compases
   de subdivisión ternaria, una negra en los demás— y las barras se construyen
