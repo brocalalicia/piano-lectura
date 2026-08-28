@@ -541,11 +541,28 @@ const COMPAS_TERNARIO = {
 // El pentagrama con el sostenido y el bemol, y debajo el teclado con los dos
 // unicos sitios donde dos teclas blancas son vecinas sin negra en medio:
 // mi-fa y si-do estan a un semitono, todas las demas a un tono.
+const COLOR_TONO = "var(--color-mano-izquierda)";
+const COLOR_SEMITONO = "var(--color-primario)";
+
+// El teclado con las dos distancias marcadas y nombradas: do-re es un tono,
+// porque hay una negra en medio, y mi-fa un semitono, porque no la hay. Debajo,
+// las dos teclas negras que se van a leer alteradas, con su nombre.
 const ALTERACIONES = {
   tipo: "teoria",
   teclado: {
     octavas: 2,
-    marcadas: [{ indice: 6 }, { indice: 7 }, { indice: 9 }, { indice: 10 }],
+    marcadas: [
+      { indice: 0, color: COLOR_TONO }, { indice: 1, color: COLOR_TONO },
+      { indice: 9, color: COLOR_SEMITONO }, { indice: 10, color: COLOR_SEMITONO },
+    ],
+    intervalos: [
+      { desde: 0, hasta: 1, texto: { es: "tono", fr: "ton" }, color: COLOR_TONO },
+      { desde: 9, hasta: 10, texto: { es: "semitono", fr: "demi-ton" }, color: COLOR_SEMITONO },
+    ],
+    negras: [
+      { indice: 10, texto: { es: "fa♯", fr: "fa♯" }, color: COLOR_SEMITONO },
+      { indice: 12, texto: { es: "si♭", fr: "si♭" }, color: COLOR_SEMITONO },
+    ],
   },
   compas: "2/4",
   sistemas: [
@@ -1962,21 +1979,23 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               es: [
                 "La distancia más corta que hay en el piano es el semitono: pasar a la tecla de al lado sin saltarse ninguna, contando también las negras. También se le llama medio tono.",
                 "Dos semitonos seguidos hacen un tono. Do y re están a un tono, porque entre los dos queda una tecla negra.",
-                "Pero no siempre hay negra en medio: entre mi y fa, y entre si y do, no hay ninguna, así que esos dos pares de teclas blancas están a un semitono. Son los dos únicos sitios del teclado donde pasa, y están marcados en el dibujo.",
+                "Pero no siempre hay negra en medio: entre mi y fa, y entre si y do, no hay ninguna, así que esos dos pares de teclas blancas están a un semitono. Son los dos únicos sitios del teclado donde pasa. En el dibujo tienes las dos distancias marcadas: do-re en azul es un tono, mi-fa en naranja es un semitono.",
                 "El sostenido sube la nota un semitono, a la tecla de al lado hacia la derecha; el bemol la baja un semitono, hacia la izquierda. Casi siempre esa vecina es una tecla negra, y por eso las alteraciones son la puerta de entrada a las teclas negras.",
+                "Debajo del teclado están señaladas las dos que vas a leer: el fa♯ es la negra que hay justo encima del fa, y el si♭ la que hay justo debajo del si. En el pentagrama son las dos notas del ejemplo.",
                 "El becuadro deshace la alteración y devuelve la nota a su tecla blanca.",
                 "La alteración vale hasta el final del compás: si la nota vuelve a aparecer en ese mismo compás, sigue alterada aunque no lleve el signo.",
               ],
               fr: [
                 "Le plus petit écart du piano est le demi-ton : passer à la touche voisine sans en sauter aucune, touches noires comprises.",
                 "Deux demi-tons consécutifs font un ton. Do et ré sont distants d'un ton, puisqu'une touche noire les sépare.",
-                "Mais il n'y a pas toujours de noire entre deux : entre mi et fa, et entre si et do, il n'y en a aucune, si bien que ces deux paires de touches blanches sont à un demi-ton. Ce sont les deux seuls endroits du clavier où cela se produit, et ils sont marqués sur le dessin.",
+                "Mais il n'y a pas toujours de noire entre deux : entre mi et fa, et entre si et do, il n'y en a aucune, si bien que ces deux paires de touches blanches sont à un demi-ton. Ce sont les deux seuls endroits du clavier où cela se produit. Le dessin montre les deux écarts : do-ré en bleu est un ton, mi-fa en orange un demi-ton.",
                 "Le dièse élève la note d'un demi-ton, vers la touche voisine de droite ; le bémol l'abaisse d'un demi-ton, vers la gauche. Cette voisine est presque toujours une touche noire : les altérations sont donc la porte d'entrée des touches noires.",
+                "Sous le clavier sont repérées les deux que tu vas lire : le fa♯ est la noire juste au-dessus du fa, et le si♭ celle qui est juste en dessous du si. Sur la portée, ce sont les deux notes de l'exemple.",
                 "Le bécarre annule l'altération et ramène la note à sa touche blanche.",
                 "Une altération vaut jusqu'à la fin de la mesure : si la note revient dans cette même mesure, elle reste altérée même sans le signe.",
               ],
             },
-            { es: ["Busca en el teclado los dos sitios donde dos blancas son vecinas: mi-fa y si-do.", "Fa sostenido y si bemol son las dos alteraciones que te vas a encontrar primero.", "Antes de tocar, di en voz alta qué tecla es: «fa sostenido, la negra de la derecha»."], fr: ["Cherche sur le clavier les deux endroits où deux blanches se touchent : mi-fa et si-do.", "Fa dièse et si bémol sont les deux premières altérations que tu rencontreras.", "Avant de jouer, dis à voix haute de quelle touche il s'agit : « fa dièse, la noire de droite »."] },
+            { es: ["Busca en el teclado los dos sitios donde dos blancas son vecinas: mi-fa y si-do.", "Lee la nota en el pentagrama y señálala en el teclado del dibujo antes de tocarla.", "Antes de tocar, di en voz alta qué tecla es: «fa sostenido, la negra de la derecha»."], fr: ["Cherche sur le clavier les deux endroits où deux blanches se touchent : mi-fa et si-do.", "Lis la note sur la portée et montre-la sur le clavier du dessin avant de la jouer.", "Avant de jouer, dis à voix haute de quelle touche il s'agit : « fa dièse, la noire de droite »."] },
             ALTERACIONES,
             [
               concepto({ es: "Semitono", fr: "Demi-ton" }, { es: "La distancia entre una tecla y la de al lado, contando también las negras. Es la más corta del piano; también se le llama medio tono.", fr: "L'écart entre une touche et sa voisine immédiate, touches noires comprises. C'est le plus petit du clavier." }),

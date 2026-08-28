@@ -1218,10 +1218,22 @@ function dibujarTeclado(contenedor, teclado) {
 
   const blancas = teclado.octavas * 7;
   const ancho = blancas * ANCHO_BLANCA;
-  const alto = ALTO_BLANCA + 26;
   const claves = teclado.claves || [];
-  // Sitio por encima del teclado para las claves, si las lleva.
-  const arriba = claves.length ? Math.ceil(ALTO_CLAVE) + 16 : 0;
+  const intervalos = teclado.intervalos || [];
+  const negras = teclado.negras || [];
+  // Los nombres de las teclas negras van en una segunda fila, debajo de los de
+  // las blancas, con una guia que sube hasta su tecla.
+  // Los nombres de las blancas van siempre a la misma altura; los de las
+  // negras, una fila mas abajo, y esa fila es la que estira el dibujo.
+  const filaNombres = ALTO_BLANCA + 20;
+  const filaNegras = filaNombres + 22;
+  const alto = (negras.some((n) => n.texto) ? filaNegras : filaNombres) + 6;
+  // Sitio por encima del teclado para las claves o para los corchetes de
+  // intervalo, segun lo que lleve.
+  const arriba = Math.max(
+    claves.length ? Math.ceil(ALTO_CLAVE) + 16 : 0,
+    intervalos.length ? 36 : 0
+  );
 
   const svg = document.createElementNS(SVG_NS, "svg");
   svg.setAttribute("viewBox", `-1 ${-arriba - 1} ${ancho + 2} ${alto + arriba + 2}`);
@@ -1233,6 +1245,10 @@ function dibujarTeclado(contenedor, teclado) {
   svg.style.maxWidth = `${Math.round(((ancho + 2) * ALTO_MAXIMO_DIBUJO) / (alto + arriba + 2))}px`;
 
   const marcadas = new Map((teclado.marcadas || []).map((m) => [m.indice, m]));
+  const colorDe = (marca) => marca.color || COLOR_MANO[[].concat(marca.mano || "derecha")[0]];
+  const centro = (i) => i * ANCHO_BLANCA + ANCHO_BLANCA / 2;
+  // La negra que sigue a la blanca i se dibuja a caballo entre las dos.
+  const centroNegra = (i) => (i + 1) * ANCHO_BLANCA;
   const tecla = (x) => {
     const r = document.createElementNS(SVG_NS, "rect");
     r.setAttribute("x", x);
@@ -1249,7 +1265,7 @@ function dibujarTeclado(contenedor, teclado) {
     const x = i * ANCHO_BLANCA;
 
     const fondo = tecla(x);
-    fondo.setAttribute("fill", manos.length ? COLOR_MANO[manos[0]] : "#ffffff");
+    fondo.setAttribute("fill", marca ? colorDe(marca) : "#ffffff");
     svg.appendChild(fondo);
 
     // El do central pertenece a las dos claves: la tecla se parte por la mitad
@@ -1271,32 +1287,92 @@ function dibujarTeclado(contenedor, teclado) {
     if (marca) {
       const texto = document.createElementNS(SVG_NS, "text");
       texto.setAttribute("x", x + ANCHO_BLANCA / 2);
-      texto.setAttribute("y", alto - 6);
+      texto.setAttribute("y", filaNombres);
       texto.setAttribute("text-anchor", "middle");
       texto.setAttribute("font-family", "Nunito, sans-serif");
       texto.setAttribute("font-size", 15);
       texto.setAttribute("font-weight", 800);
       texto.setAttribute("fill", "#3a322c");
-      texto.textContent = marca.texto || NOMBRES[i % 7];
+      texto.textContent = marca.texto ? txt(marca.texto) : NOMBRES[i % 7];
       svg.appendChild(texto);
     }
   }
 
+  const negrasMarcadas = new Map(negras.map((n) => [n.indice, n]));
+
   for (let i = 0; i < blancas; i += 1) {
     if (!CON_NEGRA.includes(i % 7) || i === blancas - 1) continue;
+    const marca = negrasMarcadas.get(i);
     const negra = document.createElementNS(SVG_NS, "rect");
-    negra.setAttribute("x", (i + 1) * ANCHO_BLANCA - ANCHO_NEGRA / 2);
+    negra.setAttribute("x", centroNegra(i) - ANCHO_NEGRA / 2);
     negra.setAttribute("y", 0);
     negra.setAttribute("width", ANCHO_NEGRA);
     negra.setAttribute("height", ALTO_NEGRA);
     negra.setAttribute("rx", 2);
-    negra.setAttribute("fill", "#3a322c");
+    negra.setAttribute("fill", marca ? colorDe(marca) : "#3a322c");
+    if (marca) {
+      negra.setAttribute("stroke", "#3a322c");
+      negra.setAttribute("stroke-width", 1.5);
+    }
     svg.appendChild(negra);
   }
 
+  // El nombre de una tecla negra va en su propia fila, con una guia que sube
+  // hasta ella para que se vea de cual se habla.
+  negras.filter((n) => n.texto).forEach((n) => {
+    const x = centroNegra(n.indice);
+    const guia = document.createElementNS(SVG_NS, "line");
+    guia.setAttribute("x1", x);
+    guia.setAttribute("y1", ALTO_NEGRA);
+    guia.setAttribute("x2", x);
+    guia.setAttribute("y2", filaNegras - 12);
+    guia.setAttribute("stroke", colorDe(n));
+    guia.setAttribute("stroke-width", 2);
+    guia.setAttribute("stroke-dasharray", "3 3");
+    svg.appendChild(guia);
+
+    const texto = document.createElementNS(SVG_NS, "text");
+    texto.setAttribute("x", x);
+    texto.setAttribute("y", filaNegras);
+    texto.setAttribute("text-anchor", "middle");
+    texto.setAttribute("font-family", "Nunito, sans-serif");
+    texto.setAttribute("font-size", 15);
+    texto.setAttribute("font-weight", 800);
+    texto.setAttribute("fill", colorDe(n));
+    texto.textContent = txt(n.texto);
+    svg.appendChild(texto);
+  });
+
+  // Un corchete por encima de las teclas, con el nombre de la distancia que
+  // hay entre ellas: un tono, un semitono.
+  intervalos.forEach((intervalo) => {
+    const x1 = centro(intervalo.desde);
+    const x2 = centro(intervalo.hasta);
+    const y = -14;
+
+    const corchete = document.createElementNS(SVG_NS, "path");
+    corchete.setAttribute("d", `M ${x1} ${y + 7} V ${y} H ${x2} V ${y + 7}`);
+    corchete.setAttribute("fill", "none");
+    corchete.setAttribute("stroke", intervalo.color);
+    corchete.setAttribute("stroke-width", 2.5);
+    corchete.setAttribute("stroke-linecap", "round");
+    svg.appendChild(corchete);
+
+    const texto = document.createElementNS(SVG_NS, "text");
+    texto.setAttribute("x", (x1 + x2) / 2);
+    texto.setAttribute("y", y - 7);
+    texto.setAttribute("text-anchor", "middle");
+    texto.setAttribute("font-family", "Nunito, sans-serif");
+    texto.setAttribute("font-size", 15);
+    texto.setAttribute("font-weight", 800);
+    texto.setAttribute("fill", intervalo.color);
+    texto.textContent = txt(intervalo.texto);
+    svg.appendChild(texto);
+  });
+
   // Cada clave, encima de la tecla en la que empieza su grupo de notas.
   claves.forEach((c) => {
-    pintarClave(svg, c.clef, c.indice * ANCHO_BLANCA + ANCHO_BLANCA / 2, -10, COLOR_MANO[c.mano]);
+    pintarClave(svg, c.clef, centro(c.indice), -10, COLOR_MANO[c.mano]);
   });
 
   contenedor.appendChild(svg);
@@ -1953,13 +2029,13 @@ function pintarEjercicio(ejercicio, conTitulo, numero) {
     dibujarCompas(caja("ficha-partitura"), partitura.compasEsquema);
   }
 
-  if (partitura.sistemas) {
-    dibujarPartituraEjercicio(caja("ficha-partitura"), partitura);
-  }
-  // El teclado puede acompanar al pentagrama, no solo sustituirlo: hay
-  // lecciones, como la del tono y el semitono, que se ven en los dos sitios.
+  // El teclado va delante del pentagrama: primero se ven las teclas y despues
+  // como se escribe lo que suena en ellas.
   if (partitura.teclado) {
     dibujarTeclado(caja("ficha-partitura"), partitura.teclado);
+  }
+  if (partitura.sistemas) {
+    dibujarPartituraEjercicio(caja("ficha-partitura"), partitura);
   }
   if (partitura.manos) {
     dibujarManos(caja("ficha-partitura"));
