@@ -98,7 +98,10 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   primero se lee la nota, después se sitúa en el teclado, luego se piensa el
   dedo y al final el ritmo. El orden es: **la teoría que abre → lectura → el
   resto de la teoría → piano → métodos**. La lectura va pegada a la teoría que
-  la explica, no al final de toda la teoría. Un curso empieza por teoría y
+  la explica, no al final de toda la teoría. **La teoría que abre son todos los
+  bloques de teoría que van seguidos al principio del catálogo**, no sólo el
+  primero: una lección que se explica en dos o tres pasos no se parte con la
+  lectura en medio. Un curso empieza por teoría y
   acaba en el piano, nunca al revés.
 - Cada bloque lleva su etiqueta visible: Teoría, Lectura, Técnica o Método.
 - **En la lista de un curso, cada lección es sólo su título y su etiqueta.**
@@ -118,7 +121,10 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   **conceptos con su definición** y una ilustración. La ilustración es un
   pentagrama dibujado con VexFlow, **un teclado de piano**, **las dos manos con
   los dedos numerados** o el **árbol de duraciones**. Todo lo que no es
-  notación sobre un pentagrama se dibuja aparte, en SVG. **Un bloque puede
+  notación sobre un pentagrama se dibuja aparte, en SVG. Un ejemplo de varios
+  pentagramas que no son las dos manos —tres armaduras, por ejemplo— lleva
+  `sinLlave: true` para que no se dibuje la llave, y el rótulo `t` de una nota
+  admite los dos idiomas. **Un bloque puede
   llevar más de una ilustración, y el teclado va siempre delante del
   pentagrama**: primero se ven las teclas y después cómo se escribe lo que
   suena en ellas.

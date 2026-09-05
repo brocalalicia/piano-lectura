@@ -976,7 +976,9 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
 
   // Si las notas llevan su nombre debajo, cada una necesita el ancho del
   // rotulo, o el texto se sale del dibujo y se pisa con el de al lado.
-  const nombres = partitura.sistemas.flatMap((sistema) => sistema.notas.map((nota) => nota.t)).filter(Boolean);
+  // El rotulo de una nota puede ser un texto suelto o venir en los dos idiomas.
+  const rotulo = (nota) => (nota.t && typeof nota.t === "object" ? txt(nota.t) : nota.t);
+  const nombres = partitura.sistemas.flatMap((sistema) => sistema.notas.map(rotulo)).filter(Boolean);
   const hayNombres = nombres.length > 0;
   const rotuloMasLargo = hayNombres ? Math.max(...nombres.map((texto) => texto.length * 8 + 20)) : 0;
   const porNota = Math.max(42, rotuloMasLargo);
@@ -1003,7 +1005,7 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   });
 
   // Manos juntas: llave y linea que unen los dos pentagramas.
-  if (pentagramas.length > 1) {
+  if (pentagramas.length > 1 && !partitura.sinLlave) {
     const primero = pentagramas[0];
     const ultimo = pentagramas[pentagramas.length - 1];
     new StaveConnector(primero, ultimo).setType(StaveConnector.type.BRACE).setContext(contexto).draw();
@@ -1031,7 +1033,7 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
 
       // "t" es el nombre de la nota y va siempre debajo; "d" es la digitacion.
       if (nota.t) {
-        const nombre = new Annotation(nota.t);
+        const nombre = new Annotation(rotulo(nota));
         nombre.setVerticalJustification(Annotation.VerticalJustify.BOTTOM);
         nombre.setFont("Nunito, sans-serif", 14, "normal");
         nombre.setStyle({ fillStyle: "#3a322c", strokeStyle: "#3a322c" });
@@ -1133,8 +1135,9 @@ function dibujarPartituraEjercicio(contenedor, partitura) {
   const anchoVista = ancho + 12;
   const altoVista = abajo - arriba;
   // El tope de alto va por pentagrama: si no, un ejercicio de una sola mano,
-  // que es la mitad de alto, se estira al doble que uno de dos.
-  const altoTope = Math.min(ALTO_MAXIMO_DIBUJO, 170 * partitura.sistemas.length);
+  // que es la mitad de alto, se estira al doble que uno de dos, y una tabla de
+  // tres pentagramas se queda estrujada.
+  const altoTope = ALTO_POR_PENTAGRAMA * partitura.sistemas.length;
   svg.style.maxWidth = `${Math.round(Math.min(anchoVista * 2.4, (altoTope * anchoVista) / altoVista))}px`;
 }
 
@@ -1173,9 +1176,12 @@ function gruposDeBarra(sistema, compas) {
   cerrar();
   return grupos;
 }
-// Alto maximo de cualquier ilustracion, en px: por encima de esto se come la
-// pantalla y hay que hacer scroll para leer el texto que la acompana.
+// Alto maximo de una ilustracion sin pentagramas, en px: por encima de esto se
+// come la pantalla y hay que hacer scroll para leer el texto que la acompana.
 const ALTO_MAXIMO_DIBUJO = 340;
+// Lo que puede crecer cada pentagrama de una partitura. El total sale de
+// multiplicarlo por cuantos lleve.
+const ALTO_POR_PENTAGRAMA = 170;
 
 // Teclado de piano dibujado a mano: el renderizador de partituras no sirve
 // para esto y es justo lo que hace falta para situar las notas en las teclas.
