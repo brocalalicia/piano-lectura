@@ -1236,9 +1236,12 @@ function dibujarTeclado(contenedor, teclado) {
   const alto = (negras.some((n) => n.texto) ? filaNegras : filaNombres) + 6;
   // Sitio por encima del teclado para las claves o para los corchetes de
   // intervalo, segun lo que lleve.
+  // Dos corchetes seguidos se pisarian el rotulo, asi que cada uno puede pedir
+  // su fila con "fila".
+  const filasIntervalo = intervalos.length ? Math.max(...intervalos.map((i) => i.fila || 0)) : 0;
   const arriba = Math.max(
     claves.length ? Math.ceil(ALTO_CLAVE) + 16 : 0,
-    intervalos.length ? 36 : 0
+    intervalos.length ? 36 + filasIntervalo * 24 : 0
   );
 
   const svg = document.createElementNS(SVG_NS, "svg");
@@ -1354,7 +1357,7 @@ function dibujarTeclado(contenedor, teclado) {
   intervalos.forEach((intervalo) => {
     const x1 = centro(intervalo.desde);
     const x2 = centro(intervalo.hasta);
-    const y = -14;
+    const y = -14 - (intervalo.fila || 0) * 24;
 
     const corchete = document.createElementNS(SVG_NS, "path");
     corchete.setAttribute("d", `M ${x1} ${y + 7} V ${y} H ${x2} V ${y + 7}`);

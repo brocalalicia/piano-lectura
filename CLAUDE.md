@@ -130,8 +130,11 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   suena en ellas.
 - El teclado sabe marcar teclas blancas (`marcadas`, con `mano` o `color`) y
   **negras** (`negras`, con su nombre y una guía que sube hasta la tecla),
-  dibujar **corchetes de intervalo** con su nombre (`intervalos`, para el tono
-  y el semitono) y poner **claves** encima (`claves`).
+  dibujar **corchetes de intervalo** con su nombre (`intervalos`, con `fila`
+  para apilarlos cuando van seguidos) y poner **claves** encima (`claves`).
+- **Un dibujo, una idea.** El teclado del tono y el semitono marca sólo teclas
+  blancas: meter ahí además las alteradas mezclaba dos lecciones y se entendía
+  peor. `negras` sigue disponible para un dibujo que trate de eso.
 - En el teclado, **cada mano lleva su color**: la derecha va en
   `--color-primario` y la izquierda en `--color-mano-izquierda`. El do central
   sale partido por la mitad, con los dos colores, porque pertenece a las dos
