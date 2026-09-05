@@ -64,6 +64,7 @@ const NOTAS_REPETIDAS = {
 
 const ESCALA_DO_DERECHA = {
   tipo: "dibujada",
+  digitacion: true,
   compas: "4/4",
   sistemas: [
     {
@@ -102,6 +103,7 @@ const ESCALA_DO_IZQUIERDA = {
 
 const ARPEGIO_DO = {
   tipo: "dibujada",
+  digitacion: true,
   compas: "4/4",
   sistemas: [
     {
@@ -117,6 +119,7 @@ const ARPEGIO_DO = {
 
 const ACORDES_TRES_SONIDOS = {
   tipo: "dibujada",
+  digitacion: true,
   compas: "4/4",
   sistemas: [
     {
@@ -599,6 +602,7 @@ const ARMADURA_Y_ACCIDENTALES = {
 
 const DOS_NOTAS = {
   tipo: "dibujada",
+  digitacion: true,
   compas: "4/4",
   sistemas: [
     {
@@ -761,6 +765,7 @@ const POSICION_SOL = aDosManos(
 const PREPARACION_PULGAR = aDosManos(
   {
     tipo: "dibujada",
+    digitacion: true,
     compas: "4/4",
     sistemas: [
       {
@@ -1694,7 +1699,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
               concepto({ es: "Teclas negras", fr: "Touches noires" }, { es: "Van en grupos de dos y de tres, y sirven para orientarse sin contar desde el extremo.", fr: "Groupées par deux et par trois, elles servent de repères : inutile de compter depuis l'extrémité du clavier." }),
               concepto({ es: "Registro", fr: "Registre" }, { es: "La zona del teclado que cubre cada clave: la de fa a la izquierda del do central, la de sol a la derecha.", fr: "La zone du clavier que couvre chaque clé : celle de fa à gauche du do central, celle de sol à droite." }),
             ]),
-          teoria("p1c1-digitacion", { es: "La digitación: qué dedo es cada número", fr: "Le doigté : quel doigt pour chaque numéro" },
+          teoria("p1c1-digitacion", { es: "Digitación", fr: "Doigté" },
             { es: "Los dedos se numeran del 1 al 5 empezando por el pulgar, y es igual en las dos manos: el pulgar siempre es el 1 y el meñique siempre el 5. Por eso los números van en espejo, y los dos pulgares se encuentran en el centro del teclado. En la partitura, el número pequeño junto a la nota dice con qué dedo tocarla.", fr: "Les doigts se numérotent de 1 à 5 en partant du pouce, et la règle vaut pour les deux mains : le pouce est toujours le 1, l'auriculaire toujours le 5. Les numéros se lisent donc en miroir, et les deux pouces se rejoignent au centre du clavier. Sur la partition, le petit chiffre placé près de la note indique le doigt à employer." },
             { es: ["Que sepas decir el número de cada dedo sin mirar el dibujo.", "Cuidado: no es el orden de izquierda a derecha, es desde el pulgar."], fr: ["Sache dire le numéro de chaque doigt sans regarder le dessin.", "Attention : ce n'est pas l'ordre de gauche à droite, c'est à partir du pouce."] },
             MANOS,
@@ -1897,7 +1902,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             MANOS_ALTERNAS),
           ejercicio("p1c4-terceras", { es: "Terceras", fr: "Tierces" },
             { es: "Saltar un dedo sin que la mano se mueva de sitio.", fr: "Sauter un doigt sans que la main bouge de place." },
-            { es: ["Los dedos que no tocan se quedan sobre sus teclas.", "El salto se prepara antes, no en el último momento."], fr: ["Les doigts qui ne jouent pas restent sur leurs touches.", "Le saut se prépare à l'avance, pas au dernier moment."] },
+            { es: ["Los saltos van 1-3, 2-4 y 3-5: dilo en voz alta antes de tocar, que ya no está escrito.", "Los dedos que no tocan se quedan sobre sus teclas.", "El salto se prepara antes, no en el último momento."], fr: ["Les sauts se font 1-3, 2-4 et 3-5 : dis-le à voix haute avant de jouer, ce n'est plus écrit.", "Les doigts qui ne jouent pas restent sur leurs touches.", "Le saut se prépare à l'avance, pas au dernier moment."] },
             TERCERAS),
           referencia("p1c4-ref", { es: "Ganando independencia: manos alternadas", fr: "Gagner en indépendance : mains alternées" },
             [
@@ -2040,7 +2045,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             { es: ["Lo que no se repasa se olvida: por eso vuelven cada pocas clases.", "Si una clave va por detrás de la otra, dedícale dos sesiones seguidas."], fr: ["Ce qu'on ne révise pas s'oublie : d'où ce retour toutes les quelques séances.", "Si une clé est en retard sur l'autre, consacre-lui deux sessions d'affilée."] }),
           ejercicio("p1c6-mediotono", { es: "El semitono", fr: "Le demi-ton" },
             { es: "Ir y venir entre una tecla blanca y la negra que tiene al lado.", fr: "Aller et venir entre une touche blanche et la noire qui la jouxte." },
-            { es: ["El dedo entra un poco más adentro para llegar a la negra, y la mano no gira.", "Escucha lo cerca que están las dos notas: eso es un semitono, la distancia más corta del piano."], fr: ["Le doigt avance un peu vers le fond pour atteindre la noire, et la main ne pivote pas.", "Écoute comme les deux notes sont proches : voilà un demi-ton, le plus petit écart du piano."] },
+            { es: ["Con la derecha, 1-2 en el primer compás y 2-3 en el segundo; con la izquierda, 5-4 y 4-3.", "El dedo entra un poco más adentro para llegar a la negra, y la mano no gira.", "Escucha lo cerca que están las dos notas: eso es un semitono, la distancia más corta del piano."], fr: ["À la main droite, 1-2 dans la première mesure et 2-3 dans la seconde ; à la main gauche, 5-4 puis 4-3.", "Le doigt avance un peu vers le fond pour atteindre la noire, et la main ne pivote pas.", "Écoute comme les deux notes sont proches : voilà un demi-ton, le plus petit écart du piano."] },
             MEDIO_TONO),
           ejercicio("p1c6-fasostenido", { es: "Con fa sostenido", fr: "Avec le fa dièse" },
             { es: "Los mismos cinco dedos, primero con el fa natural y después con el fa sostenido.", fr: "Les mêmes cinq doigts, d'abord avec le fa naturel puis avec le fa dièse." },
@@ -2304,4 +2309,41 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
   },
 ];
 
-export const NIVELES_PRACTICA = ordenarClase(NIVELES);
+// La digitacion se va retirando a medida que avanza el nivel, para que el
+// alumno no se acostumbre a leer el numero en vez de la nota: en el curso 1 va
+// entera, en el 2 y el 3 solo queda la nota de salida de cada mano, y del 4 en
+// adelante no queda ninguna. Se respeta entera donde la digitacion es el
+// contenido del ejercicio, que lo dice la formula con "digitacion: true".
+function podarDigitacion(niveles) {
+  niveles.forEach((nivel) => {
+    nivel.cursos.forEach((curso, indice) => {
+      if (indice === 0) return;
+      const soloSalida = indice <= 2;
+      curso.ejercicios.forEach((ejercicio) => {
+        const partitura = ejercicio.partitura;
+        if (partitura.tipo !== "dibujada" || partitura.digitacion) return;
+        ejercicio.partitura = {
+          ...partitura,
+          sistemas: partitura.sistemas.map((sistema) => {
+            let quedaSalida = soloSalida;
+            return {
+              ...sistema,
+              notas: sistema.notas.map((nota) => {
+                if (nota.barra || nota.silencio || !nota.d) return nota;
+                if (quedaSalida) {
+                  quedaSalida = false;
+                  return nota;
+                }
+                const { d, ...resto } = nota;
+                return resto;
+              }),
+            };
+          }),
+        };
+      });
+    });
+  });
+  return niveles;
+}
+
+export const NIVELES_PRACTICA = podarDigitacion(ordenarClase(NIVELES));

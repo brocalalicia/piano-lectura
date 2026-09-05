@@ -141,6 +141,14 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   propio ejercicio** con `unaMano()`, uno detrás de otro: las dos manos no
   hacen lo mismo, y verlas bajo una llave hace pensar que suenan a la vez.
   Juntas y al unísono llegan en el curso 3, e independientes a partir del 4.
+- **La digitación se va retirando a lo largo del nivel**, para que el alumno no
+  se acostumbre a leer el número en vez de la nota: entera en el curso 1, sólo
+  la nota de salida de cada mano en el 2 y el 3, y ninguna del 4 en adelante.
+  Lo hace `podarDigitacion()` sobre el catálogo ya montado, así que no hay que
+  editar fórmula por fórmula. Una fórmula con `digitacion: true` se libra,
+  porque ahí la digitación **es** el contenido: los acordes, el arpegio y el
+  paso del pulgar del curso 7. Cuando la digitación deja de estar escrita pero
+  no es obvia, se dice con palabras en las indicaciones.
 - En las partituras, `d` es la digitación y va encima; `t` es el nombre de la
   nota y va debajo; `silencio: true` la convierte en silencio; `alt` pone un
   sostenido (`"#"`), un bemol (`"b"`) o un becuadro (`"n"`); una `d` al final de
