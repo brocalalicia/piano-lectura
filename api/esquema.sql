@@ -48,3 +48,16 @@ CREATE TABLE IF NOT EXISTS aperturas (
 );
 
 CREATE INDEX IF NOT EXISTS aperturas_por_alumno ON aperturas (alumno_id, dia);
+
+-- Que cursos tiene abiertos cada alumno. Sin fila, el curso esta cerrado: la
+-- profesora los va abriendo a medida que da la clase. No es una barrera de
+-- seguridad, es una guia; el alumno sin codigo ve el programa entero.
+CREATE TABLE IF NOT EXISTS accesos (
+  id         SERIAL PRIMARY KEY,
+  alumno_id  INTEGER NOT NULL REFERENCES alumnos(id) ON DELETE CASCADE,
+  nivel      TEXT NOT NULL,
+  curso      INTEGER NOT NULL,
+  abierto    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS acceso_unico ON accesos (alumno_id, nivel, curso);

@@ -136,3 +136,46 @@ export async function aperturasPorDia(db, alumnoId) {
   );
   return rows;
 }
+
+// --- Que cursos tiene abierto cada alumno --------------------------------
+
+export async function cursosAbiertos(db, alumnoId) {
+  const { rows } = await db.query(
+    "SELECT nivel, curso FROM accesos WHERE alumno_id = $1 ORDER BY nivel, curso",
+    [alumnoId]
+  );
+  return rows;
+}
+
+export async function abrirCurso(db, alumnoId, nivel, curso) {
+  await db.query(
+    `INSERT INTO accesos (alumno_id, nivel, curso) VALUES ($1, $2, $3)
+     ON CONFLICT (alumno_id, nivel, curso) DO NOTHING`,
+    [alumnoId, nivel, curso]
+  );
+}
+
+export async function cerrarCurso(db, alumnoId, nivel, curso) {
+  await db.query(
+    "DELETE FROM accesos WHERE alumno_id = $1 AND nivel = $2 AND curso = $3",
+    [alumnoId, nivel, curso]
+  );
+}
+
+// Abre de golpe del curso 1 al que se diga, que es como se usa en la practica:
+// "ya puede llegar hasta el cuatro". Va en una sola sentencia y no en un bucle
+// de inserciones para no hacer un viaje por curso.
+export async function abrirHasta(db, alumnoId, nivel, hasta) {
+  if (!Number.isInteger(hasta) || hasta < 1) return;
+  const valores = [];
+  const parametros = [alumnoId, nivel];
+  for (let curso = 1; curso <= hasta; curso += 1) {
+    parametros.push(curso);
+    valores.push(`($1, $2, $${parametros.length})`);
+  }
+  await db.query(
+    `INSERT INTO accesos (alumno_id, nivel, curso) VALUES ${valores.join(", ")}
+     ON CONFLICT (alumno_id, nivel, curso) DO NOTHING`,
+    parametros
+  );
+}

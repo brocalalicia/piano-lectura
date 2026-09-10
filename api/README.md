@@ -24,6 +24,19 @@ app. El único dato personal que se guarda es ese nombre.
 La pantalla de profesora va detrás de `CLAVE_PROFESORA`, que se pone como
 variable de entorno.
 
+## Acceso progresivo a los cursos
+
+La profesora va abriendo los cursos a medida que los da. Un curso sin fila en
+`accesos` está cerrado, y el alumno lo ve en el menú pero no puede entrar.
+
+Se puede abrir **hasta un curso** (`hasta: 4` abre del 1 al 4, que es como se
+usa en clase) o **un curso suelto** (`curso: 7`, sin abrir los de antes), y
+cerrarlos igual. Cada nivel lleva su propia cuenta.
+
+**No es una barrera de seguridad, es una guía.** Un alumno sin código —o que
+borre el suyo— ve el programa entero. Sirve para que no se adelante sin querer,
+no para impedírselo.
+
 ## Variables de entorno
 
 | Variable | Para qué |
@@ -59,6 +72,7 @@ toca los datos.
 | `GET` | `/api/profesora/alumnos` | con `X-Clave-Profesora` |
 | `GET` | `/api/profesora/alumno/:codigo` | con `X-Clave-Profesora` |
 | `POST` | `/api/profesora/alumnos` | con `X-Clave-Profesora` |
+| `POST` | `/api/profesora/alumno/:codigo/acceso` | con `X-Clave-Profesora` |
 
 ## Pruebas
 

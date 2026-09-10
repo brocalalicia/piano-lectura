@@ -57,11 +57,15 @@ const conAlumno = (mano) => ruta(async (req, res) => {
 });
 
 app.get("/api/alumno/:codigo", conAlumno(async (_req, res, alumno) => {
-  res.json({ nombre: alumno.nombre });
+  res.json({ nombre: alumno.nombre, cursos: await consultas.cursosAbiertos(db, alumno.id) });
 }));
 
 app.get("/api/alumno/:codigo/progreso", conAlumno(async (_req, res, alumno) => {
-  res.json({ nombre: alumno.nombre, ...(await progresoDe(alumno.id)) });
+  res.json({
+    nombre: alumno.nombre,
+    cursos: await consultas.cursosAbiertos(db, alumno.id),
+    ...(await progresoDe(alumno.id)),
+  });
 }));
 
 async function progresoDe(alumnoId, limiteSesiones = 50) {
@@ -131,7 +135,32 @@ app.get("/api/profesora/alumnos", soloProfesora(async (_req, res) => {
 app.get("/api/profesora/alumno/:codigo", soloProfesora(async (req, res) => {
   const alumno = await consultas.alumnoPorCodigo(db, req.params.codigo);
   if (!alumno) return fallo(res, 404, "No encontrado");
-  res.json({ ...alumno, ...(await progresoDe(alumno.id, 200)) });
+  res.json({
+    ...alumno,
+    cursos: await consultas.cursosAbiertos(db, alumno.id),
+    ...(await progresoDe(alumno.id, 200)),
+  });
+}));
+
+// La profesora abre y cierra cursos a mano. "hasta" abre del 1 al que se diga,
+// que es como se usa en clase; "curso" abre o cierra uno suelto.
+app.post("/api/profesora/alumno/:codigo/acceso", soloProfesora(async (req, res) => {
+  const alumno = await consultas.alumnoPorCodigo(db, req.params.codigo);
+  if (!alumno) return fallo(res, 404, "No encontrado");
+
+  const { nivel, curso, hasta, abierto = true } = req.body || {};
+  if (!nivel) return fallo(res, 400, "Falta el nivel");
+
+  if (Number.isInteger(hasta)) {
+    await consultas.abrirHasta(db, alumno.id, String(nivel), hasta);
+  } else if (Number.isInteger(curso)) {
+    const cambiar = abierto ? consultas.abrirCurso : consultas.cerrarCurso;
+    await cambiar(db, alumno.id, String(nivel), curso);
+  } else {
+    return fallo(res, 400, "Hace falta «curso» o «hasta»");
+  }
+
+  res.json({ cursos: await consultas.cursosAbiertos(db, alumno.id) });
 }));
 
 // El codigo se genera aqui, no lo escribe la profesora: asi no acaban siendo
@@ -141,9 +170,17 @@ const nuevoCodigo = () =>
   Array.from({ length: 8 }, () => CODIGO_LETRAS[Math.floor(Math.random() * CODIGO_LETRAS.length)]).join("");
 
 app.post("/api/profesora/alumnos", soloProfesora(async (req, res) => {
-  const nombre = String((req.body || {}).nombre || "").trim();
+  const { nombre: crudo, nivel, hasta } = req.body || {};
+  const nombre = String(crudo || "").trim();
   if (!nombre) return fallo(res, 400, "Hace falta el nombre");
-  res.json(await consultas.crearAlumno(db, nombre, nuevoCodigo()));
+
+  const alumno = await consultas.crearAlumno(db, nombre, nuevoCodigo());
+  // Un alumno recien dado de alta no sirve de nada con todo cerrado, asi que
+  // se le puede abrir de entrada hasta el curso que diga la profesora.
+  if (nivel && Number.isInteger(hasta)) {
+    await consultas.abrirHasta(db, alumno.id, String(nivel), hasta);
+  }
+  res.json({ ...alumno, cursos: await consultas.cursosAbiertos(db, alumno.id) });
 }));
 
 app.listen(Number(PORT), () => console.log(`API escuchando en el puerto ${PORT}`));

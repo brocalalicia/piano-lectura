@@ -123,3 +123,63 @@ test("el resumen incluye a los alumnos que no han practicado nunca", async () =>
   assert.equal(luis.ultima_sesion, null);
   assert.equal(resumen.find((a) => a.nombre === "Marta").aciertos, 58);
 });
+
+test("un alumno nuevo no tiene ningun curso abierto", async () => {
+  const db = baseNueva();
+  const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
+  assert.deepEqual(await consultas.cursosAbiertos(db, alumno.id), []);
+});
+
+test("abrir hasta el cuatro abre del uno al cuatro", async () => {
+  const db = baseNueva();
+  const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
+  await consultas.abrirHasta(db, alumno.id, "primeros-pasos", 4);
+  const abiertos = await consultas.cursosAbiertos(db, alumno.id);
+  assert.deepEqual(abiertos.map((c) => c.curso), [1, 2, 3, 4]);
+});
+
+test("abrir dos veces no duplica ni falla", async () => {
+  const db = baseNueva();
+  const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
+  await consultas.abrirHasta(db, alumno.id, "primeros-pasos", 3);
+  await consultas.abrirHasta(db, alumno.id, "primeros-pasos", 5);
+  await consultas.abrirCurso(db, alumno.id, "primeros-pasos", 2);
+  const abiertos = await consultas.cursosAbiertos(db, alumno.id);
+  assert.deepEqual(abiertos.map((c) => c.curso), [1, 2, 3, 4, 5]);
+});
+
+test("se puede abrir un curso suelto sin abrir los de antes", async () => {
+  const db = baseNueva();
+  const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
+  await consultas.abrirCurso(db, alumno.id, "primeros-pasos", 7);
+  const abiertos = await consultas.cursosAbiertos(db, alumno.id);
+  assert.deepEqual(abiertos.map((c) => c.curso), [7]);
+});
+
+test("cerrar un curso deja los demas abiertos", async () => {
+  const db = baseNueva();
+  const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
+  await consultas.abrirHasta(db, alumno.id, "primeros-pasos", 3);
+  await consultas.cerrarCurso(db, alumno.id, "primeros-pasos", 2);
+  const abiertos = await consultas.cursosAbiertos(db, alumno.id);
+  assert.deepEqual(abiertos.map((c) => c.curso), [1, 3]);
+});
+
+test("los accesos de un alumno no afectan a otro", async () => {
+  const db = baseNueva();
+  const marta = await consultas.crearAlumno(db, "Marta", "abc12345");
+  const luis = await consultas.crearAlumno(db, "Luis", "def67890");
+  await consultas.abrirHasta(db, marta.id, "primeros-pasos", 5);
+  assert.equal((await consultas.cursosAbiertos(db, luis.id)).length, 0);
+  assert.equal((await consultas.cursosAbiertos(db, marta.id)).length, 5);
+});
+
+test("los niveles llevan cuentas separadas", async () => {
+  const db = baseNueva();
+  const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
+  await consultas.abrirHasta(db, alumno.id, "primeros-pasos", 3);
+  await consultas.abrirCurso(db, alumno.id, "tomando-vuelo", 1);
+  const abiertos = await consultas.cursosAbiertos(db, alumno.id);
+  assert.equal(abiertos.filter((c) => c.nivel === "primeros-pasos").length, 3);
+  assert.equal(abiertos.filter((c) => c.nivel === "tomando-vuelo").length, 1);
+});
