@@ -71,7 +71,7 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   piano de un curso van todos en una sola página**, que es la rutina técnica
   de la clase; el resto de bloques ocupan una fila cada uno. **Tres niveles**,
   con dificultad progresiva de un curso al
-  siguiente: **Primeros pasos** (`primeros-pasos`, 10 cursos), **Tomando vuelo**
+  siguiente: **Primeros pasos** (`primeros-pasos`, 11 cursos), **Tomando vuelo**
   (`tomando-vuelo`) y **En escena** (`en-escena`). Sólo el primero está
   preparado; los otros dos salen en el menú con el botón sombreado y
   «En preparación», que es lo que hace `boton.disabled` cuando un nivel no
@@ -172,9 +172,12 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   después.
 - **Temario de Primeros pasos, curso a curso**: 1 el pentagrama y las dos
   claves · 2 las figuras · 3 el compás y la línea divisoria · 4 los silencios ·
-  5 la corchea y su silencio · 6 sostenidos y bemoles · 7 los acordes y la
-  escala · 8 las semicorcheas y su silencio · 9 el puntillo y la ligadura de
-  prolongación · 10 compases binarios y ternarios.
+  5 la corchea y su silencio · 6 sostenidos y bemoles · 7 las tonalidades ·
+  8 los acordes y la escala · 9 las semicorcheas y su silencio · 10 el puntillo
+  y la ligadura de prolongación · 11 compases binarios y ternarios.
+- **Una clase no aguanta más de dos bloques de teoría.** El curso 6 llegó a
+  tener tres —el semitono, las tonalidades y las accidentales, catorce
+  conceptos— y dejó de entenderse: se partió en dos cursos.
 - El **paso del pulgar y la escala de do** no son un curso aparte: van como
   técnica del curso 7, junto a los acordes, porque el acorde y la escala son
   las dos maneras de salir de la posición de cinco dedos.
@@ -221,8 +224,9 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   de lo más reciente a lo más antiguo. El reparto de Primeros pasos: inicial 1
   nuevas (c1) → inicial 1 afianzar + inicial 2 nuevas (c2) → inicial 2 afianzar
   + intermedio nuevas (c3) → intermedio, precisión (c4) y velocidad (c5) →
-  inicial 2 (c6) → las líneas del centro, nuevas (c7) → esas más inicial 1 (c8)
-  → las ocho sesiones como evaluación (c9).
+  inicial 2 (c6) → inicial 1 (c7) → las líneas del centro, nuevas (c8) → esas
+  mismas, afianzar (c9) → inicial 2 a velocidad (c10) → las ocho sesiones como
+  evaluación (c11).
 - **Ojo con los nombres de los niveles avanzados: no son simétricos.** En clave
   de sol, Avanzado 1 es el extremo agudo y Avanzado 2 baja al do central; en
   clave de fa es al revés, Avanzado 1 sube al do central y Avanzado 2 es el
