@@ -1,5 +1,6 @@
 import { Renderer, Stave, StaveNote, Formatter, Annotation, BarNote, StaveConnector, Accidental, Beam, Dot, StaveTie } from "vexflow";
 import { NIVELES_PRACTICA } from "./programa.js";
+import * as api from "./api.js";
 import * as Tone from "tone";
 import "./style.css";
 
@@ -85,6 +86,49 @@ const TRADUCCIONES = {
     },
     practicaNivelTitulo: "Elige un nivel",
     practicaEnPreparacion: "En preparación",
+    cursoCerrado: "Aún no disponible",
+    hola: (nombre) => `Hola, ${nombre}`,
+    miProgreso: "Mi progreso",
+    salir: "Salir",
+    tuCodigo: "Tu código",
+    entrar: "Entrar",
+    comprobando: "Comprobando…",
+    codigoNoValido: "Ese código no existe. Pregunta a tu profesora.",
+    sinConexion: "No se ha podido conectar. Inténtalo más tarde.",
+    soyLaProfesora: "Soy la profesora",
+    progresoTitulo: "Mi progreso",
+    progresoVacio: "Todavía no has terminado ninguna sesión de lectura.",
+    progresoSesiones: "Sesiones de lectura",
+    progresoMarcas: "Tu mejor marca por nivel",
+    progresoLecciones: "Lecciones que has abierto",
+    columnaNivel: "Nivel",
+    columnaSesionesCorto: "Sesiones",
+    columnaMejorTiempo: "Mejor tiempo",
+    columnaTiempo: "Tiempo",
+    columnaMejoresEstrellas: "Mejores estrellas",
+    columnaAperturas: "Veces",
+    columnaMediaDia: "Al día",
+    columnaCurso: "Curso",
+    profesoraTitulo: "Mis alumnos",
+    claveProfesora: "Clave de profesora",
+    claveIncorrecta: "Clave incorrecta.",
+    nuevoAlumno: "Nombre del alumno nuevo",
+    darDeAlta: "Dar de alta",
+    codigoDe: (nombre, codigo) => `Código de ${nombre}: ${codigo}`,
+    sinAlumnos: "Todavía no has dado de alta a ningún alumno.",
+    columnaAlumno: "Alumno",
+    columnaCodigo: "Código",
+    columnaUltima: "Última vez",
+    columnaAbiertoHasta: "Abierto hasta",
+    nunca: "Nunca",
+    verDetalle: "Ver",
+    cerrarDetalle: "Cerrar",
+    aperturasPorCurso: "Aperturas por curso",
+    columnaLecciones: "Lecciones",
+    columnaDias: "Días",
+    columnaMediaSemana: "A la semana",
+    columnaMediaMes: "Al mes",
+    cambiarClave: "Cambiar de clave",
     practicaCursoTitulo: (n) => `Curso ${n}`,
     practicaCuentaCursos: (n, total) => `${n} de ${total} cursos preparados`,
     referenciaEn: "En tu método",
@@ -199,6 +243,49 @@ const TRADUCCIONES = {
     },
     practicaNivelTitulo: "Choisis un niveau",
     practicaEnPreparacion: "En préparation",
+    cursoCerrado: "Pas encore disponible",
+    hola: (nombre) => `Bonjour, ${nombre}`,
+    miProgreso: "Mes progrès",
+    salir: "Quitter",
+    tuCodigo: "Ton code",
+    entrar: "Entrer",
+    comprobando: "Vérification…",
+    codigoNoValido: "Ce code n'existe pas. Demande à ta professeure.",
+    sinConexion: "Connexion impossible. Réessaie plus tard.",
+    soyLaProfesora: "Je suis la professeure",
+    progresoTitulo: "Mes progrès",
+    progresoVacio: "Tu n'as encore terminé aucune session de lecture.",
+    progresoSesiones: "Sessions de lecture",
+    progresoMarcas: "Ton meilleur résultat par niveau",
+    progresoLecciones: "Leçons que tu as ouvertes",
+    columnaNivel: "Niveau",
+    columnaSesionesCorto: "Sessions",
+    columnaMejorTiempo: "Meilleur temps",
+    columnaTiempo: "Temps",
+    columnaMejoresEstrellas: "Meilleures étoiles",
+    columnaAperturas: "Fois",
+    columnaMediaDia: "Par jour",
+    columnaCurso: "Cours",
+    profesoraTitulo: "Mes élèves",
+    claveProfesora: "Clé de la professeure",
+    claveIncorrecta: "Clé incorrecte.",
+    nuevoAlumno: "Nom du nouvel élève",
+    darDeAlta: "Inscrire",
+    codigoDe: (nombre, codigo) => `Code de ${nombre} : ${codigo}`,
+    sinAlumnos: "Tu n'as encore inscrit aucun élève.",
+    columnaAlumno: "Élève",
+    columnaCodigo: "Code",
+    columnaUltima: "Dernière fois",
+    columnaAbiertoHasta: "Ouvert jusqu'à",
+    nunca: "Jamais",
+    verDetalle: "Voir",
+    cerrarDetalle: "Fermer",
+    aperturasPorCurso: "Ouvertures par cours",
+    columnaLecciones: "Leçons",
+    columnaDias: "Jours",
+    columnaMediaSemana: "Par semaine",
+    columnaMediaMes: "Par mois",
+    cambiarClave: "Changer de clé",
     practicaCursoTitulo: (n) => `Cours ${n}`,
     practicaCuentaCursos: (n, total) => `${n} cours sur ${total} disponibles`,
     referenciaEn: "Dans ta méthode",
@@ -328,6 +415,13 @@ const menuClaveEl = document.getElementById("menu-clave");
 const menuProgramaEl = document.getElementById("menu-programa");
 const programaTituloEl = document.getElementById("programa-titulo");
 const menuProgramaOpcionesEl = document.getElementById("menu-programa-opciones");
+const identidadEl = document.getElementById("identidad");
+const progresoEl = document.getElementById("progreso");
+const progresoTituloEl = document.getElementById("progreso-titulo");
+const progresoContenidoEl = document.getElementById("progreso-contenido");
+const profesoraEl = document.getElementById("profesora");
+const profesoraTituloEl = document.getElementById("profesora-titulo");
+const profesoraContenidoEl = document.getElementById("profesora-contenido");
 const practicaNivelEl = document.getElementById("practica-nivel");
 const practicaNivelTituloEl = document.getElementById("practica-nivel-titulo");
 const practicaNivelOpcionesEl = document.getElementById("practica-nivel-opciones");
@@ -390,6 +484,10 @@ let cursoPractica = null;
 // Si se entra a la lectura desde un curso de practica, se guarda para poder
 // volver a el desde cualquier pantalla del ejercicio.
 let origenLectura = null;
+// Quien esta usando la app, si ha metido su codigo. Sin codigo todo sigue
+// abierto: el bloqueo de cursos es una guia de la profesora, no un candado.
+let alumnoActual = null;
+let cursosAbiertos = null;
 let ejercicioPractica = null;
 // Que fila de la lista del curso se esta viendo, para poder ir adelante y atras.
 let filaPractica = 0;
@@ -1802,6 +1900,82 @@ function renderizarMenuPrograma() {
 
     menuProgramaOpcionesEl.appendChild(boton);
   });
+
+  renderizarIdentidad();
+}
+
+// El pie de la pantalla de inicio: quien esta usando la app. Sin servidor no se
+// pinta nada, porque no habria donde guardar el progreso.
+function renderizarIdentidad() {
+  identidadEl.innerHTML = "";
+  if (!api.hayServidor()) return;
+
+  const linea = (clase) => {
+    const div = document.createElement("div");
+    div.className = clase;
+    identidadEl.appendChild(div);
+    return div;
+  };
+
+  const enlace = (texto, alPulsar) => {
+    const b = document.createElement("button");
+    b.className = "enlace-discreto";
+    b.textContent = texto;
+    b.addEventListener("click", alPulsar);
+    return b;
+  };
+
+  if (api.codigoAlumno() && alumnoActual) {
+    const fila = linea("identidad-fila");
+    const saludo = document.createElement("span");
+    saludo.className = "identidad-nombre";
+    saludo.textContent = t().hola(alumnoActual);
+    fila.appendChild(saludo);
+    fila.appendChild(enlace(t().miProgreso, irAProgreso));
+    fila.appendChild(enlace(t().salir, async () => {
+      api.olvidarCodigoAlumno();
+      await cargarAlumno();
+      renderizarIdentidad();
+    }));
+    return;
+  }
+
+  const fila = linea("identidad-fila");
+  const campo = document.createElement("input");
+  campo.className = "campo-codigo";
+  campo.placeholder = t().tuCodigo;
+  campo.autocapitalize = "off";
+  campo.autocomplete = "off";
+  campo.spellcheck = false;
+  campo.maxLength = 12;
+  fila.appendChild(campo);
+
+  const aviso = linea("identidad-aviso");
+
+  const entrar = async () => {
+    const codigo = campo.value.trim().toLowerCase();
+    if (!codigo) return;
+    aviso.textContent = t().comprobando;
+    const { ok, estado: codigoHttp } = await api.buscarAlumno(codigo);
+    if (!ok) {
+      aviso.textContent = codigoHttp === 404 ? t().codigoNoValido : t().sinConexion;
+      return;
+    }
+    api.guardarCodigoAlumno(codigo);
+    await cargarAlumno();
+    renderizarIdentidad();
+  };
+
+  const boton = document.createElement("button");
+  boton.className = "boton-control compacto";
+  boton.textContent = t().entrar;
+  boton.addEventListener("click", entrar);
+  fila.appendChild(boton);
+  campo.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") entrar();
+  });
+
+  identidadEl.appendChild(enlace(t().soyLaProfesora, irAProfesora));
 }
 
 function renderizarPracticaNiveles() {
@@ -1842,9 +2016,10 @@ function renderizarPracticaCursos() {
 
   nivelPractica.cursos.forEach((curso, indice) => {
     const preparado = curso.ejercicios.length > 0;
+    const abierto = cursoAbierto(nivelPractica.id, indice + 1);
     const boton = document.createElement("button");
     boton.className = "boton-menu boton-nivel";
-    boton.disabled = !preparado;
+    boton.disabled = !preparado || !abierto;
 
     const nombre = document.createElement("span");
     nombre.className = "menu-nombre";
@@ -1853,7 +2028,11 @@ function renderizarPracticaCursos() {
 
     const detalle = document.createElement("span");
     detalle.className = "menu-rango";
-    detalle.textContent = preparado ? txt(curso.titulo) : t().practicaEnPreparacion;
+    detalle.textContent = !preparado
+      ? t().practicaEnPreparacion
+      : abierto
+        ? txt(curso.titulo)
+        : t().cursoCerrado;
     boton.appendChild(detalle);
 
     boton.addEventListener("click", () => {
@@ -2195,6 +2374,14 @@ function irAPracticaLista(curso, numero) {
 
 function irAPracticaEjercicio(indice) {
   const filas = filasDelCurso(cursoPractica);
+  const fila = filas[Math.max(0, Math.min(indice, filas.length - 1))];
+  if (fila && nivelPractica) {
+    api.registrarApertura({
+      nivel: nivelPractica.id,
+      curso: cursoPractica.numero,
+      leccion: fila.grupo[0].id,
+    });
+  }
   filaPractica = Math.max(0, Math.min(indice, filas.length - 1));
   ejercicioPractica = filas[filaPractica].grupo;
   estado = "practica-ejercicio";
@@ -2245,6 +2432,8 @@ const PANTALLA_ANTERIOR = {
   "practica-curso": irAPracticaNivel,
   "practica-lista": () => irAPracticaCurso(nivelPractica),
   "practica-ejercicio": () => irAPracticaLista(cursoPractica),
+  progreso: irAMenuPrograma,
+  profesora: irAMenuPrograma,
 };
 
 function volverAtras() {
@@ -2387,6 +2576,7 @@ function actualizarTextosResultado() {
   tablaSesionContenedorEl.classList.toggle("oculto", !esUltimoEjercicio);
   if (esUltimoEjercicio) {
     renderizarTablaSesion();
+    enviarSesionCompleta();
   }
 }
 
@@ -2409,6 +2599,355 @@ function finalizarEjercicioActual() {
   actualizarUI();
 }
 
+// Una sesion es la tanda entera de seis ejercicios de una clave y un nivel, que
+// es la unidad que le sirve a la profesora. Se manda al acabar el ultimo.
+function enviarSesionCompleta() {
+  const suma = (campo) => resultadosSesion.reduce((total, r) => total + r[campo], 0);
+  api.registrarSesion({
+    clave: claveActual.id,
+    nivel: nivelActual.id,
+    aciertos: suma("aciertos"),
+    fallos: suma("fallos"),
+    rachaMaxima,
+    duracionMs: Math.round(suma("tiempo")),
+    estrellas: suma("estrellas"),
+  });
+}
+
+// Un curso esta abierto si la profesora lo ha abierto para este alumno. Sin
+// alumno identificado, todo abierto.
+function cursoAbierto(nivelId, numero) {
+  if (!cursosAbiertos) return true;
+  return cursosAbiertos.some((c) => c.nivel === nivelId && c.curso === numero);
+}
+
+// Se llama al identificarse y al arrancar. Si el servidor no contesta se deja
+// todo abierto: mas vale que el alumno pueda estudiar a que se quede fuera.
+async function cargarAlumno() {
+  const codigo = api.codigoAlumno();
+  if (!codigo) {
+    alumnoActual = null;
+    cursosAbiertos = null;
+    return;
+  }
+  const { ok, datos } = await api.buscarAlumno(codigo);
+  alumnoActual = ok ? datos.nombre : null;
+  cursosAbiertos = ok ? datos.cursos : null;
+
+  // Se pide al arrancar, asi que cuando contesta la pantalla ya esta pintada:
+  // hay que repintar lo que depende de quien sea el alumno.
+  if (estado === "menu-programa") renderizarIdentidad();
+  if (estado === "practica-curso") renderizarPracticaCursos();
+}
+
+// --- Mi progreso ----------------------------------------------------------
+
+// Utilidades para montar tablas sin escribir HTML a mano: los datos vienen del
+// servidor y no pueden acabar dentro de innerHTML.
+function tabla(cabeceras, filas) {
+  const t = document.createElement("table");
+  t.className = "tabla-datos";
+  const thead = document.createElement("thead");
+  const filaCabecera = document.createElement("tr");
+  cabeceras.forEach((texto) => {
+    const th = document.createElement("th");
+    th.textContent = texto;
+    filaCabecera.appendChild(th);
+  });
+  thead.appendChild(filaCabecera);
+  t.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  filas.forEach((celdas) => {
+    const tr = document.createElement("tr");
+    celdas.forEach((valor) => {
+      const td = document.createElement("td");
+      td.textContent = valor;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  t.appendChild(tbody);
+  return t;
+}
+
+function seccion(contenedor, titulo) {
+  const h = document.createElement("h3");
+  h.className = "seccion-titulo";
+  h.textContent = titulo;
+  contenedor.appendChild(h);
+}
+
+const fechaCorta = (valor) => (valor ? new Date(valor).toLocaleDateString(idioma === "fr" ? "fr-FR" : "es-ES") : "—");
+const ESTRELLAS_POR_SESION = TOTAL_EJERCICIOS * 3;
+const estrellasTexto = (n) => `★ ${n} / ${ESTRELLAS_POR_SESION}`;
+
+function irAProgreso() {
+  estado = "progreso";
+  actualizarUI();
+  renderizarProgreso();
+}
+
+async function renderizarProgreso() {
+  progresoTituloEl.textContent = t().progresoTitulo;
+  progresoContenidoEl.innerHTML = "";
+
+  const { ok, datos } = await api.progresoAlumno(api.codigoAlumno());
+  if (!ok) {
+    const aviso = document.createElement("p");
+    aviso.className = "aviso";
+    aviso.textContent = t().sinConexion;
+    progresoContenidoEl.appendChild(aviso);
+    return;
+  }
+
+  if (!datos.sesiones.length && !datos.aperturasPorCurso.length) {
+    const aviso = document.createElement("p");
+    aviso.className = "aviso";
+    aviso.textContent = t().progresoVacio;
+    progresoContenidoEl.appendChild(aviso);
+    return;
+  }
+
+  if (datos.marcas.length) {
+    seccion(progresoContenidoEl, t().progresoMarcas);
+    progresoContenidoEl.appendChild(tabla(
+      [t().columnaNivel, t().columnaSesionesCorto, t().columnaMejorTiempo, t().columnaMejoresEstrellas],
+      datos.marcas.map((m) => [
+        `${t().claves[m.clave]} · ${t().niveles[m.nivel]}`,
+        m.sesiones,
+        formatearTiempo(m.mejor_tiempo_ms),
+        estrellasTexto(m.mejores_estrellas),
+      ])
+    ));
+  }
+
+  if (datos.sesiones.length) {
+    seccion(progresoContenidoEl, t().progresoSesiones);
+    progresoContenidoEl.appendChild(tabla(
+      ["", t().columnaNivel, t().aciertos, t().fallos, t().columnaTiempo],
+      datos.sesiones.slice(0, 15).map((s) => [
+        fechaCorta(s.creado),
+        `${t().claves[s.clave]} · ${t().niveles[s.nivel]}`,
+        s.aciertos,
+        s.fallos,
+        formatearTiempo(s.duracion_ms),
+      ])
+    ));
+  }
+
+  if (datos.aperturasPorCurso.length) {
+    seccion(progresoContenidoEl, t().progresoLecciones);
+    progresoContenidoEl.appendChild(tabla(
+      [t().columnaCurso, t().columnaAperturas, t().columnaMediaDia],
+      datos.aperturasPorCurso.map((c) => [
+        t().practicaCursoTitulo(c.curso),
+        c.aperturas,
+        c.medias.dia,
+      ])
+    ));
+  }
+}
+
+// --- Pantalla de la profesora ---------------------------------------------
+
+function irAProfesora() {
+  estado = "profesora";
+  actualizarUI();
+  renderizarProfesora();
+}
+
+// El nivel sobre el que se abren cursos. Hoy solo hay uno preparado; si algun
+// dia hay mas, se elige entre ellos.
+const nivelesPreparados = () => NIVELES_PRACTICA.filter((n) => n.cursos.some((c) => c.ejercicios.length));
+
+async function renderizarProfesora() {
+  profesoraTituloEl.textContent = t().profesoraTitulo;
+  profesoraContenidoEl.innerHTML = "";
+
+  const clave = api.claveProfesora();
+  if (!clave) return pedirClaveProfesora();
+
+  const { ok, estado: http, datos } = await api.listarAlumnos(clave);
+  if (!ok) {
+    api.olvidarClaveProfesora();
+    return pedirClaveProfesora(http === 401 ? t().claveIncorrecta : t().sinConexion);
+  }
+
+  pintarAltaAlumno(clave);
+  pintarListaAlumnos(clave, datos);
+
+  const salir = document.createElement("button");
+  salir.className = "enlace-discreto";
+  salir.textContent = t().cambiarClave;
+  salir.addEventListener("click", () => {
+    api.olvidarClaveProfesora();
+    renderizarProfesora();
+  });
+  profesoraContenidoEl.appendChild(salir);
+}
+
+function pedirClaveProfesora(aviso) {
+  const fila = document.createElement("div");
+  fila.className = "identidad-fila";
+  const campo = document.createElement("input");
+  campo.className = "campo-codigo";
+  campo.type = "password";
+  campo.placeholder = t().claveProfesora;
+  const boton = document.createElement("button");
+  boton.className = "boton-control compacto";
+  boton.textContent = t().entrar;
+  const entrar = () => {
+    if (!campo.value.trim()) return;
+    api.guardarClaveProfesora(campo.value);
+    renderizarProfesora();
+  };
+  boton.addEventListener("click", entrar);
+  campo.addEventListener("keydown", (e) => { if (e.key === "Enter") entrar(); });
+  fila.append(campo, boton);
+  profesoraContenidoEl.appendChild(fila);
+
+  if (aviso) {
+    const p = document.createElement("p");
+    p.className = "aviso";
+    p.textContent = aviso;
+    profesoraContenidoEl.appendChild(p);
+  }
+}
+
+function pintarAltaAlumno(clave) {
+  const fila = document.createElement("div");
+  fila.className = "identidad-fila";
+  const campo = document.createElement("input");
+  campo.className = "campo-codigo campo-ancho";
+  campo.placeholder = t().nuevoAlumno;
+  const boton = document.createElement("button");
+  boton.className = "boton-control compacto";
+  boton.textContent = t().darDeAlta;
+  const aviso = document.createElement("p");
+  aviso.className = "aviso codigo-nuevo";
+
+  boton.addEventListener("click", async () => {
+    const nombre = campo.value.trim();
+    if (!nombre) return;
+    const nivel = nivelesPreparados()[0];
+    const { ok, datos } = await api.altaAlumno(clave, nombre, nivel ? nivel.id : null, 1);
+    if (!ok) { aviso.textContent = t().sinConexion; return; }
+    // El codigo se ensena aqui y no se vuelve a ver: es lo que hay que copiar
+    // y pasarle al alumno.
+    aviso.textContent = t().codigoDe(datos.nombre, datos.codigo);
+    campo.value = "";
+    renderizarProfesora().then(() => profesoraContenidoEl.appendChild(aviso));
+  });
+
+  fila.append(campo, boton);
+  profesoraContenidoEl.append(fila, aviso);
+}
+
+function pintarListaAlumnos(clave, alumnos) {
+  if (!alumnos.length) {
+    const p = document.createElement("p");
+    p.className = "aviso";
+    p.textContent = t().sinAlumnos;
+    profesoraContenidoEl.appendChild(p);
+    return;
+  }
+
+  const nivel = nivelesPreparados()[0];
+  const total = nivel ? nivel.cursos.length : 0;
+
+  alumnos.forEach((alumno) => {
+    const ficha = document.createElement("div");
+    ficha.className = "ficha-alumno";
+
+    const cabecera = document.createElement("div");
+    cabecera.className = "alumno-cabecera";
+    const nombre = document.createElement("strong");
+    nombre.textContent = alumno.nombre;
+    const codigo = document.createElement("code");
+    codigo.textContent = alumno.codigo;
+    cabecera.append(nombre, codigo);
+    ficha.appendChild(cabecera);
+
+    const resumen = document.createElement("p");
+    resumen.className = "alumno-resumen";
+    resumen.textContent = `${t().columnaSesionesCorto}: ${alumno.sesiones} · ${t().columnaUltima}: ${alumno.ultima_sesion ? fechaCorta(alumno.ultima_sesion) : t().nunca}`;
+    ficha.appendChild(resumen);
+
+    if (nivel) {
+      const fila = document.createElement("div");
+      fila.className = "identidad-fila";
+      const etiqueta = document.createElement("span");
+      etiqueta.className = "alumno-etiqueta";
+      etiqueta.textContent = t().columnaAbiertoHasta;
+      const selector = document.createElement("select");
+      selector.className = "campo-codigo";
+      for (let n = 0; n <= total; n += 1) {
+        const opcion = document.createElement("option");
+        opcion.value = String(n);
+        opcion.textContent = n === 0 ? "—" : t().practicaCursoTitulo(n);
+        selector.appendChild(opcion);
+      }
+      selector.addEventListener("change", async () => {
+        const hasta = Number(selector.value);
+        // Cerrar es quitar uno a uno los que sobran; abrir, mandar "hasta".
+        if (hasta > 0) await api.cambiarAcceso(clave, alumno.codigo, { nivel: nivel.id, hasta });
+        for (let n = hasta + 1; n <= total; n += 1) {
+          await api.cambiarAcceso(clave, alumno.codigo, { nivel: nivel.id, curso: n, abierto: false });
+        }
+      });
+      cargarAbiertoHasta(clave, alumno.codigo, nivel.id, selector);
+      fila.append(etiqueta, selector);
+      ficha.appendChild(fila);
+    }
+
+    const detalle = document.createElement("div");
+    const ver = document.createElement("button");
+    ver.className = "enlace-discreto";
+    ver.textContent = t().verDetalle;
+    ver.addEventListener("click", async () => {
+      if (detalle.childElementCount) { detalle.innerHTML = ""; ver.textContent = t().verDetalle; return; }
+      ver.textContent = t().cerrarDetalle;
+      const { ok, datos } = await api.detalleAlumno(clave, alumno.codigo);
+      if (!ok) return;
+      if (datos.marcas.length) {
+        seccion(detalle, t().progresoMarcas);
+        detalle.appendChild(tabla(
+          [t().columnaNivel, t().columnaSesionesCorto, t().columnaMejorTiempo, t().columnaMejoresEstrellas],
+          datos.marcas.map((m) => [
+            `${t().claves[m.clave]} · ${t().niveles[m.nivel]}`,
+            m.sesiones, formatearTiempo(m.mejor_tiempo_ms), estrellasTexto(m.mejores_estrellas),
+          ])
+        ));
+      }
+      if (datos.aperturasPorCurso.length) {
+        seccion(detalle, t().aperturasPorCurso);
+        detalle.appendChild(tabla(
+          [t().columnaCurso, t().columnaLecciones, t().columnaAperturas, t().columnaDias,
+           t().columnaMediaDia, t().columnaMediaSemana, t().columnaMediaMes],
+          datos.aperturasPorCurso.map((c) => [
+            t().practicaCursoTitulo(c.curso), c.lecciones, c.aperturas, c.dias,
+            c.medias.dia, c.medias.semana, c.medias.mes,
+          ])
+        ));
+      }
+    });
+    ficha.append(ver, detalle);
+    profesoraContenidoEl.appendChild(ficha);
+  });
+}
+
+// El selector arranca en el ultimo curso abierto. Se pide aparte porque el
+// resumen de la lista no trae los accesos.
+async function cargarAbiertoHasta(clave, codigo, nivelId, selector) {
+  const { ok, datos } = await api.detalleAlumno(clave, codigo);
+  if (!ok) return;
+  const numeros = (datos.cursos || [])
+    .filter((c) => c.nivel === nivelId)
+    .map((c) => c.curso);
+  selector.value = String(numeros.length ? Math.max(...numeros) : 0);
+}
+
 function actualizarUI() {
   const enMemorizacion = estado === "memorizando";
   const enProgreso = estado === "memorizando" || estado === "jugando" || estado === "pausado";
@@ -2420,6 +2959,8 @@ function actualizarUI() {
   document.body.dataset.estado = estado;
 
   menuProgramaEl.classList.toggle("oculto", estado !== "menu-programa");
+  progresoEl.classList.toggle("oculto", estado !== "progreso");
+  profesoraEl.classList.toggle("oculto", estado !== "profesora");
   menuClaveEl.classList.toggle("oculto", estado !== "menu-clave");
   menuNivelEl.classList.toggle("oculto", estado !== "menu-nivel");
   practicaNivelEl.classList.toggle("oculto", estado !== "practica-nivel");
@@ -2545,3 +3086,4 @@ botonContinuar.addEventListener("click", () => {
 crearBotones(BOTONES_ID);
 actualizarMarcador();
 aplicarIdioma(idioma);
+cargarAlumno();

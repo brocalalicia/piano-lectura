@@ -62,6 +62,28 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - Micro-animaciones rápidas (bajo 200ms). Nada que bloquee al alumno.
 
 ## Programa de práctica
+## Progreso de los alumnos
+- La app puede hablar con una **API propia** (`api/`, ver su README) que guarda
+  el progreso en Postgres. La dirección se fija al construir con **`VITE_API`**;
+  sin esa variable la app funciona sola, sin guardar nada y sin pedir código.
+- **Nada de `src/api.js` puede romper la app.** Si no hay servidor, si el alumno
+  no ha metido código o si la red falla, todo devuelve `null` y se sigue como
+  siempre. Ninguna función lanza. En particular, **si el servidor no contesta se
+  deja todo abierto**: más vale que el alumno pueda estudiar de más a que se
+  quede fuera de su clase.
+- El alumno entra con un **código de ocho letras** que le da la profesora y que
+  queda en `localStorage`. La profesora entra con una clave, que va en el mismo
+  sitio.
+- Los cursos que el alumno tiene abiertos los decide la profesora. Es una guía,
+  no un candado: sin código se ve todo.
+- Las sesiones se mandan al acabar **el último de los seis ejercicios**, que es
+  la unidad que le sirve a la profesora, y cada apertura de una lección se
+  registra por separado.
+- Para probar todo esto sin base de datos: `node api/dev/servidor-memoria.js`
+  levanta la API contra un Postgres en memoria con datos de ejemplo, y basta con
+  poner `VITE_API=http://localhost:3001` en un `.env.local`.
+
+## Interfaz
 - La app tiene dos programas: **Lectura** (leer notas) y **Lecciones de piano**
   (ejercicios técnicos, en francés «Leçons de piano»). Se eligen en la primera
   pantalla, bajo el título «Aprende y mejora tu técnica de piano con Alicia».
