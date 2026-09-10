@@ -67,11 +67,11 @@ export async function mejoresMarcas(db, alumnoId) {
   return rows;
 }
 
-export async function registrarLeccion(db, alumnoId, nivel, curso, leccion) {
+// Cada apertura es una fila. No se agrupa por dia: abrir cinco veces la misma
+// leccion en una tarde es informacion, no ruido.
+export async function registrarApertura(db, alumnoId, nivel, curso, leccion) {
   await db.query(
-    `INSERT INTO lecciones_vistas (alumno_id, nivel, curso, leccion)
-     VALUES ($1, $2, $3, $4)
-     ON CONFLICT (alumno_id, leccion, dia) DO NOTHING`,
+    "INSERT INTO aperturas (alumno_id, nivel, curso, leccion) VALUES ($1, $2, $3, $4)",
     [alumnoId, nivel, curso, leccion]
   );
 }
@@ -93,12 +93,45 @@ export async function resumenAlumnos(db) {
   return rows;
 }
 
-export async function leccionesDe(db, alumnoId) {
+// Cuantas veces ha abierto cada leccion, en cuantos dias distintos y entre que
+// fechas. Las medias se calculan despues, en estadisticas.js.
+export async function aperturasPorLeccion(db, alumnoId) {
   const { rows } = await db.query(
-    `SELECT nivel, curso, leccion, MAX(dia) AS ultima
-       FROM lecciones_vistas WHERE alumno_id = $1
+    `SELECT nivel, curso, leccion,
+            COUNT(*)::int            AS aperturas,
+            COUNT(DISTINCT dia)::int AS dias,
+            MIN(dia)                 AS primera,
+            MAX(dia)                 AS ultima
+       FROM aperturas WHERE alumno_id = $1
       GROUP BY nivel, curso, leccion
+      ORDER BY nivel, curso, leccion`,
+    [alumnoId]
+  );
+  return rows;
+}
+
+export async function aperturasPorCurso(db, alumnoId) {
+  const { rows } = await db.query(
+    `SELECT nivel, curso,
+            COUNT(*)::int                AS aperturas,
+            COUNT(DISTINCT leccion)::int AS lecciones,
+            COUNT(DISTINCT dia)::int     AS dias,
+            MIN(dia)                     AS primera,
+            MAX(dia)                     AS ultima
+       FROM aperturas WHERE alumno_id = $1
+      GROUP BY nivel, curso
       ORDER BY nivel, curso`,
+    [alumnoId]
+  );
+  return rows;
+}
+
+// La serie diaria, para poder dibujar la evolucion en vez de solo la media.
+export async function aperturasPorDia(db, alumnoId) {
+  const { rows } = await db.query(
+    `SELECT dia, COUNT(*)::int AS aperturas
+       FROM aperturas WHERE alumno_id = $1
+      GROUP BY dia ORDER BY dia`,
     [alumnoId]
   );
   return rows;

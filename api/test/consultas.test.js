@@ -70,14 +70,45 @@ test("las mejores marcas agrupan por clave y nivel", async () => {
   assert.equal(sol.mejores_estrellas, 5, "las mejores estrellas son las mas altas");
 });
 
-test("una leccion abierta dos veces el mismo dia cuenta una", async () => {
+test("cada apertura cuenta, tambien las del mismo dia", async () => {
   const db = baseNueva();
   const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
-  await consultas.registrarLeccion(db, alumno.id, "primeros-pasos", 1, "p1c1-pentagrama");
-  await consultas.registrarLeccion(db, alumno.id, "primeros-pasos", 1, "p1c1-pentagrama");
-  await consultas.registrarLeccion(db, alumno.id, "primeros-pasos", 1, "p1c1-teclado");
-  const lecciones = await consultas.leccionesDe(db, alumno.id);
-  assert.equal(lecciones.length, 2);
+  for (let i = 0; i < 5; i += 1) {
+    await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-pentagrama");
+  }
+  await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-teclado");
+  await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 2, "p1c2-figuras");
+
+  const lecciones = await consultas.aperturasPorLeccion(db, alumno.id);
+  assert.equal(lecciones.length, 3, "tres lecciones distintas");
+  const pentagrama = lecciones.find((l) => l.leccion === "p1c1-pentagrama");
+  assert.equal(pentagrama.aperturas, 5, "las cinco aperturas se cuentan");
+  assert.equal(pentagrama.dias, 1, "todas fueron el mismo dia");
+});
+
+test("las aperturas se agrupan tambien por curso", async () => {
+  const db = baseNueva();
+  const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
+  await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-pentagrama");
+  await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-pentagrama");
+  await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-teclado");
+  await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 2, "p1c2-figuras");
+
+  const cursos = await consultas.aperturasPorCurso(db, alumno.id);
+  assert.equal(cursos.length, 2);
+  const uno = cursos.find((c) => c.curso === 1);
+  assert.equal(uno.aperturas, 3, "tres aperturas en el curso 1");
+  assert.equal(uno.lecciones, 2, "de dos lecciones distintas");
+});
+
+test("la serie diaria devuelve una fila por dia", async () => {
+  const db = baseNueva();
+  const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
+  await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-pentagrama");
+  await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-teclado");
+  const dias = await consultas.aperturasPorDia(db, alumno.id);
+  assert.equal(dias.length, 1);
+  assert.equal(dias[0].aperturas, 2);
 });
 
 test("el resumen incluye a los alumnos que no han practicado nunca", async () => {

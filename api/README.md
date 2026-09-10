@@ -1,8 +1,19 @@
 # API de Clase de piano
 
 Guarda el progreso de los alumnos: cada sesión terminada del programa de
-Lectura y qué lecciones ha abierto cada uno. La app la usa sólo si el alumno ha
+Lectura y **cada vez** que abre una lección. La app la usa sólo si el alumno ha
 metido su código; sin código funciona igual que siempre y no guarda nada.
+
+## Cómo se cuentan las aperturas
+
+Una fila por apertura, sin agrupar por día: si abre cinco veces la misma
+lección en una tarde, se ven las cinco. De ahí salen los totales por lección y
+por curso, los días distintos en que la ha abierto y la serie diaria.
+
+**La media es aperturas ÷ días transcurridos desde la primera**, contando
+también los días en que no tocó nada — que es lo que distingue a quien practica
+a diario de quien lo abre todo la víspera de la clase. La semana son siete de
+esos días y el mes treinta.
 
 ## Cómo se identifica un alumno
 
@@ -44,7 +55,7 @@ toca los datos.
 | `GET` | `/api/alumno/:codigo` | el alumno |
 | `GET` | `/api/alumno/:codigo/progreso` | el alumno |
 | `POST` | `/api/alumno/:codigo/sesion` | el alumno |
-| `POST` | `/api/alumno/:codigo/leccion` | el alumno |
+| `POST` | `/api/alumno/:codigo/apertura` | el alumno |
 | `GET` | `/api/profesora/alumnos` | con `X-Clave-Profesora` |
 | `GET` | `/api/profesora/alumno/:codigo` | con `X-Clave-Profesora` |
 | `POST` | `/api/profesora/alumnos` | con `X-Clave-Profesora` |

@@ -31,17 +31,20 @@ CREATE TABLE IF NOT EXISTS sesiones (
 -- ordenadas de la mas reciente a la mas antigua.
 CREATE INDEX IF NOT EXISTS sesiones_por_alumno ON sesiones (alumno_id, creado DESC);
 
--- Que lecciones ha abierto el alumno, para saber por donde va en el programa
--- de piano. Una fila por leccion y dia: si la abre dos veces el mismo dia solo
--- cuenta una.
-CREATE TABLE IF NOT EXISTS lecciones_vistas (
+-- Cada vez que el alumno abre una leccion se guarda una fila. No se agrupa por
+-- dia a proposito: que abra la misma leccion cinco veces en una tarde es
+-- justamente lo que la profesora quiere ver.
+--
+-- "dia" va aparte de "creado" aunque se pueda deducir de el, para poder agrupar
+-- por dia sin convertir fechas en cada consulta.
+CREATE TABLE IF NOT EXISTS aperturas (
   id         SERIAL PRIMARY KEY,
   alumno_id  INTEGER NOT NULL REFERENCES alumnos(id) ON DELETE CASCADE,
   nivel      TEXT NOT NULL,
   curso      INTEGER NOT NULL,
   leccion    TEXT NOT NULL,
-  dia        DATE NOT NULL DEFAULT CURRENT_DATE
+  dia        DATE NOT NULL DEFAULT CURRENT_DATE,
+  creado     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS leccion_por_dia
-  ON lecciones_vistas (alumno_id, leccion, dia);
+CREATE INDEX IF NOT EXISTS aperturas_por_alumno ON aperturas (alumno_id, dia);

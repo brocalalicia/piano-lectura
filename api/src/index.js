@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
 import * as consultas from "./consultas.js";
+import { conMedias } from "./estadisticas.js";
 
 const aqui = path.dirname(fileURLToPath(import.meta.url));
 
@@ -60,13 +61,25 @@ app.get("/api/alumno/:codigo", conAlumno(async (_req, res, alumno) => {
 }));
 
 app.get("/api/alumno/:codigo/progreso", conAlumno(async (_req, res, alumno) => {
-  const [sesiones, marcas, lecciones] = await Promise.all([
-    consultas.sesionesDe(db, alumno.id),
-    consultas.mejoresMarcas(db, alumno.id),
-    consultas.leccionesDe(db, alumno.id),
-  ]);
-  res.json({ nombre: alumno.nombre, sesiones, marcas, lecciones });
+  res.json({ nombre: alumno.nombre, ...(await progresoDe(alumno.id)) });
 }));
+
+async function progresoDe(alumnoId, limiteSesiones = 50) {
+  const [sesiones, marcas, lecciones, cursos, porDia] = await Promise.all([
+    consultas.sesionesDe(db, alumnoId, limiteSesiones),
+    consultas.mejoresMarcas(db, alumnoId),
+    consultas.aperturasPorLeccion(db, alumnoId),
+    consultas.aperturasPorCurso(db, alumnoId),
+    consultas.aperturasPorDia(db, alumnoId),
+  ]);
+  return {
+    sesiones,
+    marcas,
+    lecciones: conMedias(lecciones),
+    cursos: conMedias(cursos),
+    aperturasPorDia: porDia,
+  };
+}
 
 const ENTERO = (v) => (Number.isInteger(v) && v >= 0 ? v : null);
 
@@ -86,10 +99,10 @@ app.post("/api/alumno/:codigo/sesion", conAlumno(async (req, res, alumno) => {
   res.json(await consultas.guardarSesion(db, alumno.id, datos));
 }));
 
-app.post("/api/alumno/:codigo/leccion", conAlumno(async (req, res, alumno) => {
+app.post("/api/alumno/:codigo/apertura", conAlumno(async (req, res, alumno) => {
   const { nivel, curso, leccion } = req.body || {};
-  if (!nivel || !leccion || !Number.isInteger(curso)) return fallo(res, 400, "Lección incompleta");
-  await consultas.registrarLeccion(db, alumno.id, String(nivel), curso, String(leccion));
+  if (!nivel || !leccion || !Number.isInteger(curso)) return fallo(res, 400, "Apertura incompleta");
+  await consultas.registrarApertura(db, alumno.id, String(nivel), curso, String(leccion));
   res.json({ guardado: true });
 }));
 
@@ -118,12 +131,7 @@ app.get("/api/profesora/alumnos", soloProfesora(async (_req, res) => {
 app.get("/api/profesora/alumno/:codigo", soloProfesora(async (req, res) => {
   const alumno = await consultas.alumnoPorCodigo(db, req.params.codigo);
   if (!alumno) return fallo(res, 404, "No encontrado");
-  const [sesiones, marcas, lecciones] = await Promise.all([
-    consultas.sesionesDe(db, alumno.id, 200),
-    consultas.mejoresMarcas(db, alumno.id),
-    consultas.leccionesDe(db, alumno.id),
-  ]);
-  res.json({ ...alumno, sesiones, marcas, lecciones });
+  res.json({ ...alumno, ...(await progresoDe(alumno.id, 200)) });
 }));
 
 // El codigo se genera aqui, no lo escribe la profesora: asi no acaban siendo
