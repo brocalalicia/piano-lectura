@@ -15,6 +15,14 @@ también los días en que no tocó nada — que es lo que distingue a quien prac
 a diario de quien lo abre todo la víspera de la clase. La semana son siete de
 esos días y el mes treinta.
 
+**Los minutos por página** son la media de lo que duró cada apertura. La app
+mide solo el tiempo con la pestaña a la vista (si el alumno cambia de pestaña o
+bloquea el móvil, el reloj se para) y manda el total al salir de la lección y
+cada vez que la pestaña se oculta; la API se queda con el mayor valor y lo topa
+en tres horas. Una apertura que se cerró de golpe se queda sin duración y no
+entra en la media: por eso la media puede salir de menos aperturas que las
+contadas, y sin ninguna medida se muestra una raya.
+
 ## Cómo se identifica un alumno
 
 No hay correo ni contraseña. La profesora crea al alumno con su nombre y la API
@@ -69,6 +77,7 @@ toca los datos.
 | `GET` | `/api/alumno/:codigo/progreso` | el alumno |
 | `POST` | `/api/alumno/:codigo/sesion` | el alumno |
 | `POST` | `/api/alumno/:codigo/apertura` | el alumno |
+| `POST` | `/api/alumno/:codigo/apertura/:id/duracion` | el alumno |
 | `GET` | `/api/profesora/alumnos` | con `X-Clave-Profesora` |
 | `GET` | `/api/profesora/alumno/:codigo` | con `X-Clave-Profesora` |
 | `POST` | `/api/profesora/alumnos` | con `X-Clave-Profesora` |

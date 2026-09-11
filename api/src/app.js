@@ -95,7 +95,22 @@ export function crearApp(db, { claveProfesora, origenPermitido } = {}) {
   app.post("/api/alumno/:codigo/apertura", conAlumno(async (req, res, alumno) => {
     const { nivel, curso, leccion } = req.body || {};
     if (!nivel || !leccion || !Number.isInteger(curso)) return fallo(res, 400, "Apertura incompleta");
-    await consultas.registrarApertura(db, alumno.id, String(nivel), curso, String(leccion));
+    const id = await consultas.registrarApertura(db, alumno.id, String(nivel), curso, String(leccion));
+    res.json({ guardado: true, id });
+  }));
+
+  // Tope de tres horas por apertura: una pestana olvidada en pantalla no puede
+  // convertir la media de minutos en un disparate.
+  const DURACION_MAXIMA_MS = 3 * 60 * 60 * 1000;
+
+  app.post("/api/alumno/:codigo/apertura/:id/duracion", conAlumno(async (req, res, alumno) => {
+    const id = Number(req.params.id);
+    const duracionMs = ENTERO((req.body || {}).duracionMs);
+    if (!Number.isInteger(id) || duracionMs === null) return fallo(res, 400, "Duración incompleta");
+    const guardado = await consultas.guardarDuracionApertura(
+      db, alumno.id, id, Math.min(duracionMs, DURACION_MAXIMA_MS)
+    );
+    if (!guardado) return fallo(res, 404, "Apertura desconocida");
     res.json({ guardado: true });
   }));
 

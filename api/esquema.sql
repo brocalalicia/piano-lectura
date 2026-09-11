@@ -49,6 +49,12 @@ CREATE TABLE IF NOT EXISTS aperturas (
 
 CREATE INDEX IF NOT EXISTS aperturas_por_alumno ON aperturas (alumno_id, dia);
 
+-- Cuanto tiempo estuvo la leccion en pantalla, en milisegundos. Lo manda la app
+-- al salir de la leccion; si el alumno cierra el navegador de golpe se queda en
+-- NULL y esa apertura no entra en la media de minutos. Va como ALTER y no en el
+-- CREATE porque la tabla ya existia en produccion cuando se anadio.
+ALTER TABLE aperturas ADD COLUMN IF NOT EXISTS duracion_ms INTEGER;
+
 -- Que cursos tiene abiertos cada alumno. Sin fila, el curso esta cerrado: la
 -- profesora los va abriendo a medida que da la clase. No es una barrera de
 -- seguridad, es una guia; el alumno sin codigo ve el programa entero.

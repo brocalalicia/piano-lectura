@@ -69,11 +69,25 @@ export async function mejoresMarcas(db, alumnoId) {
 
 // Cada apertura es una fila. No se agrupa por dia: abrir cinco veces la misma
 // leccion en una tarde es informacion, no ruido.
+// Devuelve el id para que la app pueda decir despues cuanto duro.
 export async function registrarApertura(db, alumnoId, nivel, curso, leccion) {
-  await db.query(
-    "INSERT INTO aperturas (alumno_id, nivel, curso, leccion) VALUES ($1, $2, $3, $4)",
+  const { rows } = await db.query(
+    "INSERT INTO aperturas (alumno_id, nivel, curso, leccion) VALUES ($1, $2, $3, $4) RETURNING id",
     [alumnoId, nivel, curso, leccion]
   );
+  return rows[0].id;
+}
+
+// La app manda la duracion acumulada varias veces (al ocultar la pestana, al
+// salir de la leccion), asi que se guarda el mayor valor recibido y da igual
+// el orden en que lleguen. Solo toca aperturas del propio alumno.
+export async function guardarDuracionApertura(db, alumnoId, aperturaId, duracionMs) {
+  const { rowCount } = await db.query(
+    `UPDATE aperturas SET duracion_ms = GREATEST(COALESCE(duracion_ms, 0), $1)
+      WHERE id = $2 AND alumno_id = $3`,
+    [duracionMs, aperturaId, alumnoId]
+  );
+  return rowCount === 1;
 }
 
 // El resumen de la profesora: una fila por alumno con lo justo para saber de un
@@ -101,7 +115,9 @@ export async function aperturasPorLeccion(db, alumnoId) {
             COUNT(*)::int            AS aperturas,
             COUNT(DISTINCT dia)::int AS dias,
             MIN(dia)                 AS primera,
-            MAX(dia)                 AS ultima
+            MAX(dia)                 AS ultima,
+            COUNT(duracion_ms)::int  AS aperturas_medidas,
+            COALESCE(SUM(duracion_ms), 0)::bigint AS duracion_total_ms
        FROM aperturas WHERE alumno_id = $1
       GROUP BY nivel, curso, leccion
       ORDER BY nivel, curso, leccion`,
@@ -117,7 +133,9 @@ export async function aperturasPorCurso(db, alumnoId) {
             COUNT(DISTINCT leccion)::int AS lecciones,
             COUNT(DISTINCT dia)::int     AS dias,
             MIN(dia)                     AS primera,
-            MAX(dia)                     AS ultima
+            MAX(dia)                     AS ultima,
+            COUNT(duracion_ms)::int      AS aperturas_medidas,
+            COALESCE(SUM(duracion_ms), 0)::bigint AS duracion_total_ms
        FROM aperturas WHERE alumno_id = $1
       GROUP BY nivel, curso
       ORDER BY nivel, curso`,

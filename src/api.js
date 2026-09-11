@@ -44,11 +44,13 @@ export const olvidarClaveProfesora = () => guardar(CLAVE_GUARDADA, "");
 // Devuelve los datos, o null si algo ha ido mal. El motivo se distingue con
 // "estado": 401 es clave incorrecta y 404 codigo que no existe, que son los dos
 // casos que la interfaz necesita contar al usuario.
-async function pedir(ruta, { metodo = "GET", cuerpo, clave } = {}) {
+async function pedir(ruta, { metodo = "GET", cuerpo, clave, keepalive = false } = {}) {
   if (!BASE) return { ok: false, estado: 0, datos: null };
   try {
     const respuesta = await fetch(`${BASE}${ruta}`, {
       method: metodo,
+      // keepalive deja que la peticion termine aunque la pestana se cierre.
+      keepalive,
       headers: {
         ...(cuerpo ? { "Content-Type": "application/json" } : {}),
         ...(clave ? { "X-Clave-Profesora": clave } : {}),
@@ -78,10 +80,26 @@ export function registrarSesion(sesion) {
   pedir(`/api/alumno/${encodeURIComponent(codigo)}/sesion`, { metodo: "POST", cuerpo: sesion });
 }
 
-export function registrarApertura(apertura) {
+// Devuelve el id de la apertura (o null), para poder decir luego cuanto duro.
+export async function registrarApertura(apertura) {
   const codigo = codigoAlumno();
-  if (!codigo || !BASE) return;
-  pedir(`/api/alumno/${encodeURIComponent(codigo)}/apertura`, { metodo: "POST", cuerpo: apertura });
+  if (!codigo || !BASE) return null;
+  const { datos } = await pedir(`/api/alumno/${encodeURIComponent(codigo)}/apertura`, {
+    metodo: "POST",
+    cuerpo: apertura,
+  });
+  return datos?.id ?? null;
+}
+
+// Se manda con keepalive porque muchas veces sale justo al cerrar la pestana.
+export function enviarDuracionApertura(id, duracionMs) {
+  const codigo = codigoAlumno();
+  if (!codigo || !BASE || !id) return;
+  pedir(`/api/alumno/${encodeURIComponent(codigo)}/apertura/${id}/duracion`, {
+    metodo: "POST",
+    cuerpo: { duracionMs: Math.round(duracionMs) },
+    keepalive: true,
+  });
 }
 
 // --- Profesora ------------------------------------------------------------

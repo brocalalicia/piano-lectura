@@ -29,10 +29,20 @@ export function medias(aperturas, primera, hasta = new Date()) {
   };
 }
 
+// Minutos que dura una apertura de media, con un decimal. Solo cuentan las
+// aperturas de las que se sabe la duracion; si no hay ninguna, null (que no es
+// lo mismo que cero: no se sabe).
+export function minutosPorApertura(duracionTotalMs, aperturasMedidas) {
+  const medidas = Number(aperturasMedidas) || 0;
+  if (!medidas) return null;
+  return Math.round((Number(duracionTotalMs) / medidas / 60000) * 10) / 10;
+}
+
 // Anade las medias a cada fila de un agrupado (por leccion o por curso).
 export function conMedias(filas, hasta = new Date()) {
   return filas.map((fila) => ({
     ...fila,
     medias: medias(fila.aperturas, fila.primera, hasta),
+    minutosPorApertura: minutosPorApertura(fila.duracion_total_ms, fila.aperturas_medidas),
   }));
 }

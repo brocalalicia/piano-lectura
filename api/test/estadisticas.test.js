@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { medias, diasTranscurridos, conMedias } from "../src/estadisticas.js";
+import { medias, diasTranscurridos, conMedias, minutosPorApertura } from "../src/estadisticas.js";
 
 const dia = (iso) => new Date(`${iso}T12:00:00Z`);
 
@@ -39,4 +39,12 @@ test("conMedias respeta el resto de la fila", () => {
   assert.equal(fila.leccion, "p1c1-pentagrama");
   assert.equal(fila.dias, 2);
   assert.equal(fila.medias.dia, 2);
+});
+
+test("los minutos por apertura salen de las aperturas medidas, no de todas", () => {
+  assert.equal(minutosPorApertura(240000, 2), 2, "dos aperturas de dos minutos");
+  assert.equal(minutosPorApertura("250000", "3"), 1.4, "pg devuelve los bigint como texto");
+  assert.equal(minutosPorApertura(0, 0), null, "sin medir no hay media");
+  const [fila] = conMedias([{ aperturas: 4, primera: dia("2026-09-09"), duracion_total_ms: 600000, aperturas_medidas: 4 }]);
+  assert.equal(fila.minutosPorApertura, 2.5);
 });

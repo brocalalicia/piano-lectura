@@ -25,7 +25,9 @@ for (const [curso, leccion, veces] of [
   [1, "p1c1-pentagrama", 5], [1, "p1c1-teclado", 2], [2, "p1c2-figuras", 3],
 ]) {
   for (let i = 0; i < veces; i += 1) {
-    await consultas.registrarApertura(db, marta.id, "primeros-pasos", curso, leccion);
+    const id = await consultas.registrarApertura(db, marta.id, "primeros-pasos", curso, leccion);
+    // La ultima de cada leccion se deja sin duracion, como una pestana cerrada de golpe.
+    if (i < veces - 1) await consultas.guardarDuracionApertura(db, marta.id, id, (i + 1) * 90000);
   }
 }
 

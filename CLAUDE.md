@@ -78,7 +78,8 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
   no un candado: sin código se ve todo.
 - Las sesiones se mandan al acabar **el último de los seis ejercicios**, que es
   la unidad que le sirve a la profesora, y cada apertura de una lección se
-  registra por separado.
+  registra por separado. Al salir de la lección se manda cuánto duró (solo el
+  tiempo con la pestaña visible); el detalle está en `api/README.md`.
 - Para probar todo esto sin base de datos: `node api/dev/servidor-memoria.js`
   levanta la API contra un Postgres en memoria con datos de ejemplo, y basta con
   poner `VITE_API=http://localhost:3001` en un `.env.local`.

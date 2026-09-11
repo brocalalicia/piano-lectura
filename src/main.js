@@ -108,6 +108,7 @@ const TRADUCCIONES = {
     columnaMejoresEstrellas: "Mejores estrellas",
     columnaAperturas: "Veces",
     columnaMediaDia: "Al día",
+    columnaMinutos: "Minutos por página",
     columnaCurso: "Curso",
     profesoraTitulo: "Mis alumnos",
     claveProfesora: "Clave de profesora",
@@ -265,6 +266,7 @@ const TRADUCCIONES = {
     columnaMejoresEstrellas: "Meilleures étoiles",
     columnaAperturas: "Fois",
     columnaMediaDia: "Par jour",
+    columnaMinutos: "Minutes par page",
     columnaCurso: "Cours",
     profesoraTitulo: "Mes élèves",
     claveProfesora: "Clé de la professeure",
@@ -2372,11 +2374,59 @@ function irAPracticaLista(curso, numero) {
   actualizarUI();
 }
 
+// --- Tiempo en cada leccion -----------------------------------------------
+//
+// Cada apertura de leccion lleva un reloj que solo corre mientras la pestana
+// esta a la vista: si el alumno cambia de pestana o bloquea el movil, se para.
+// El total se manda al salir de la leccion, y tambien cada vez que la pestana
+// se oculta, por si ya no vuelve. El servidor se queda con el mayor valor.
+
+let aperturaAbierta = null; // { id, acumuladoMs, visibleDesde }
+
+function empezarApertura(apertura) {
+  cerrarApertura();
+  const abierta = { id: null, acumuladoMs: 0, visibleDesde: pestanaVisible() ? Date.now() : null };
+  api.registrarApertura(apertura).then((id) => { abierta.id = id; });
+  aperturaAbierta = abierta;
+}
+
+const pestanaVisible = () => document.visibilityState !== "hidden";
+
+function duracionApertura(abierta) {
+  return abierta.acumuladoMs + (abierta.visibleDesde ? Date.now() - abierta.visibleDesde : 0);
+}
+
+function enviarDuracionApertura(abierta) {
+  if (abierta.id) api.enviarDuracionApertura(abierta.id, duracionApertura(abierta));
+}
+
+function cerrarApertura() {
+  if (!aperturaAbierta) return;
+  enviarDuracionApertura(aperturaAbierta);
+  aperturaAbierta = null;
+}
+
+document.addEventListener("visibilitychange", () => {
+  const abierta = aperturaAbierta;
+  if (!abierta) return;
+  if (pestanaVisible()) {
+    abierta.visibleDesde = Date.now();
+  } else {
+    abierta.acumuladoMs = duracionApertura(abierta);
+    abierta.visibleDesde = null;
+    enviarDuracionApertura(abierta);
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  if (aperturaAbierta) enviarDuracionApertura(aperturaAbierta);
+});
+
 function irAPracticaEjercicio(indice) {
   const filas = filasDelCurso(cursoPractica);
   const fila = filas[Math.max(0, Math.min(indice, filas.length - 1))];
   if (fila && nivelPractica) {
-    api.registrarApertura({
+    empezarApertura({
       nivel: nivelPractica.id,
       curso: cursoPractica.numero,
       leccion: fila.grupo[0].id,
@@ -2682,6 +2732,10 @@ const fechaCorta = (valor) => (valor ? new Date(valor).toLocaleDateString(idioma
 const ESTRELLAS_POR_SESION = TOTAL_EJERCICIOS * 3;
 const estrellasTexto = (n) => `★ ${n} / ${ESTRELLAS_POR_SESION}`;
 
+// Sin ninguna apertura medida no hay media que dar: raya, no cero.
+const minutosTexto = (minutos) =>
+  minutos === null || minutos === undefined ? "–" : String(minutos).replace(".", ",");
+
 function irAProgreso() {
   estado = "progreso";
   actualizarUI();
@@ -2739,11 +2793,12 @@ async function renderizarProgreso() {
   if (datos.aperturasPorCurso.length) {
     seccion(progresoContenidoEl, t().progresoLecciones);
     progresoContenidoEl.appendChild(tabla(
-      [t().columnaCurso, t().columnaAperturas, t().columnaMediaDia],
+      [t().columnaCurso, t().columnaAperturas, t().columnaMediaDia, t().columnaMinutos],
       datos.aperturasPorCurso.map((c) => [
         t().practicaCursoTitulo(c.curso),
         c.aperturas,
         c.medias.dia,
+        minutosTexto(c.minutosPorApertura),
       ])
     ));
   }
@@ -2924,10 +2979,10 @@ function pintarListaAlumnos(clave, alumnos) {
         seccion(detalle, t().aperturasPorCurso);
         detalle.appendChild(tabla(
           [t().columnaCurso, t().columnaLecciones, t().columnaAperturas, t().columnaDias,
-           t().columnaMediaDia, t().columnaMediaSemana, t().columnaMediaMes],
+           t().columnaMediaDia, t().columnaMediaSemana, t().columnaMediaMes, t().columnaMinutos],
           datos.aperturasPorCurso.map((c) => [
             t().practicaCursoTitulo(c.curso), c.lecciones, c.aperturas, c.dias,
-            c.medias.dia, c.medias.semana, c.medias.mes,
+            c.medias.dia, c.medias.semana, c.medias.mes, minutosTexto(c.minutosPorApertura),
           ])
         ));
       }
@@ -2957,6 +3012,10 @@ function actualizarUI() {
   // El estado tambien va en el body para que el CSS pueda centrar las
   // pantallas que no tienen la zona de juego (menus, inicio y resumen).
   document.body.dataset.estado = estado;
+
+  // Al salir de una leccion por cualquier camino (atras, otro menu, cerrar
+  // sesion) se cierra su reloj.
+  if (estado !== "practica-ejercicio") cerrarApertura();
 
   menuProgramaEl.classList.toggle("oculto", estado !== "menu-programa");
   progresoEl.classList.toggle("oculto", estado !== "progreso");

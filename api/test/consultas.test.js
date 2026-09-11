@@ -101,6 +101,30 @@ test("las aperturas se agrupan tambien por curso", async () => {
   assert.equal(uno.lecciones, 2, "de dos lecciones distintas");
 });
 
+test("la duracion se guarda por apertura y entra en la media de minutos", async () => {
+  const db = baseNueva();
+  const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
+  const otro = await consultas.crearAlumno(db, "Luis", "xyz98765");
+  const a = await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-pentagrama");
+  const b = await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-pentagrama");
+  await consultas.registrarApertura(db, alumno.id, "primeros-pasos", 1, "p1c1-pentagrama");
+
+  assert.ok(Number.isInteger(a) && a !== b, "cada apertura devuelve su id");
+  assert.equal(await consultas.guardarDuracionApertura(db, alumno.id, a, 60000), true);
+  // Llega primero el total y luego un parcial mas viejo: se queda el mayor.
+  assert.equal(await consultas.guardarDuracionApertura(db, alumno.id, b, 180000), true);
+  assert.equal(await consultas.guardarDuracionApertura(db, alumno.id, b, 90000), true);
+  assert.equal(await consultas.guardarDuracionApertura(db, otro.id, a, 999999), false,
+    "un alumno no puede tocar las aperturas de otro");
+
+  const [leccion] = await consultas.aperturasPorLeccion(db, alumno.id);
+  assert.equal(leccion.aperturas, 3);
+  assert.equal(leccion.aperturas_medidas, 2, "la tercera sigue sin duracion");
+  assert.equal(Number(leccion.duracion_total_ms), 240000);
+  const [curso] = await consultas.aperturasPorCurso(db, alumno.id);
+  assert.equal(Number(curso.duracion_total_ms), 240000);
+});
+
 test("la serie diaria devuelve una fila por dia", async () => {
   const db = baseNueva();
   const alumno = await consultas.crearAlumno(db, "Marta", "abc12345");
