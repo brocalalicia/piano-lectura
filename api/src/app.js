@@ -99,9 +99,9 @@ export function crearApp(db, { claveProfesora, origenPermitido } = {}) {
     res.json({ guardado: true, id });
   }));
 
-  // Tope de tres horas por apertura: una pestana olvidada en pantalla no puede
+  // Tope de una hora por apertura: una pestana olvidada en pantalla no puede
   // convertir la media de minutos en un disparate.
-  const DURACION_MAXIMA_MS = 3 * 60 * 60 * 1000;
+  const DURACION_MAXIMA_MS = 60 * 60 * 1000;
 
   app.post("/api/alumno/:codigo/apertura/:id/duracion", conAlumno(async (req, res, alumno) => {
     const id = Number(req.params.id);

@@ -19,7 +19,7 @@ esos días y el mes treinta.
 mide solo el tiempo con la pestaña a la vista (si el alumno cambia de pestaña o
 bloquea el móvil, el reloj se para) y manda el total al salir de la lección y
 cada vez que la pestaña se oculta; la API se queda con el mayor valor y lo topa
-en tres horas. Una apertura que se cerró de golpe se queda sin duración y no
+en una hora. Una apertura que se cerró de golpe se queda sin duración y no
 entra en la media: por eso la media puede salir de menos aperturas que las
 contadas, y sin ninguna medida se muestra una raya.
 
