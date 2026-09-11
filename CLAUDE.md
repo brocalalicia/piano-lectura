@@ -30,6 +30,11 @@ No soy programador.
   ligature, chiffrage de mesure) y espacio fino antes de : ; ? !
 - Español por defecto, con selector de idioma (ES/FR) arriba a la derecha.
   La preferencia se guarda en el navegador (localStorage).
+- A la izquierda del selector va el **espacio** del alumno (una pastilla con su
+  nombre → «Mi progreso») o de la profesora («Profesora» → sus alumnos). Se ve
+  en cualquier pantalla menos en mitad de una sesión de lectura, y «← Atrás»
+  desde ahí devuelve a la pantalla en la que se estaba. Las pantallas de
+  progreso se parten en dos bloques: **Cursos** y **Lectura**.
 - Nombres de notas en solfeo: do, re, mi, fa, sol, la, si (ré en francés).
   Nunca C, D, E...
 - Botones grandes, pensados para dedos de niño en una tablet.

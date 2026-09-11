@@ -97,10 +97,14 @@ const TRADUCCIONES = {
     sinConexion: "No se ha podido conectar. Inténtalo más tarde.",
     soyLaProfesora: "Soy la profesora",
     progresoTitulo: "Mi progreso",
-    progresoVacio: "Todavía no has terminado ninguna sesión de lectura.",
     progresoSesiones: "Sesiones de lectura",
     progresoMarcas: "Tu mejor marca por nivel",
+    marcasAlumno: "Mejor marca por nivel",
     progresoLecciones: "Lecciones que has abierto",
+    bloqueCursos: "Cursos",
+    bloqueLectura: "Lectura",
+    todaviaNada: "Todavía nada.",
+    espacioProfesora: "Profesora",
     columnaNivel: "Nivel",
     columnaSesionesCorto: "Sesiones",
     columnaMejorTiempo: "Mejor tiempo",
@@ -255,10 +259,14 @@ const TRADUCCIONES = {
     sinConexion: "Connexion impossible. Réessaie plus tard.",
     soyLaProfesora: "Je suis la professeure",
     progresoTitulo: "Mes progrès",
-    progresoVacio: "Tu n'as encore terminé aucune session de lecture.",
     progresoSesiones: "Sessions de lecture",
     progresoMarcas: "Ton meilleur résultat par niveau",
+    marcasAlumno: "Meilleur résultat par niveau",
     progresoLecciones: "Leçons que tu as ouvertes",
+    bloqueCursos: "Cours",
+    bloqueLectura: "Lecture",
+    todaviaNada: "Rien pour l'instant.",
+    espacioProfesora: "Professeure",
     columnaNivel: "Niveau",
     columnaSesionesCorto: "Sessions",
     columnaMejorTiempo: "Meilleur temps",
@@ -418,6 +426,7 @@ const menuProgramaEl = document.getElementById("menu-programa");
 const programaTituloEl = document.getElementById("programa-titulo");
 const menuProgramaOpcionesEl = document.getElementById("menu-programa-opciones");
 const identidadEl = document.getElementById("identidad");
+const espacioEl = document.getElementById("espacio");
 const progresoEl = document.getElementById("progreso");
 const progresoTituloEl = document.getElementById("progreso-titulo");
 const progresoContenidoEl = document.getElementById("progreso-contenido");
@@ -1910,6 +1919,7 @@ function renderizarMenuPrograma() {
 // pinta nada, porque no habria donde guardar el progreso.
 function renderizarIdentidad() {
   identidadEl.innerHTML = "";
+  renderizarEspacio();
   if (!api.hayServidor()) return;
 
   const linea = (clase) => {
@@ -2482,9 +2492,69 @@ const PANTALLA_ANTERIOR = {
   "practica-curso": irAPracticaNivel,
   "practica-lista": () => irAPracticaCurso(nivelPractica),
   "practica-ejercicio": () => irAPracticaLista(cursoPractica),
-  progreso: irAMenuPrograma,
-  profesora: irAMenuPrograma,
+  progreso: volverDelEspacio,
+  profesora: volverDelEspacio,
 };
+
+// --- Espacio del alumno y de la profesora -----------------------------------
+//
+// Desde la barra de arriba se llega al progreso o a la lista de alumnos desde
+// cualquier pantalla, y "atras" devuelve a la pantalla en la que se estaba.
+// Si se entro desde el inicio, "atras" vuelve al inicio, como siempre.
+
+let regresoEspacio = null;
+
+function restauradorDe(pantalla) {
+  switch (pantalla) {
+    case "practica-nivel": return irAPracticaNivel;
+    case "practica-curso": return () => irAPracticaCurso(nivelPractica);
+    case "practica-lista": return () => irAPracticaLista(cursoPractica, cursoPractica.numero);
+    case "practica-ejercicio": return () => irAPracticaEjercicio(filaPractica);
+    case "menu-clave": return volverAlMenuClave;
+    case "menu-nivel": case "inicio": case "terminado": return volverAlMenuNivel;
+    case "progreso": case "profesora": return regresoEspacio;
+    default: return null;
+  }
+}
+
+function volverDelEspacio() {
+  const regreso = regresoEspacio || irAMenuPrograma;
+  regresoEspacio = null;
+  regreso();
+}
+
+function renderizarEspacio() {
+  espacioEl.innerHTML = "";
+  if (!api.hayServidor()) return;
+  // En mitad de una sesion de lectura no se ofrece salir: se perderia.
+  if (estado === "memorizando" || estado === "jugando" || estado === "pausado") return;
+
+  const boton = (texto, pantalla, alPulsar) => {
+    const b = document.createElement("button");
+    b.className = "boton-espacio";
+    b.textContent = texto;
+    b.title = texto;
+    if (estado === pantalla) {
+      b.classList.add("activo");
+      b.disabled = true;
+    } else {
+      b.addEventListener("click", () => {
+        vibrar(15);
+        regresoEspacio = restauradorDe(estado);
+        alPulsar();
+      });
+    }
+    espacioEl.appendChild(b);
+  };
+
+  const alumno = api.codigoAlumno() && alumnoActual;
+  const profesora = Boolean(api.claveProfesora());
+  if (alumno) boton(alumnoActual, "progreso", irAProgreso);
+  if (profesora) boton(t().espacioProfesora, "profesora", irAProfesora);
+  if (!alumno && !profesora && estado !== "menu-programa") {
+    boton(t().entrar, "menu-programa", irAMenuPrograma);
+  }
+}
 
 function volverAtras() {
   if (estado === "menu-programa") return;
@@ -2688,6 +2758,7 @@ async function cargarAlumno() {
   // hay que repintar lo que depende de quien sea el alumno.
   if (estado === "menu-programa") renderizarIdentidad();
   if (estado === "practica-curso") renderizarPracticaCursos();
+  renderizarEspacio();
 }
 
 // --- Mi progreso ----------------------------------------------------------
@@ -2719,6 +2790,25 @@ function tabla(cabeceras, filas) {
   });
   t.appendChild(tbody);
   return t;
+}
+
+// Un bloque con cabecera grande: el progreso se parte en "Cursos" y "Lectura".
+function bloque(contenedor, titulo) {
+  const div = document.createElement("div");
+  div.className = "bloque-progreso";
+  const h = document.createElement("h2");
+  h.className = "bloque-titulo";
+  h.textContent = titulo;
+  div.appendChild(h);
+  contenedor.appendChild(div);
+  return div;
+}
+
+function nada(contenedor) {
+  const p = document.createElement("p");
+  p.className = "aviso";
+  p.textContent = t().todaviaNada;
+  contenedor.appendChild(p);
 }
 
 function seccion(contenedor, titulo) {
@@ -2755,17 +2845,26 @@ async function renderizarProgreso() {
     return;
   }
 
-  if (!datos.sesiones.length && !datos.aperturasPorCurso.length) {
-    const aviso = document.createElement("p");
-    aviso.className = "aviso";
-    aviso.textContent = t().progresoVacio;
-    progresoContenidoEl.appendChild(aviso);
-    return;
+  const cursos = bloque(progresoContenidoEl, t().bloqueCursos);
+  if (datos.aperturasPorCurso.length) {
+    seccion(cursos, t().progresoLecciones);
+    cursos.appendChild(tabla(
+      [t().columnaCurso, t().columnaAperturas, t().columnaMediaDia, t().columnaMinutos],
+      datos.aperturasPorCurso.map((c) => [
+        t().practicaCursoTitulo(c.curso),
+        c.aperturas,
+        c.medias.dia,
+        minutosTexto(c.minutosPorApertura),
+      ])
+    ));
+  } else {
+    nada(cursos);
   }
 
+  const lectura = bloque(progresoContenidoEl, t().bloqueLectura);
   if (datos.marcas.length) {
-    seccion(progresoContenidoEl, t().progresoMarcas);
-    progresoContenidoEl.appendChild(tabla(
+    seccion(lectura, t().progresoMarcas);
+    lectura.appendChild(tabla(
       [t().columnaNivel, t().columnaSesionesCorto, t().columnaMejorTiempo, t().columnaMejoresEstrellas],
       datos.marcas.map((m) => [
         `${t().claves[m.clave]} · ${t().niveles[m.nivel]}`,
@@ -2775,10 +2874,9 @@ async function renderizarProgreso() {
       ])
     ));
   }
-
   if (datos.sesiones.length) {
-    seccion(progresoContenidoEl, t().progresoSesiones);
-    progresoContenidoEl.appendChild(tabla(
+    seccion(lectura, t().progresoSesiones);
+    lectura.appendChild(tabla(
       ["", t().columnaNivel, t().aciertos, t().fallos, t().columnaTiempo],
       datos.sesiones.slice(0, 15).map((s) => [
         fechaCorta(s.creado),
@@ -2789,19 +2887,7 @@ async function renderizarProgreso() {
       ])
     ));
   }
-
-  if (datos.aperturasPorCurso.length) {
-    seccion(progresoContenidoEl, t().progresoLecciones);
-    progresoContenidoEl.appendChild(tabla(
-      [t().columnaCurso, t().columnaAperturas, t().columnaMediaDia, t().columnaMinutos],
-      datos.aperturasPorCurso.map((c) => [
-        t().practicaCursoTitulo(c.curso),
-        c.aperturas,
-        c.medias.dia,
-        minutosTexto(c.minutosPorApertura),
-      ])
-    ));
-  }
+  if (!datos.marcas.length && !datos.sesiones.length) nada(lectura);
 }
 
 // --- Pantalla de la profesora ---------------------------------------------
@@ -2821,11 +2907,13 @@ async function renderizarProfesora() {
   profesoraContenidoEl.innerHTML = "";
 
   const clave = api.claveProfesora();
+  renderizarEspacio();
   if (!clave) return pedirClaveProfesora();
 
   const { ok, estado: http, datos } = await api.listarAlumnos(clave);
   if (!ok) {
     api.olvidarClaveProfesora();
+    renderizarEspacio();
     return pedirClaveProfesora(http === 401 ? t().claveIncorrecta : t().sinConexion);
   }
 
@@ -2965,19 +3053,10 @@ function pintarListaAlumnos(clave, alumnos) {
       ver.textContent = t().cerrarDetalle;
       const { ok, datos } = await api.detalleAlumno(clave, alumno.codigo);
       if (!ok) return;
-      if (datos.marcas.length) {
-        seccion(detalle, t().progresoMarcas);
-        detalle.appendChild(tabla(
-          [t().columnaNivel, t().columnaSesionesCorto, t().columnaMejorTiempo, t().columnaMejoresEstrellas],
-          datos.marcas.map((m) => [
-            `${t().claves[m.clave]} · ${t().niveles[m.nivel]}`,
-            m.sesiones, formatearTiempo(m.mejor_tiempo_ms), estrellasTexto(m.mejores_estrellas),
-          ])
-        ));
-      }
+      const cursos = bloque(detalle, t().bloqueCursos);
       if (datos.aperturasPorCurso.length) {
-        seccion(detalle, t().aperturasPorCurso);
-        detalle.appendChild(tabla(
+        seccion(cursos, t().aperturasPorCurso);
+        cursos.appendChild(tabla(
           [t().columnaCurso, t().columnaLecciones, t().columnaAperturas, t().columnaDias,
            t().columnaMediaDia, t().columnaMediaSemana, t().columnaMediaMes, t().columnaMinutos],
           datos.aperturasPorCurso.map((c) => [
@@ -2985,6 +3064,21 @@ function pintarListaAlumnos(clave, alumnos) {
             c.medias.dia, c.medias.semana, c.medias.mes, minutosTexto(c.minutosPorApertura),
           ])
         ));
+      } else {
+        nada(cursos);
+      }
+      const lectura = bloque(detalle, t().bloqueLectura);
+      if (datos.marcas.length) {
+        seccion(lectura, t().marcasAlumno);
+        lectura.appendChild(tabla(
+          [t().columnaNivel, t().columnaSesionesCorto, t().columnaMejorTiempo, t().columnaMejoresEstrellas],
+          datos.marcas.map((m) => [
+            `${t().claves[m.clave]} · ${t().niveles[m.nivel]}`,
+            m.sesiones, formatearTiempo(m.mejor_tiempo_ms), estrellasTexto(m.mejores_estrellas),
+          ])
+        ));
+      } else {
+        nada(lectura);
       }
     });
     ficha.append(ver, detalle);
@@ -3028,6 +3122,7 @@ function actualizarUI() {
   practicaEjercicioEl.classList.toggle("oculto", estado !== "practica-ejercicio");
   indicadorNivelEl.classList.toggle("oculto", !enLectura);
   botonAtras.classList.toggle("oculto", estado === "menu-programa");
+  renderizarEspacio();
   botonAtras.textContent =
     origenLectura && enLectura
       ? `← ${t().practicaCursoTitulo(origenLectura.numero)}`
