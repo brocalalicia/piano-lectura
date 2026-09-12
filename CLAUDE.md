@@ -30,8 +30,9 @@ No soy programador.
   ligature, chiffrage de mesure) y espacio fino antes de : ; ? !
 - Español por defecto, con selector de idioma (ES/FR) arriba a la derecha.
   La preferencia se guarda en el navegador (localStorage).
-- A la izquierda del selector va el **espacio** del alumno (una pastilla con su
-  nombre → «Mi progreso») o de la profesora («Profesora» → sus alumnos). Se ve
+- A la izquierda del selector va el **espacio**: una sola pastilla, con el
+  nombre del alumno (→ «Mi progreso») si hay alumno identificado, y si no,
+  «Profesora» (→ sus alumnos) cuando la clave está guardada. Se ve
   en cualquier pantalla menos en mitad de una sesión de lectura, y «← Atrás»
   desde ahí devuelve a la pantalla en la que se estaba. Las pantallas de
   progreso se parten en dos bloques: **Cursos** y **Lectura**.

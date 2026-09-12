@@ -2547,13 +2547,14 @@ function renderizarEspacio() {
     espacioEl.appendChild(b);
   };
 
+  // Una sola pastilla. Si hay un alumno identificado (aunque sea la profesora
+  // probando con un codigo de alumno), se ve la app como la ve el alumno: sin
+  // acceso de profesora en la barra.
   const alumno = api.codigoAlumno() && alumnoActual;
   const profesora = Boolean(api.claveProfesora());
   if (alumno) boton(alumnoActual, "progreso", irAProgreso);
-  if (profesora) boton(t().espacioProfesora, "profesora", irAProfesora);
-  if (!alumno && !profesora && estado !== "menu-programa") {
-    boton(t().entrar, "menu-programa", irAMenuPrograma);
-  }
+  else if (profesora) boton(t().espacioProfesora, "profesora", irAProfesora);
+  else if (estado !== "menu-programa") boton(t().entrar, "menu-programa", irAMenuPrograma);
 }
 
 function volverAtras() {
