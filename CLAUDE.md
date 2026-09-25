@@ -265,6 +265,15 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - **A partir del curso 6 cada clase lleva un bloque de repertorio**, sacado de
   *Essential Piano Repertoire, Preparatory Level* (Keith Snell), en el orden
   progresivo del propio libro.
+- **Las páginas de los métodos: qué está verificado y qué no.** Snell y Aaron
+  están comprobados contra el índice que publican sus editoriales (Kjos y
+  Alfred), así que esas páginas son fiables. Las de Hervé/Pouillard y las de
+  Chornet **no**: ninguna editorial publica su índice por páginas, y son una
+  estimación. Antes de darlas por buenas hay que mirarlas en el libro. En
+  Chornet el orden del libro es manos separadas → **alternadas** → **unísono** →
+  dedos libres → legato → acordes, al revés que la progresión de los cursos 3 y
+  4; los tramos están repartidos según ese orden, pero el punto de corte entre
+  uno y otro sigue sin confirmar.
 - **No se enlaza a partituras de fuera**: o está dibujada dentro de la app, o
   remite a un libro que ella ya tiene.
 - Los dos programas están conectados: la práctica manda a la lectura. Si se

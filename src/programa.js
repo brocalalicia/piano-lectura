@@ -2019,7 +2019,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
           referencia("p1c3-ref", { es: "Práctica a manos juntas, al unísono", fr: "Travail en mains ensemble, à l'unisson" },
             [
               pouillard({ es: "cap. II págs. 16-19", fr: "chap. II p. 16-19" }),
-              chornet({ es: "págs. 14-16, manos juntas al unísono", fr: "p. 14-16, mains ensemble à l'unisson" }),
+              chornet({ es: "págs. 17-21, manos juntas al unísono", fr: "p. 17-21, mains ensemble à l'unisson" }),
               aaron({ es: "págs. 17-18", fr: "p. 17-18" }),
             ],
             { es: "Las dos manos tocan lo mismo a la vez, separadas por una octava, y aparecen las primeras ligaduras.", fr: "Les deux mains jouent la même chose en même temps, à l'octave, et les premières liaisons apparaissent." }),
@@ -2064,8 +2064,8 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
           referencia("p1c4-ref", { es: "Ganando independencia: manos alternadas", fr: "Gagner en indépendance : mains alternées" },
             [
               pouillard({ es: "cap. II págs. 20-22", fr: "chap. II p. 20-22" }),
-              chornet({ es: "págs. 17-21, manos alternadas", fr: "p. 17-21, mains alternées" }),
-              aaron({ es: "págs. 19 y 29-30", fr: "p. 19 et 29-30" }),
+              chornet({ es: "págs. 14-16, manos alternadas", fr: "p. 14-16, mains alternées" }),
+              aaron({ es: "pág. 13, los silencios y la nueva posición de la mano izquierda", fr: "p. 13, les silences et la nouvelle position de la main gauche" }),
             ],
             { es: "Las manos dejan de ir al unísono: se van pasando la melodía sobre el sistema de dos pentagramas.", fr: "Les mains cessent d'aller à l'unisson : elles se passent la mélodie sur le système de deux portées." }),
         ],
@@ -2124,7 +2124,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             [
               pouillard({ es: "cap. III págs. 26-27", fr: "chap. III p. 26-27" }),
               chornet({ es: "págs. 22-25, dedos libres", fr: "p. 22-25, doigts libres" }),
-              aaron({ es: "págs. 31-32", fr: "p. 31-32" }),
+              aaron({ es: "pág. 26, las corcheas, y pág. 31, estudios de notas dobles", fr: "p. 26, les croches, et p. 31, études de notes doubles" }),
             ],
             { es: "Cada mano hace algo distinto sin arrastrar a la otra, y dentro de cada mano unos dedos tocan mientras los demás se quedan quietos.", fr: "Chaque main fait quelque chose de différent sans entraîner l'autre, et dans chaque main certains doigts jouent pendant que les autres restent en place." }),
         ],
@@ -2379,7 +2379,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             [
               pouillard({ es: "cap. VII págs. 64-68", fr: "chap. VII p. 64-68" }),
               chornet({ es: "págs. 29-32, legato y staccato, y págs. 33-36, Czerny op. 599 nº 1-8", fr: "p. 29-32, legato et staccato, et p. 33-36, Czerny op. 599 nº 1-8" }),
-              aaron({ es: "págs. 25-27", fr: "p. 25-27" }),
+              aaron({ es: "pág. 27, la tabla de matices, y pág. 38, Study in Staccato", fr: "p. 27, le tableau des nuances, et p. 38, Study in Staccato" }),
             ],
             { es: "Los dos ataques básicos, ligado y picado, y las primeras indicaciones de matiz sobre estudios cortos.", fr: "Les deux attaques de base, lié et piqué, et les premières indications de nuance sur de courtes études." }),
           referencia("p1c9-rep", { es: "Repertorio", fr: "Répertoire" },
