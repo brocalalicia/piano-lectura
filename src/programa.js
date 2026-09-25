@@ -1890,9 +1890,7 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             unaMano(PULGARES_DO_MI)),
           referencia("p1c1-ref", { es: "Práctica a manos separadas", fr: "Travail en mains séparées" },
             [
-              pouillard({ es: "Presentación págs. 4-6 y cap. I pág. 8", fr: "Présentation p. 4-6 et chap. I p. 8" }),
-              chornet({ es: "pág. 11", fr: "p. 11" }),
-              aaron({ es: "págs. 6-7", fr: "p. 6-7" }),
+              pouillard({ es: "Presentación págs. 4-6 y cap. I págs. 11 y 12", fr: "Présentation p. 4-6 et chap. I p. 11 et 12" }),
             ],
             { es: "Cómo sentarse al piano, la numeración de los dedos y las primeras melodías a 2 dedos.", fr: "Comment s'asseoir au piano, la numérotation des doigts et les premières mélodies à 2 doigts." }),
         ],
@@ -1952,9 +1950,9 @@ teoria("p1c1-teclado", { es: "Del pentagrama al teclado", fr: "De la portée au 
             unaMano(NOTAS_REPETIDAS_MI)),
           referencia("p1c2-ref", { es: "Primeras melodías a manos separadas", fr: "Premières mélodies en mains séparées" },
             [
-              pouillard({ es: "cap. I págs. 11-14", fr: "chap. I p. 11-14" }),
-              chornet({ es: "págs. 12-13", fr: "p. 12-13" }),
-              aaron({ es: "págs. 8-10", fr: "p. 8-10" }),
+              pouillard({ es: "cap. I págs. 13-14 y pág. 17, ejercicio 12", fr: "chap. I p. 13-14 et p. 17, exercice 12" }),
+              chornet({ es: "pág. 13, ejercicio 15", fr: "p. 13, exercice 15" }),
+              aaron({ es: "págs. 7-10 y 12", fr: "p. 7-10 et 12" }),
             ],
             { es: "Melodías a 3, 4 y 5 dedos, cada mano por separado y ya con negras.", fr: "Mélodies à 3, 4 et 5 doigts, chaque main séparément et déjà en noires." }),
         ],
