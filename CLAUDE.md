@@ -265,6 +265,10 @@ Referencias de sensación: Duolingo, Toca Boca. Nada de estética corporativa.
 - **A partir del curso 6 cada clase lleva un bloque de repertorio**, sacado de
   *Essential Piano Repertoire, Preparatory Level* (Keith Snell), en el orden
   progresivo del propio libro.
+- `catalogo-metodos.csv` es la vista editable de esos bloques, para que ella
+  corrija las páginas con los libros delante. Se regenera con
+  `node dev/catalogo-csv.mjs > catalogo-metodos.csv`, y lo que ella cambie ahí
+  se vuelca a mano a `src/programa.js`, que sigue siendo la fuente de verdad.
 - **Las páginas de los métodos: qué está verificado y qué no.** Snell y Aaron
   están comprobados contra el índice que publican sus editoriales (Kjos y
   Alfred), así que esas páginas son fiables. Las de Hervé/Pouillard y las de
